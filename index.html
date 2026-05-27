@@ -276,15 +276,34 @@ h2 {
 
 /* ── SOBRE SIMBA ── */
 .sobre-bg {
-  background:linear-gradient(135deg, #1A1210 0%, #2A1A12 50%, #1A1210 100%);
+  background: linear-gradient(135deg, #0d1f14 0%, #12192e 40%, #1a0d20 70%, #0d1f14 100%);
+  background-size: 300% 300%;
+  animation: sobreGradient 14s ease infinite;
   position:relative; overflow:hidden;
 }
+@keyframes sobreGradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 .sobre-bg::before {
-  content:''; position:absolute; inset:0;
+  content:''; position:absolute; inset:0; pointer-events:none;
   background:
-    radial-gradient(ellipse at 80% 20%, rgba(240,138,124,.12) 0%, transparent 60%),
-    radial-gradient(ellipse at 20% 80%, rgba(126,200,164,.10) 0%, transparent 55%);
-  pointer-events:none;
+    radial-gradient(ellipse at 10% 80%, rgba(126,200,164,.22) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 15%, rgba(240,138,124,.18) 0%, transparent 45%),
+    radial-gradient(ellipse at 55% 55%, rgba(90,168,130,.10) 0%, transparent 55%);
+  animation: sobreBlobs 9s ease-in-out infinite alternate;
+}
+.sobre-bg::after {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse at 80% 90%, rgba(240,138,124,.10) 0%, transparent 45%),
+    radial-gradient(ellipse at 20% 10%, rgba(126,200,164,.12) 0%, transparent 50%);
+  animation: sobreBlobs 9s ease-in-out infinite alternate-reverse;
+}
+@keyframes sobreBlobs {
+  from { transform: scale(1) translate(0, 0); opacity:.7; }
+  to   { transform: scale(1.12) translate(2%, 2%); opacity:1; }
 }
 .sobre-grid {
   display:grid; grid-template-columns:1fr 1fr;
@@ -691,6 +710,7 @@ footer {
   <div class="hero-content">
     <div class="hero-pill">🏅 Guardería Canina · Madrid</div>
     <h1>La casita de Simba</h1>
+    <div class="hero-guarderia-badge">🐾 Donde tu perro es el rey</div>
     <p class="hero-tagline">Cuidado, juego y cariño como en casa</p>
     <p class="hero-desc">Un hogar lleno de amor donde tu peludo se siente feliz, acompañado y seguro mientras tú estás en el trabajo.</p>
     <div class="hero-btns">
