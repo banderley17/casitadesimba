@@ -637,70 +637,40 @@ header.scrolled .nav-social a:hover svg { fill:white; }
 
 /* ── WHATSAPP BUBBLE ── */
 .wa-bubble {
-  position:fixed; bottom:7.5rem; right:2rem; z-index:9998;
-  width:290px;
-  background:white; border-radius:16px 16px 4px 16px;
-  box-shadow:0 12px 48px rgba(0,0,0,.22);
-  opacity:0; transform:translateY(16px) scale(.94);
-  transition:opacity .4s ease, transform .4s ease;
-  pointer-events:none; overflow:hidden;
+  position:fixed; bottom:7rem; right:2rem; z-index:9998;
+  background:white; border-radius:14px;
+  box-shadow:0 4px 22px rgba(0,0,0,.16);
+  padding:.7rem 2rem .7rem .9rem;
+  max-width:210px; cursor:pointer;
+  opacity:0; transform:scale(.88) translateY(8px);
+  transition:opacity .3s, transform .3s;
+  pointer-events:none;
+  text-decoration:none; display:block;
+}
+.wa-bubble::after {
+  content:''; position:absolute;
+  bottom:-6px; right:24px;
+  border:6px solid transparent;
+  border-top-color:white; border-bottom:none;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.08));
 }
 .wa-bubble.show {
-  opacity:1; transform:translateY(0) scale(1);
+  opacity:1; transform:scale(1) translateY(0);
   pointer-events:all;
 }
-.wa-bubble-header {
-  display:flex; align-items:center; gap:.8rem;
-  background:#075E54; padding:.9rem 1rem;
-}
-.wa-bubble-avatar {
-  width:42px; height:42px; border-radius:50%;
-  background:#128C7E;
-  display:flex; align-items:center; justify-content:center;
-  font-size:1.3rem; flex-shrink:0;
-  border:2px solid rgba(255,255,255,.3);
-}
-.wa-bubble-info .wa-name {
-  color:white; font-weight:800; font-size:.95rem;
-}
-.wa-bubble-info .wa-status {
-  color:rgba(255,255,255,.75); font-size:.75rem; margin-top:.1rem;
-}
-.wa-bubble-info .wa-status::before {
-  content:'●'; color:#4ade80; margin-right:.3rem; font-size:.6rem;
-}
 .wa-bubble-close {
-  margin-left:auto; background:none; border:none;
-  color:rgba(255,255,255,.7); font-size:1.1rem; cursor:pointer;
-  line-height:1; padding:.2rem; transition:color .2s;
+  position:absolute; top:.35rem; right:.45rem;
+  background:none; border:none; color:#bbb;
+  font-size:.8rem; cursor:pointer; line-height:1;
 }
-.wa-bubble-close:hover { color:white; }
-.wa-bubble-body { padding:1rem 1rem .2rem; background:#ECE5DD; }
-.wa-bubble-msg {
-  background:white; border-radius:0 10px 10px 10px;
-  padding:.75rem 1rem; font-size:.9rem;
-  color:#111; line-height:1.55;
-  box-shadow:0 1px 2px rgba(0,0,0,.12);
-  position:relative;
+.wa-bubble-close:hover { color:#666; }
+.wa-bubble-row { display:flex; align-items:center; gap:.5rem; }
+.wa-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:#25D366; flex-shrink:0;
 }
-.wa-bubble-msg::before {
-  content:''; position:absolute; top:0; left:-8px;
-  border:8px solid transparent;
-  border-right-color:white; border-top-color:white;
-}
-.wa-bubble-time {
-  text-align:right; font-size:.7rem;
-  color:#999; margin-top:.3rem; padding-right:.2rem;
-}
-.wa-bubble-cta {
-  display:block; text-align:center;
-  background:#25D366; color:white;
-  text-decoration:none; font-weight:800; font-size:.95rem;
-  padding:.85rem 1rem; margin:.8rem 1rem 1rem;
-  border-radius:50px;
-  transition:background .2s;
-}
-.wa-bubble-cta:hover { background:#1db954; }
+.wa-bubble-text { font-size:.8rem; color:#222; line-height:1.45; }
+.wa-bubble-text strong { color:#075E54; }
 
 /* ── WHATSAPP ── */
 .wa-float {
@@ -1179,25 +1149,13 @@ header.scrolled .nav-social a:hover svg { fill:white; }
 </footer>
 
 <!-- WHATSAPP BUBBLE -->
-<div class="wa-bubble" id="waBubble">
-  <div class="wa-bubble-header">
-    <div class="wa-bubble-avatar">🐾</div>
-    <div class="wa-bubble-info">
-      <div class="wa-name">Elena · La Casita de Simba</div>
-      <div class="wa-status">En línea ahora</div>
-    </div>
-    <button class="wa-bubble-close" id="waBubbleClose" aria-label="Cerrar">✕</button>
+<a class="wa-bubble" id="waBubble" href="https://wa.me/34613753680?text=Hola%20Elena%2C%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20La%20Casita%20de%20Simba" target="_blank">
+  <button class="wa-bubble-close" id="waBubbleClose" aria-label="Cerrar">✕</button>
+  <div class="wa-bubble-row">
+    <span class="wa-dot"></span>
+    <div class="wa-bubble-text"><strong>Elena</strong> — ¡Hola! 👋<br>¿Te ayudo o quieres reservar?</div>
   </div>
-  <div class="wa-bubble-body">
-    <div class="wa-bubble-msg">
-      ¡Hola! 👋 Soy Elena.<br>¿Te ayudo con algo? Puedo darte información sobre precios, disponibilidad o gestionar tu <strong>reserva</strong> 🐶
-    </div>
-    <div class="wa-bubble-time">ahora ✓✓</div>
-    <a href="https://wa.me/34613753680?text=Hola%20Elena%2C%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20La%20Casita%20de%20Simba" class="wa-bubble-cta" target="_blank">
-      💬 Escribir a Elena
-    </a>
-  </div>
-</div>
+</a>
 
 <!-- WHATSAPP -->
 <a href="https://wa.me/34613753680?text=Hola%20quiero%20informacion%20sobre%20La%20Casita%20de%20Simba" class="wa-float" target="_blank" aria-label="WhatsApp">
