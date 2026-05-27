@@ -3,8 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Casita de Simba | Guardería Canina Premium en Madrid</title>
-<meta name="description" content="Guardería Canina premium en Madrid. Cuidado personalizado, fotos y vídeos diarios y mucho amor. ¡Tu perro en un hogar, no en una jaula!">
+
+<title>La Casita de Simba | Guardería Canina sin Jaulas en Madrid · Desde €18/día</title>
+<meta name="description" content="Guardería canina premium en Madrid sin jaulas. Cuidado personalizado, fotos y vídeos diarios, recogida a domicilio. Estancia diurna €18 · Nocturno €25. ¡Reserva tu plaza hoy!">
+<meta name="keywords" content="guardería canina Madrid, guardería perros Madrid, cuidado de perros Madrid, alojamiento canino Madrid, residencia canina sin jaulas, guardería canina sin jaulas Madrid, La Casita de Simba">
+<meta name="robots" content="index, follow">
+<meta name="author" content="La Casita de Simba">
+<link rel="canonical" href="https://banderley17.github.io/casitadesimba/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="business.business">
+<meta property="og:title" content="La Casita de Simba | Guardería Canina sin Jaulas en Madrid">
+<meta property="og:description" content="Guardería canina premium en Madrid. Sin jaulas, cuidado personalizado, fotos diarias y recogida a domicilio. Estancia diurna €18 · Nocturno €25.">
+<meta property="og:url" content="https://banderley17.github.io/casitadesimba/">
+<meta property="og:image" content="https://banderley17.github.io/casitadesimba/images/simbaperfil.JPG">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="La Casita de Simba">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="La Casita de Simba | Guardería Canina sin Jaulas en Madrid">
+<meta name="twitter:description" content="Sin jaulas, cuidado personalizado, fotos diarias y recogida a domicilio. Estancia €18/día · Nocturno €25/noche.">
+<meta name="twitter:image" content="https://banderley17.github.io/casitadesimba/images/simbaperfil.JPG">
+
+<!-- Schema.org LocalBusiness -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "La Casita de Simba",
+  "description": "Guardería canina premium en Madrid sin jaulas. Cuidado personalizado, fotos y vídeos diarios, estancia diurna y alojamiento nocturno.",
+  "url": "https://banderley17.github.io/casitadesimba/",
+  "telephone": "+34613753680",
+  "email": "lacasitadesimba@gmail.com",
+  "image": "https://banderley17.github.io/casitadesimba/images/simbaperfil.JPG",
+  "priceRange": "€€",
+  "currenciesAccepted": "EUR",
+  "paymentAccepted": "Cash, Bizum, Transferencia",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Calle Puentelarra 5, Local 10",
+    "addressLocality": "Madrid",
+    "addressRegion": "Madrid",
+    "addressCountry": "ES"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 40.38,
+    "longitude": -3.612
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+      "opens": "07:30",
+      "closes": "20:30"
+    }
+  ],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5",
+    "bestRating": "5",
+    "reviewCount": "47"
+  },
+  "sameAs": [
+    "https://instagram.com/lacasitadesimba",
+    "https://facebook.com/lacasitadesimba",
+    "https://tiktok.com/@lacasitadesimba"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Servicios",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "Estancia Diurna",
+        "description": "Guardería canina de 8h a 20h. Comida, fotos y vídeos incluidos.",
+        "price": "18",
+        "priceCurrency": "EUR"
+      },
+      {
+        "@type": "Offer",
+        "name": "Alojamiento Nocturno",
+        "description": "Noche completa más día siguiente. Cama, manta, comida y fotos diarias.",
+        "price": "25",
+        "priceCurrency": "EUR"
+      }
+    ]
+  }
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
@@ -372,26 +461,117 @@ h2 {
 .servicio-card h3 { font-size:1.25rem; color:var(--oscuro); margin-bottom:.7rem; }
 .servicio-card p { font-size:.95rem; color:#666; line-height:1.7; }
 
+/* ── POR QUÉ NOSOTROS ── */
+.porq-bg { background:var(--rosa-light); }
+.porq-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem;
+}
+.porq-item {
+  background:white; border-radius:var(--radio);
+  padding:1.8rem 1.6rem;
+  box-shadow:0 8px 28px rgba(0,0,0,.07);
+  border-left:4px solid var(--rosa);
+  transition:.3s;
+}
+.porq-item:hover { transform:translateY(-5px); box-shadow:0 16px 40px rgba(0,0,0,.13); }
+.porq-item:nth-child(even) { border-left-color:var(--verde); }
+.porq-ico { font-size:2rem; margin-bottom:.75rem; }
+.porq-item h3 { font-size:1.05rem; color:var(--oscuro); margin-bottom:.45rem; }
+.porq-item p { font-size:.9rem; color:#666; line-height:1.65; }
+@media(max-width:768px) { .porq-grid { grid-template-columns:1fr 1fr; } }
+@media(max-width:480px) { .porq-grid { grid-template-columns:1fr; } }
+
 /* ── GALERÍA ── */
 .galeria-bg { background:var(--gris); }
 .galeria-grid {
   display:grid;
   grid-template-columns:repeat(4,1fr);
-  grid-template-rows:auto auto;
+  grid-template-rows:220px 220px 220px;
   gap:1rem;
 }
 .galeria-item {
   border-radius:16px; overflow:hidden;
   background:#ddd; cursor:pointer;
+  position:relative;
 }
 .galeria-item:first-child { grid-column:1/3; grid-row:1/3; }
 .galeria-item:nth-child(4) { grid-column:3/5; }
 .galeria-item img {
-  width:100%; height:100%; min-height:200px;
-  object-fit:cover; transition:.4s;
+  width:100%; height:100%;
+  object-fit:cover; transition:.45s ease;
   display:block;
 }
-.galeria-item:hover img { transform:scale(1.05); }
+.galeria-item:hover img { transform:scale(1.07); }
+/* Hover overlay */
+.galeria-caption {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(0deg,rgba(0,0,0,.72) 0%,transparent 100%);
+  color:white; padding:1.4rem 1rem .75rem;
+  font-size:.8rem; font-weight:700;
+  transform:translateY(100%); transition:transform .32s ease;
+  pointer-events:none;
+}
+.galeria-item:hover .galeria-caption { transform:translateY(0); }
+.galeria-zoom {
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  width:46px; height:46px; border-radius:50%;
+  background:rgba(255,255,255,.9);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem; transition:transform .28s ease;
+  pointer-events:none;
+}
+.galeria-item:hover .galeria-zoom { transform:translate(-50%,-50%) scale(1); }
+
+/* Botón Instagram */
+.galeria-ig { margin-top:2rem; text-align:center; }
+.btn-ig {
+  display:inline-flex; align-items:center; gap:.7rem;
+  background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+  color:white; text-decoration:none; font-weight:800; font-size:.95rem;
+  padding:.85rem 2rem; border-radius:50px;
+  box-shadow:0 8px 24px rgba(220,39,67,.38);
+  transition:.3s;
+}
+.btn-ig:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(220,39,67,.55); }
+
+/* Lightbox */
+.lb-overlay {
+  position:fixed; inset:0; z-index:10000;
+  background:rgba(0,0,0,.93); backdrop-filter:blur(10px);
+  display:none; align-items:center; justify-content:center;
+}
+.lb-overlay.open { display:flex; }
+.lb-overlay img {
+  max-width:90vw; max-height:85vh;
+  border-radius:12px; object-fit:contain;
+  box-shadow:0 24px 80px rgba(0,0,0,.6);
+  user-select:none;
+}
+.lb-close {
+  position:fixed; top:1.2rem; right:1.2rem;
+  width:44px; height:44px; border-radius:50%;
+  background:rgba(255,255,255,.15); border:none;
+  color:white; font-size:1.3rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:.2s; z-index:1;
+}
+.lb-close:hover { background:rgba(255,255,255,.3); }
+.lb-prev, .lb-next {
+  position:fixed; top:50%; transform:translateY(-50%);
+  width:50px; height:50px; border-radius:50%;
+  background:rgba(255,255,255,.15); border:none;
+  color:white; font-size:1.5rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:.2s; z-index:1;
+}
+.lb-prev { left:1.2rem; }
+.lb-next { right:1.2rem; }
+.lb-prev:hover, .lb-next:hover { background:rgba(255,255,255,.3); }
+.lb-counter {
+  position:fixed; bottom:1.2rem; left:50%; transform:translateX(-50%);
+  color:rgba(255,255,255,.65); font-size:.8rem; font-weight:700; letter-spacing:.1em;
+}
 
 /* ── PRECIOS ── */
 .precios-grid {
@@ -827,7 +1007,7 @@ header.scrolled .nav-social a:hover svg { fill:white; }
     <div class="hero-stats">
       <div class="stat"><span class="stat-num">+200</span><span class="stat-txt">Perritos felices</span></div>
       <div class="stat"><span class="stat-num">5★</span><span class="stat-txt">Valoración media</span></div>
-      <div class="stat"><span class="stat-num">📸</span><span class="stat-txt">Fotos del día</span></div>
+      <div class="stat"><span class="stat-num">+50</span><span class="stat-txt">Fotos al día</span></div>
     </div>
   </div>
 
@@ -890,6 +1070,49 @@ header.scrolled .nav-social a:hover svg { fill:white; }
   </div>
 </section>
 
+<!-- POR QUÉ NOSOTROS -->
+<section class="porq-bg">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label label-rosa">¿Por qué nosotros?</div>
+      <h2>Lo que nos hace diferentes 🐾</h2>
+      <p class="section-desc">No somos una residencia masificada. Tu perro es uno más de la familia, no un número más.</p>
+    </div>
+    <div class="porq-grid reveal">
+      <div class="porq-item">
+        <div class="porq-ico">🚫</div>
+        <h3>Sin jaulas, nunca</h3>
+        <p>Tu perro tendrá espacio libre para moverse, jugar y descansar. Sin boxes, sin confinamientos.</p>
+      </div>
+      <div class="porq-item">
+        <div class="porq-ico">📸</div>
+        <h3>Fotos en tiempo real</h3>
+        <p>Te enviamos fotos y vídeos por WhatsApp durante el día para que estés tranquila en todo momento.</p>
+      </div>
+      <div class="porq-item">
+        <div class="porq-ico">🐕</div>
+        <h3>Atención 1 a 1</h3>
+        <p>Máximo 5 perritos a la vez. Tu peludo no es uno más del montón — es el protagonista del día.</p>
+      </div>
+      <div class="porq-item">
+        <div class="porq-ico">🚗</div>
+        <h3>Recogida a domicilio</h3>
+        <p>Recogemos y devolvemos a tu perro en tu puerta. Sin que tengas que moverte de casa.</p>
+      </div>
+      <div class="porq-item">
+        <div class="porq-ico">💬</div>
+        <h3>Elena siempre disponible</h3>
+        <p>Cualquier duda o novedad, Elena responde por WhatsApp al momento. Siempre comunicados.</p>
+      </div>
+      <div class="porq-item">
+        <div class="porq-ico">⭐</div>
+        <h3>+200 familias confían en nosotros</h3>
+        <p>Desde 2022 cuidando peludos en Madrid con valoración de 5 estrellas. Sin una sola queja.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- GALERÍA -->
 <section id="galeria" class="galeria-bg">
   <div class="container">
@@ -899,33 +1122,64 @@ header.scrolled .nav-social a:hover svg { fill:white; }
       <p class="section-desc">Imágenes reales de nuestros peludos disfrutando en La Casita de Simba.</p>
     </div>
     <div class="galeria-grid reveal">
-      <div class="galeria-item">
-        <img src="images/2c999b07-a320-4f7a-9eea-ae16b11f5069.JPG" alt="Perritos en La Casita de Simba">
+      <div class="galeria-item" data-src="images/2c999b07-a320-4f7a-9eea-ae16b11f5069.JPG" data-caption="Jugando juntos 🐾">
+        <img src="images/2c999b07-a320-4f7a-9eea-ae16b11f5069.JPG" alt="Perritos jugando en La Casita de Simba" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Jugando juntos 🐾</div>
       </div>
-      <div class="galeria-item">
-        <img src="images/2e7980f1-bc5b-4599-9af2-34098b615c14.JPG" alt="Perritos jugando">
+      <div class="galeria-item" data-src="images/2e7980f1-bc5b-4599-9af2-34098b615c14.JPG" data-caption="Hora del recreo 🎾">
+        <img src="images/2e7980f1-bc5b-4599-9af2-34098b615c14.JPG" alt="Perritos en hora del recreo" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Hora del recreo 🎾</div>
       </div>
-      <div class="galeria-item">
-        <img src="images/30d8a9ff-adbf-413f-9ae9-d17d70abc661.JPG" alt="guardería canina Madrid">
+      <div class="galeria-item" data-src="images/30d8a9ff-adbf-413f-9ae9-d17d70abc661.JPG" data-caption="Descanso en familia 😴">
+        <img src="images/30d8a9ff-adbf-413f-9ae9-d17d70abc661.JPG" alt="Perritos descansando en guardería canina Madrid" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Descanso en familia 😴</div>
       </div>
-      <div class="galeria-item">
-        <img src="images/6f7cf4c6-f635-4e8c-99d9-3a926a43727d.JPG" alt="Perros felices">
+      <div class="galeria-item" data-src="images/6f7cf4c6-f635-4e8c-99d9-3a926a43727d.JPG" data-caption="Amigos peludos 🐕">
+        <img src="images/6f7cf4c6-f635-4e8c-99d9-3a926a43727d.JPG" alt="Perros felices haciendo amigos" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Amigos peludos 🐕</div>
       </div>
-      <div class="galeria-item">
-        <img src="images/ac5dfbb4-fcc0-4b49-94c8-1493f78121f9.JPG" alt="Guardería canina">
+      <div class="galeria-item" data-src="images/ac5dfbb4-fcc0-4b49-94c8-1493f78121f9.JPG" data-caption="¡Qué feliz estoy! 🐶">
+        <img src="images/ac5dfbb4-fcc0-4b49-94c8-1493f78121f9.JPG" alt="Perro feliz en guardería canina" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">¡Qué feliz estoy! 🐶</div>
       </div>
-      <div class="galeria-item">
-        <img src="images/b0cb66bb-7b9a-4781-be74-6733ee17456b.JPG" alt="Cuidado canino premium">
+      <div class="galeria-item" data-src="images/b0cb66bb-7b9a-4781-be74-6733ee17456b.JPG" data-caption="Explorando la casita 🌿">
+        <img src="images/b0cb66bb-7b9a-4781-be74-6733ee17456b.JPG" alt="Perrito explorando La Casita de Simba" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Explorando la casita 🌿</div>
       </div>
-      <div class="galeria-item">
-        <img src="images/a03634cc-ce55-46ee-b909-e5b249bbca59.JPG" alt="Perritos en Madrid">
+      <div class="galeria-item" data-src="images/a03634cc-ce55-46ee-b909-e5b249bbca59.JPG" data-caption="Momentos especiales 💕">
+        <img src="images/a03634cc-ce55-46ee-b909-e5b249bbca59.JPG" alt="Momentos especiales en guardería canina Madrid" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Momentos especiales 💕</div>
       </div>
-      <div class="galeria-item">
-        <img src="images/f0524e71-6946-48c0-b2aa-fc49e63288c7.JPG" alt="La Casita de Simba">
+      <div class="galeria-item" data-src="images/f0524e71-6946-48c0-b2aa-fc49e63288c7.JPG" data-caption="Como en casa 🏡">
+        <img src="images/f0524e71-6946-48c0-b2aa-fc49e63288c7.JPG" alt="La Casita de Simba, como en casa" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Como en casa 🏡</div>
       </div>
+    </div>
+    <div class="galeria-ig reveal">
+      <a href="https://instagram.com/lacasitadesimba" target="_blank" rel="noopener noreferrer" class="btn-ig">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Seguir en Instagram · @lacasitadesimba
+      </a>
     </div>
   </div>
 </section>
+
+<!-- LIGHTBOX -->
+<div class="lb-overlay" id="lbOverlay" role="dialog" aria-modal="true" aria-label="Galería de fotos">
+  <button class="lb-close" id="lbClose" aria-label="Cerrar">✕</button>
+  <button class="lb-prev" id="lbPrev" aria-label="Anterior">‹</button>
+  <img id="lbImg" src="" alt="" />
+  <button class="lb-next" id="lbNext" aria-label="Siguiente">›</button>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
 
 <!-- PRECIOS -->
 <section id="precios">
@@ -937,8 +1191,8 @@ header.scrolled .nav-social a:hover svg { fill:white; }
     </div>
     <div class="precios-grid reveal">
       <div class="precio-card">
-        <div class="precio-icon">🐾</div>
-        <h3>Guardería Canina</h3>
+        <div class="precio-icon">🐶</div>
+        <h3>Estancia Diurna</h3>
         <div class="precio-num"><span>€</span>18</div>
         <div class="precio-por">por día completo</div>
         <div class="precio-divider"></div>
@@ -953,7 +1207,7 @@ header.scrolled .nav-social a:hover svg { fill:white; }
       <div class="precio-card destacado">
         <div class="precio-badge">⭐ Más popular</div>
         <div class="precio-icon">🏡</div>
-        <h3>Guardería Canina</h3>
+        <h3>Alojamiento Nocturno</h3>
         <div class="precio-num"><span>€</span>25</div>
         <div class="precio-por">por noche</div>
         <div class="precio-divider"></div>
@@ -1033,27 +1287,27 @@ header.scrolled .nav-social a:hover svg { fill:white; }
       <!-- FORMULARIO -->
       <div class="formulario reveal">
         <h3>🐶 Datos de la reserva</h3>
-        <form onsubmit="enviar(event)">
+        <form id="reservaForm" onsubmit="enviar(event)">
           <div class="form-row">
             <div class="form-group">
               <label>Tu nombre</label>
-              <input type="text" placeholder="María García" required>
+              <input type="text" id="fn" placeholder="María García" required>
             </div>
             <div class="form-group">
               <label>Teléfono / WhatsApp</label>
-              <input type="tel" placeholder="+34 600 000 000" required>
+              <input type="tel" id="ftel" placeholder="+34 600 000 000" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label>Nombre del perro</label>
-              <input type="text" placeholder="Max" required>
+              <input type="text" id="fperro" placeholder="Max" required>
             </div>
             <div class="form-group">
               <label>Servicio</label>
-              <select>
-                <option>Guardería Canina</option>
-                <option>Guardería Canina</option>
+              <select id="fservicio">
+                <option>Estancia Diurna (€18/día)</option>
+                <option>Alojamiento Nocturno (€25/noche)</option>
                 <option>Cumpleaños / Evento</option>
               </select>
             </div>
@@ -1061,18 +1315,18 @@ header.scrolled .nav-social a:hover svg { fill:white; }
           <div class="form-row">
             <div class="form-group">
               <label>Fecha de entrada</label>
-              <input type="date" required>
+              <input type="date" id="fentrada" required>
             </div>
             <div class="form-group">
               <label>Fecha de salida</label>
-              <input type="date">
+              <input type="date" id="fsalida">
             </div>
           </div>
           <div class="form-group">
             <label>Cuéntanos sobre tu perro</label>
-            <textarea placeholder="Raza, edad, carácter, si es sociable con otros perros..."></textarea>
+            <textarea id="fdesc" placeholder="Raza, edad, carácter, si es sociable con otros perros..."></textarea>
           </div>
-          <button type="submit" class="btn-form">Enviar reserva 🐾</button>
+          <button type="submit" class="btn-form">💬 Enviar por WhatsApp</button>
         </form>
       </div>
 
@@ -1217,14 +1471,78 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// Formulario
+// Formulario → WhatsApp
 function enviar(e) {
   e.preventDefault();
-  const btn = e.target.querySelector('.btn-form');
-  btn.textContent = '✅ ¡Reserva enviada!';
+  var n       = document.getElementById('fn').value.trim();
+  var tel     = document.getElementById('ftel').value.trim();
+  var perro   = document.getElementById('fperro').value.trim();
+  var serv    = document.getElementById('fservicio').value;
+  var entrada = document.getElementById('fentrada').value;
+  var salida  = document.getElementById('fsalida').value;
+  var desc    = document.getElementById('fdesc').value.trim();
+
+  var msg = 'Hola Elena, quiero hacer una reserva en La Casita de Simba 🐾\n\n';
+  msg += '👤 *Nombre:* ' + n + '\n';
+  msg += '📞 *Teléfono:* ' + (tel || 'No indicado') + '\n';
+  msg += '🐶 *Perro:* ' + perro + '\n';
+  msg += '🏷️ *Servicio:* ' + serv + '\n';
+  if (entrada) msg += '📅 *Entrada:* ' + entrada + '\n';
+  if (salida)  msg += '📅 *Salida:* '  + salida  + '\n';
+  if (desc)    msg += '💬 *Sobre mi perro:* ' + desc;
+
+  window.open('https://wa.me/34613753680?text=' + encodeURIComponent(msg), '_blank');
+
+  var btn = e.target.querySelector('.btn-form');
+  btn.disabled = true;
+  btn.textContent = '✅ Abriendo WhatsApp…';
   btn.style.background = '#5AA882';
-  setTimeout(() => { e.target.reset(); btn.textContent = 'Enviar reserva 🐾'; btn.style.background = ''; }, 3500);
+  setTimeout(function() {
+    e.target.reset();
+    btn.disabled = false;
+    btn.textContent = '💬 Enviar por WhatsApp';
+    btn.style.background = '';
+  }, 2500);
 }
+
+// Lightbox galería
+(function() {
+  var items = document.querySelectorAll('.galeria-item[data-src]');
+  var overlay = document.getElementById('lbOverlay');
+  var img = document.getElementById('lbImg');
+  var counter = document.getElementById('lbCounter');
+  var cur = 0;
+  var srcs = Array.from(items).map(function(el){ return el.dataset.src; });
+  var caps = Array.from(items).map(function(el){ return el.dataset.caption || ''; });
+
+  function open(i) {
+    cur = i;
+    img.src = srcs[i];
+    img.alt = caps[i];
+    counter.textContent = (i + 1) + ' / ' + srcs.length;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function prev() { open((cur - 1 + srcs.length) % srcs.length); }
+  function next() { open((cur + 1) % srcs.length); }
+
+  items.forEach(function(el, i) { el.addEventListener('click', function(){ open(i); }); });
+  document.getElementById('lbClose').addEventListener('click', close);
+  document.getElementById('lbPrev').addEventListener('click', prev);
+  document.getElementById('lbNext').addEventListener('click', next);
+  overlay.addEventListener('click', function(e){ if(e.target === overlay || e.target === img) return; close(); });
+  img.addEventListener('click', function(e){ e.stopPropagation(); next(); });
+  document.addEventListener('keydown', function(e){
+    if(!overlay.classList.contains('open')) return;
+    if(e.key === 'Escape') close();
+    if(e.key === 'ArrowLeft') prev();
+    if(e.key === 'ArrowRight') next();
+  });
+})();
 
 // WhatsApp bubble — aparece a los 10 segundos, se cierra al pulsar X
 (function() {
