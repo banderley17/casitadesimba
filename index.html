@@ -154,6 +154,8 @@ header.scrolled .nav-cta { color:white !important; }
   transition:color .4s;
 }
 .logo span { color:rgba(255,255,255,.85); transition:color .4s; }
+.logo-img { height:52px; width:auto; display:block; transition:opacity .3s; }
+.logo:hover .logo-img { opacity:.85; }
 nav { display:flex; gap:2rem; align-items:center; }
 nav a {
   text-decoration:none; font-weight:700; font-size:.95rem;
@@ -462,22 +464,63 @@ h2 {
 .servicio-card p { font-size:.95rem; color:#666; line-height:1.7; }
 
 /* ── POR QUÉ NOSOTROS ── */
-.porq-bg { background:var(--rosa-light); }
+.porq-bg {
+  background:linear-gradient(180deg,#fff 0%,var(--gris) 100%);
+}
 .porq-grid {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1.6rem;
 }
 .porq-item {
-  background:white; border-radius:var(--radio);
-  padding:1.8rem 1.6rem;
-  box-shadow:0 8px 28px rgba(0,0,0,.07);
-  border-left:4px solid var(--rosa);
-  transition:.3s;
+  background:white; border-radius:24px;
+  padding:2rem 1.8rem 1.8rem;
+  box-shadow:0 4px 24px rgba(0,0,0,.06);
+  border:1.5px solid #f0eeee;
+  transition:.35s cubic-bezier(.34,1.56,.64,1);
+  position:relative; overflow:hidden;
 }
-.porq-item:hover { transform:translateY(-5px); box-shadow:0 16px 40px rgba(0,0,0,.13); }
-.porq-item:nth-child(even) { border-left-color:var(--verde); }
-.porq-ico { font-size:2rem; margin-bottom:.75rem; }
-.porq-item h3 { font-size:1.05rem; color:var(--oscuro); margin-bottom:.45rem; }
-.porq-item p { font-size:.9rem; color:#666; line-height:1.65; }
+.porq-item::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--rosa),var(--rosa-dark));
+  border-radius:24px 24px 0 0;
+}
+.porq-item:nth-child(even)::after {
+  background:linear-gradient(90deg,var(--verde),var(--verde-dark));
+}
+.porq-item:hover {
+  transform:translateY(-10px) scale(1.01);
+  box-shadow:0 24px 56px rgba(240,138,124,.2);
+  border-color:rgba(240,138,124,.25);
+}
+.porq-item:nth-child(even):hover {
+  box-shadow:0 24px 56px rgba(126,200,164,.22);
+  border-color:rgba(126,200,164,.28);
+}
+.porq-num {
+  position:absolute; top:1.1rem; right:1.3rem;
+  font-size:.65rem; font-weight:900; letter-spacing:.14em;
+  color:rgba(0,0,0,.09);
+}
+.porq-ico-wrap {
+  width:68px; height:68px; border-radius:18px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:2.1rem; margin-bottom:1.2rem;
+  background:linear-gradient(135deg,var(--rosa-light),rgba(240,138,124,.18));
+  box-shadow:0 6px 18px rgba(240,138,124,.2);
+  transition:transform .3s, box-shadow .3s;
+}
+.porq-item:nth-child(even) .porq-ico-wrap {
+  background:linear-gradient(135deg,var(--verde-light),rgba(126,200,164,.18));
+  box-shadow:0 6px 18px rgba(126,200,164,.2);
+}
+.porq-item:hover .porq-ico-wrap {
+  transform:scale(1.1) rotate(-4deg);
+  box-shadow:0 10px 28px rgba(240,138,124,.35);
+}
+.porq-item:nth-child(even):hover .porq-ico-wrap {
+  box-shadow:0 10px 28px rgba(126,200,164,.35);
+}
+.porq-item h3 { font-size:1.05rem; font-weight:900; color:var(--oscuro); margin-bottom:.5rem; }
+.porq-item p  { font-size:.88rem; color:#777; line-height:1.7; }
 @media(max-width:768px) { .porq-grid { grid-template-columns:1fr 1fr; } }
 @media(max-width:480px) { .porq-grid { grid-template-columns:1fr; } }
 
@@ -955,7 +998,7 @@ header.scrolled .nav-social a:hover svg { fill:white; }
 <!-- HEADER -->
 <header id="header">
   <div class="header-inner">
-    <a href="#inicio" class="logo">🐾 La casita de <span>Simba</span></a>
+    <a href="#inicio" class="logo"><img src="images/Letrero2.png" alt="La Casita de Simba" class="logo-img"></a>
     <nav id="nav">
       <a href="#simba">Sobre Simba</a>
       <a href="#servicios">Servicios</a>
@@ -1080,32 +1123,38 @@ header.scrolled .nav-social a:hover svg { fill:white; }
     </div>
     <div class="porq-grid reveal">
       <div class="porq-item">
-        <div class="porq-ico">🚫</div>
+        <span class="porq-num">01</span>
+        <div class="porq-ico-wrap">🛋️</div>
         <h3>Sin jaulas, nunca</h3>
         <p>Tu perro tendrá espacio libre para moverse, jugar y descansar. Sin boxes, sin confinamientos.</p>
       </div>
       <div class="porq-item">
-        <div class="porq-ico">📸</div>
-        <h3>Fotos en tiempo real</h3>
+        <span class="porq-num">02</span>
+        <div class="porq-ico-wrap">🎥</div>
+        <h3>Fotos y vídeos en directo</h3>
         <p>Te enviamos fotos y vídeos por WhatsApp durante el día para que estés tranquila en todo momento.</p>
       </div>
       <div class="porq-item">
-        <div class="porq-ico">🐕</div>
+        <span class="porq-num">03</span>
+        <div class="porq-ico-wrap">🫶</div>
         <h3>Atención 1 a 1</h3>
         <p>Máximo 5 perritos a la vez. Tu peludo no es uno más del montón — es el protagonista del día.</p>
       </div>
       <div class="porq-item">
-        <div class="porq-ico">🚗</div>
+        <span class="porq-num">04</span>
+        <div class="porq-ico-wrap">🚗</div>
         <h3>Recogida a domicilio</h3>
         <p>Recogemos y devolvemos a tu perro en tu puerta. Sin que tengas que moverte de casa.</p>
       </div>
       <div class="porq-item">
-        <div class="porq-ico">💬</div>
+        <span class="porq-num">05</span>
+        <div class="porq-ico-wrap">📲</div>
         <h3>Elena siempre disponible</h3>
         <p>Cualquier duda o novedad, Elena responde por WhatsApp al momento. Siempre comunicados.</p>
       </div>
       <div class="porq-item">
-        <div class="porq-ico">⭐</div>
+        <span class="porq-num">06</span>
+        <div class="porq-ico-wrap">🏅</div>
         <h3>+200 familias confían en nosotros</h3>
         <p>Desde 2022 cuidando peludos en Madrid con valoración de 5 estrellas. Sin una sola queja.</p>
       </div>
@@ -1365,7 +1414,7 @@ header.scrolled .nav-social a:hover svg { fill:white; }
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
-      <a href="#inicio" class="logo" style="color:white;">🐾 La casita de <span>Simba</span></a>
+      <a href="#inicio" class="logo"><img src="images/Letrero2.png" alt="La Casita de Simba" class="logo-img" style="filter:brightness(0) invert(1);"></a>
       <p style="margin-top:.8rem;">Guardería Canina premium en Madrid. Cuidado con amor desde 2022.</p>
       <div class="footer-social">
         <a href="https://instagram.com/lacasitadesimba" target="_blank" class="ig" aria-label="Instagram">
