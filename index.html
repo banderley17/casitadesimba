@@ -1160,8 +1160,20 @@ header.menu-open.scrolled {
   nav.open .nav-social svg:not(.gmail-svg) { width:26px; height:26px; fill:white; }
   nav.open .nav-social svg.gmail-svg { width:26px; height:26px; }
   .nav-social { display:none; }
-  .menu-btn { display:block; z-index:1001; color:white; }
+  .menu-btn { display:block; z-index:1001; color:white; flex-shrink:0; }
   header.scrolled .menu-btn { color:var(--oscuro); }
+  /* Logo centrado, botones en extremos */
+  .header-inner { position:relative; }
+  .logo {
+    position:absolute; left:50%; transform:translateX(-50%);
+    font-size:1rem; white-space:nowrap;
+  }
+  #langBtn { font-size:.68rem; padding:.22rem .55rem; flex-shrink:0; }
+  #langFlag { width:16px; height:12px; }
+  @media(max-width:360px) {
+    #langText { display:none; }
+    .logo { font-size:.9rem; }
+  }
   .sobre-grid { grid-template-columns:1fr; }
   .sobre-img { aspect-ratio:4/3; max-height:320px; }
   .contacto-main { grid-template-columns:1fr; }
