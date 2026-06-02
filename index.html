@@ -549,6 +549,31 @@ h2 {
   border-radius:var(--radio); padding:1.2rem 2rem;
   font-size:1rem; color:var(--oscuro); line-height:1.6;
 }
+/* ── TARIFA ESTÁNDAR ── */
+.tarifa-std {
+  background:linear-gradient(135deg,rgba(253,236,234,.5),rgba(230,247,238,.5));
+  border:1px solid rgba(240,138,124,.15);
+  border-radius:var(--radio); padding:2rem; margin-bottom:2.5rem;
+}
+.tarifa-std-ttl { font-size:1.1rem; font-weight:800; color:var(--oscuro); margin-bottom:1.2rem; }
+.tarifa-tabla { width:100%; border-collapse:collapse; }
+.tarifa-tabla th {
+  text-align:left; font-size:.72rem; text-transform:uppercase;
+  letter-spacing:.07em; color:#aaa; padding:.5rem .7rem;
+  border-bottom:2px solid rgba(0,0,0,.07);
+}
+.tarifa-tabla td {
+  padding:.7rem .7rem; font-size:.92rem; color:var(--oscuro);
+  border-bottom:1px solid rgba(0,0,0,.05); vertical-align:middle;
+}
+.tarifa-tabla tr:last-child td { border-bottom:none; }
+.tarifa-tabla tr:hover td { background:rgba(240,138,124,.04); transition:background .2s; }
+.t-precio { font-weight:800; color:var(--rosa-dark); white-space:nowrap; }
+.t-precio small { font-weight:400; font-size:.78rem; color:#aaa; }
+.tarifa-nota { margin-top:1rem; font-size:.87rem; color:#777; text-align:center; font-style:italic; }
+@media(max-width:600px) {
+  .tarifa-tabla th:last-child,.tarifa-tabla td:last-child { display:none; }
+}
 
 /* ── POR QUÉ NOSOTROS ── */
 .porq-bg {
@@ -1564,6 +1589,47 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
       <h2>Tarifas claras 💎</h2>
       <p class="section-desc">Precios transparentes y sin letra pequeña. Lo que ves es lo que pagas.</p>
     </div>
+    <div class="tarifa-std reveal">
+      <h3 class="tarifa-std-ttl">📋 Tarifa Estándar</h3>
+      <table class="tarifa-tabla">
+        <thead>
+          <tr>
+            <th class="tbl-th1">Servicio</th>
+            <th class="tbl-th2">Precio</th>
+            <th class="tbl-th3">Incluye</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🐶 <span class="tbl-s1n">Estancia Diurna</span></td>
+            <td class="t-precio">€18<small class="tbl-s1u">/día</small></td>
+            <td class="tbl-s1d">8h–20h · comida · fotos</td>
+          </tr>
+          <tr>
+            <td>🏡 <span class="tbl-s2n">Alojamiento Nocturno</span></td>
+            <td class="t-precio">€25<small class="tbl-s2u">/noche</small></td>
+            <td class="tbl-s2d">Noche + día · cama · comida · fotos</td>
+          </tr>
+          <tr>
+            <td>🗓️ <span class="tbl-s3n">Bono Semanal</span></td>
+            <td class="t-precio">desde €75<small class="tbl-s3u">/semana</small></td>
+            <td class="tbl-s3d">5 días · horario flexible · fotos</td>
+          </tr>
+          <tr>
+            <td>🎟️ <span class="tbl-s4n">Bono Mensual</span></td>
+            <td class="t-precio">desde €280<small class="tbl-s4u">/mes</small></td>
+            <td class="tbl-s4d">Días adaptados · precio especial · fotos</td>
+          </tr>
+          <tr>
+            <td>🎂 <span class="tbl-s5n">Cumpleaños / Evento</span></td>
+            <td class="t-precio tbl-s5p">A consultar</td>
+            <td class="tbl-s5d">Decoración · tarta · fotos</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="tarifa-nota tbl-nota">🔄 Nos adaptamos a tu rutina — consulta tu bono personalizado.</p>
+    </div>
+
     <div class="precios-grid reveal">
       <div class="precio-card">
         <div class="precio-icon">🐶</div>
@@ -2139,6 +2205,9 @@ function enviar(e) {
       'serv2-h3':'Alojamiento Nocturno','serv2-p':'Un hogar acogedor donde tu peludo dormirá tranquilo y acompañado. Ideal para viajes, escapadas o fines de semana.',
       'serv3-h3':'Fotos y Vídeos','serv3-p':'Te enviamos fotos y vídeos de tu peludo durante el día para que estés siempre tranquila. ¡Verás lo bien que lo pasa!',
       'serv4-h3':'Cumpleaños Perrunos','serv4-p':'Celebraciones especiales con decoración, tarta y fotos. ¡Porque tu peludo también merece su fiesta!',
+      'serv5-h3':'Bono Semanal','serv5-p':'Elige los días que necesitas cada semana y paga solo por lo que usas. Perfecto para rutinas variables y agendas cambiantes.',
+      'serv6-h3':'Bono Mensual','serv6-p':'La opción más económica para clientes habituales. Precio especial al contratar el mes completo. Cuéntanos tu rutina y lo diseñamos a tu medida.',
+      'serv-rutina':'🔄 <strong>Nos adaptamos a tu rutina.</strong> Dinos tus horarios y diseñamos el servicio perfecto para ti y tu peludo — sin estrés y sin complicaciones.',
       'porq-label':'¿Por qué nosotros?','porq-h2':'Lo que nos hace diferentes 🐾',
       'porq-desc':'No somos una residencia masificada. Tu perro es uno más de la familia, no un número más.',
       'porq1-h3':'Sin jaulas, nunca','porq1-p':'Tu perro tendrá espacio libre para moverse, jugar y descansar. Sin boxes, sin confinamientos.',
@@ -2155,6 +2224,15 @@ function enviar(e) {
       'prec1-h3':'Estancia Diurna','prec1-por':'por día completo','prec1-li1':'De 8h a 20h','prec1-li2':'Comida incluida','prec1-li3':'Fotos del día','prec1-li4':'Fotos y Vídeos','prec1-cta':'Reservar',
       'prec2-badge':'⭐ Más popular','prec2-h3':'Alojamiento Nocturno','prec2-por':'por noche','prec2-li1':'Noche + día siguiente','prec2-li2':'Cama y manta propias','prec2-li3':'Comida incluida','prec2-li4':'Fotos y vídeos diarios','prec2-cta':'Reservar',
       'prec3-h3':'Eventos y Cumpleaños','prec3-num':'A consultar','prec3-por':'pack personalizado','prec3-li1':'Decoración incluida','prec3-li2':'Tarta perruna','prec3-li3':'Sesión de fotos','prec3-li4':'Invitados peludos','prec3-cta':'Consultar',
+      'prec4-h3':'Bono Semanal','prec4-por':'precio referencial / semana','prec4-li1':'5 días a tu elección','prec4-li2':'Horario flexible','prec4-li3':'Comida incluida','prec4-li4':'Fotos y vídeos diarios','prec4-cta':'Consultar',
+      'prec5-h3':'Bono Mensual','prec5-por':'precio referencial / mes','prec5-li1':'Días adaptados a tu rutina','prec5-li2':'Precio especial habitual','prec5-li3':'Comida incluida','prec5-li4':'Fotos y vídeos diarios','prec5-cta':'Consultar',
+      'tbl-ttl':'📋 Tarifa Estándar','tbl-th1':'Servicio','tbl-th2':'Precio','tbl-th3':'Incluye',
+      'tbl-s1n':'Estancia Diurna','tbl-s1u':'/día','tbl-s1d':'8h–20h · comida · fotos',
+      'tbl-s2n':'Alojamiento Nocturno','tbl-s2u':'/noche','tbl-s2d':'Noche + día · cama · comida · fotos',
+      'tbl-s3n':'Bono Semanal','tbl-s3u':'/semana','tbl-s3d':'5 días · horario flexible · fotos',
+      'tbl-s4n':'Bono Mensual','tbl-s4u':'/mes','tbl-s4d':'Días adaptados · precio especial · fotos',
+      'tbl-s5n':'Cumpleaños / Evento','tbl-s5p':'A consultar','tbl-s5d':'Decoración · tarta · fotos',
+      'tbl-nota':'🔄 Nos adaptamos a tu rutina — consulta tu bono personalizado.',
       'test-label':'Lo que dicen','test-h2':'Familias que confían en nosotros ❤️',
       'test-desc':'Las opiniones de quienes más importan: los dueños de nuestros peludos.',
       'test1-p':'"Mi perro volvió feliz y súper tranquilo. Elena tiene un cariño increíble por los animales. Nunca lo llevaría a otro sitio."',
@@ -2202,6 +2280,9 @@ function enviar(e) {
       'serv2-h3':'Overnight Stay','serv2-p':"A cosy home where your furry friend will sleep peacefully with company. Perfect for trips, getaways or weekends.",
       'serv3-h3':'Photos & Videos','serv3-p':"We send you photos and videos of your furry friend throughout the day so you're always at ease. You'll see how much fun they're having!",
       'serv4-h3':'Dog Birthdays','serv4-p':'Special celebrations with decorations, cake and photos. Because your furry friend deserves their own party!',
+      'serv5-h3':'Weekly Pack','serv5-p':'Choose the days you need each week and pay only for what you use. Perfect for variable routines and changing schedules.',
+      'serv6-h3':'Monthly Pack','serv6-p':"The most affordable option for regular clients. Special price when you book the full month. Tell us your routine and we'll design it to fit you.",
+      'serv-rutina':"🔄 <strong>We adapt to your routine.</strong> Tell us your schedule and we'll design the perfect service for you and your furry friend — stress-free and hassle-free.",
       'porq-label':'Why us?','porq-h2':'What makes us different 🐾',
       'porq-desc':'We are not a crowded kennel. Your dog is one of the family, not just a number.',
       'porq1-h3':'No cages, ever','porq1-p':'Your dog will have free space to move, play and rest. No boxes, no confinement.',
@@ -2218,6 +2299,15 @@ function enviar(e) {
       'prec1-h3':'Day Care','prec1-por':'per full day','prec1-li1':'From 8am to 8pm','prec1-li2':'Food included','prec1-li3':'Daily photos','prec1-li4':'Photos & Videos','prec1-cta':'Book',
       'prec2-badge':'⭐ Most popular','prec2-h3':'Overnight Stay','prec2-por':'per night','prec2-li1':'Night + next day','prec2-li2':'Own bed & blanket','prec2-li3':'Food included','prec2-li4':'Daily photos & videos','prec2-cta':'Book',
       'prec3-h3':'Events & Birthdays','prec3-num':'Ask for price','prec3-por':'personalised pack','prec3-li1':'Decoration included','prec3-li2':'Dog-friendly cake','prec3-li3':'Photo session','prec3-li4':'Furry guests','prec3-cta':'Enquire',
+      'prec4-h3':'Weekly Pack','prec4-por':'reference price / week','prec4-li1':'5 days of your choice','prec4-li2':'Flexible hours','prec4-li3':'Food included','prec4-li4':'Daily photos & videos','prec4-cta':'Enquire',
+      'prec5-h3':'Monthly Pack','prec5-por':'reference price / month','prec5-li1':'Days adapted to your routine','prec5-li2':'Special regular rate','prec5-li3':'Food included','prec5-li4':'Daily photos & videos','prec5-cta':'Enquire',
+      'tbl-ttl':'📋 Standard Rates','tbl-th1':'Service','tbl-th2':'Price','tbl-th3':'Includes',
+      'tbl-s1n':'Day Care','tbl-s1u':'/day','tbl-s1d':'8am–8pm · food · photos',
+      'tbl-s2n':'Overnight Stay','tbl-s2u':'/night','tbl-s2d':'Night + next day · bed · food · photos',
+      'tbl-s3n':'Weekly Pack','tbl-s3u':'/week','tbl-s3d':'5 days · flexible hours · photos',
+      'tbl-s4n':'Monthly Pack','tbl-s4u':'/month','tbl-s4d':'Adapted days · special rate · photos',
+      'tbl-s5n':'Birthdays / Events','tbl-s5p':'Ask for price','tbl-s5d':'Decoration · cake · photos',
+      'tbl-nota':'🔄 We adapt to your routine — enquire about your personalised pack.',
       'test-label':'What they say','test-h2':'Families who trust us ❤️',
       'test-desc':"The opinions of those who matter most: our dogs' owners.",
       'test1-p':'"My dog came back happy and super calm. Elena has an incredible love for animals. I would never take him anywhere else."',
@@ -2291,6 +2381,11 @@ function enviar(e) {
     s('#servicios .servicio-card:nth-child(3) p','serv3-p',lang);
     s('#servicios .servicio-card:nth-child(4) h3','serv4-h3',lang);
     s('#servicios .servicio-card:nth-child(4) p','serv4-p',lang);
+    s('#servicios .servicio-card:nth-child(5) h3','serv5-h3',lang);
+    s('#servicios .servicio-card:nth-child(5) p','serv5-p',lang);
+    s('#servicios .servicio-card:nth-child(6) h3','serv6-h3',lang);
+    s('#servicios .servicio-card:nth-child(6) p','serv6-p',lang);
+    s('.servicio-rutina','serv-rutina',lang,'h');
     s('.porq-bg .section-label','porq-label',lang);
     s('.porq-bg h2','porq-h2',lang);
     s('.porq-bg .section-desc','porq-desc',lang);
@@ -2343,6 +2438,30 @@ function enviar(e) {
     s('.precios-grid .precio-card:nth-child(3) .precio-lista li:nth-child(3)','prec3-li3',lang);
     s('.precios-grid .precio-card:nth-child(3) .precio-lista li:nth-child(4)','prec3-li4',lang);
     s('.precios-grid .precio-card:nth-child(3) .precio-cta','prec3-cta',lang);
+    s('.precios-grid .precio-card:nth-child(4) h3','prec4-h3',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-por','prec4-por',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(1)','prec4-li1',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(2)','prec4-li2',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(3)','prec4-li3',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(4)','prec4-li4',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-cta','prec4-cta',lang);
+    s('.precios-grid .precio-card:nth-child(5) h3','prec5-h3',lang);
+    s('.precios-grid .precio-card:nth-child(5) .precio-por','prec5-por',lang);
+    s('.precios-grid .precio-card:nth-child(5) .precio-lista li:nth-child(1)','prec5-li1',lang);
+    s('.precios-grid .precio-card:nth-child(5) .precio-lista li:nth-child(2)','prec5-li2',lang);
+    s('.precios-grid .precio-card:nth-child(5) .precio-lista li:nth-child(3)','prec5-li3',lang);
+    s('.precios-grid .precio-card:nth-child(5) .precio-lista li:nth-child(4)','prec5-li4',lang);
+    s('.precios-grid .precio-card:nth-child(5) .precio-cta','prec5-cta',lang);
+    s('.tarifa-std-ttl','tbl-ttl',lang);
+    s('.tbl-th1','tbl-th1',lang);
+    s('.tbl-th2','tbl-th2',lang);
+    s('.tbl-th3','tbl-th3',lang);
+    s('.tbl-s1n','tbl-s1n',lang); s('.tbl-s1u','tbl-s1u',lang); s('.tbl-s1d','tbl-s1d',lang);
+    s('.tbl-s2n','tbl-s2n',lang); s('.tbl-s2u','tbl-s2u',lang); s('.tbl-s2d','tbl-s2d',lang);
+    s('.tbl-s3n','tbl-s3n',lang); s('.tbl-s3u','tbl-s3u',lang); s('.tbl-s3d','tbl-s3d',lang);
+    s('.tbl-s4n','tbl-s4n',lang); s('.tbl-s4u','tbl-s4u',lang); s('.tbl-s4d','tbl-s4d',lang);
+    s('.tbl-s5n','tbl-s5n',lang); s('.tbl-s5p','tbl-s5p',lang); s('.tbl-s5d','tbl-s5d',lang);
+    s('.tbl-nota','tbl-nota',lang);
     s('.testimonios-bg .section-label','test-label',lang);
     s('.testimonios-bg h2','test-h2',lang);
     s('.testimonios-bg .section-desc','test-desc',lang);
