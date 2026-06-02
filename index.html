@@ -316,13 +316,26 @@ nav a:hover::after { width:100%; }
 .btn {
   display:inline-block; text-decoration:none;
   padding:.85rem 2.2rem; border-radius:50px;
-  font-weight:800; font-size:1rem; transition:.3s;
+  font-weight:800; font-size:1rem;
+  position:relative; overflow:hidden;
+  transition:background .3s, transform .35s cubic-bezier(.22,1,.36,1), box-shadow .3s, color .3s;
 }
 .btn-rosa {
-  background:var(--rosa); color:white;
+  background:linear-gradient(135deg, var(--rosa), var(--rosa-dark));
+  color:white;
   box-shadow:0 8px 28px rgba(240,138,124,.45);
 }
-.btn-rosa:hover { background:var(--rosa-dark); transform:translateY(-4px); }
+/* Shimmer sweep on hover */
+.btn-rosa::before {
+  content:'';
+  position:absolute; top:0; left:-80%;
+  width:55%; height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.32), transparent);
+  transform:skewX(-18deg);
+  pointer-events:none;
+}
+.btn-rosa:hover { background:linear-gradient(135deg, var(--rosa-dark), #c05040); transform:translateY(-5px); box-shadow:0 16px 36px rgba(240,138,124,.6); }
+.btn-rosa:hover::before { left:140%; transition:left .55s ease; }
 .btn-outline {
   background:rgba(255,255,255,.14);
   border:2px solid rgba(255,255,255,.75);
@@ -447,11 +460,13 @@ h2 {
   padding:2.5rem 2rem; text-align:center;
   box-shadow:var(--sombra);
   border-top:5px solid transparent;
-  transition:.35s;
+  transition:transform .35s, box-shadow .35s;
 }
-.servicio-card:hover { transform:translateY(-8px); box-shadow:var(--sombra-hover); }
+.servicio-card:hover { transform:translateY(-10px) scale(1.02); box-shadow:var(--sombra-hover); }
 .servicio-card.rosa { border-top-color:var(--rosa); }
+.servicio-card.rosa:hover { box-shadow:0 20px 50px rgba(240,138,124,.22); }
 .servicio-card.verde { border-top-color:var(--verde); }
+.servicio-card.verde:hover { box-shadow:0 20px 50px rgba(126,200,164,.22); }
 .servicio-icon {
   width:72px; height:72px; border-radius:50%;
   display:flex; align-items:center; justify-content:center;
@@ -474,7 +489,7 @@ h2 {
   padding:2rem 1.8rem 1.8rem;
   box-shadow:0 4px 24px rgba(0,0,0,.06);
   border:1.5px solid #f0eeee;
-  transition:.35s cubic-bezier(.34,1.56,.64,1);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s, border-color .35s;
   position:relative; overflow:hidden;
 }
 .porq-item::after {
@@ -573,7 +588,7 @@ h2 {
   color:white; text-decoration:none; font-weight:800; font-size:.95rem;
   padding:.85rem 2rem; border-radius:50px;
   box-shadow:0 8px 24px rgba(220,39,67,.38);
-  transition:.3s;
+  transition:transform .3s, box-shadow .3s;
 }
 .btn-ig:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(220,39,67,.55); }
 
@@ -596,7 +611,7 @@ h2 {
   background:rgba(255,255,255,.15); border:none;
   color:white; font-size:1.3rem; cursor:pointer;
   display:flex; align-items:center; justify-content:center;
-  transition:.2s; z-index:1;
+  transition:background .2s; z-index:1;
 }
 .lb-close:hover { background:rgba(255,255,255,.3); }
 .lb-prev, .lb-next {
@@ -605,7 +620,7 @@ h2 {
   background:rgba(255,255,255,.15); border:none;
   color:white; font-size:1.5rem; cursor:pointer;
   display:flex; align-items:center; justify-content:center;
-  transition:.2s; z-index:1;
+  transition:background .2s; z-index:1;
 }
 .lb-prev { left:1.2rem; }
 .lb-next { right:1.2rem; }
@@ -624,7 +639,7 @@ h2 {
   background:white; border-radius:var(--radio);
   padding:2.5rem 2rem; text-align:center;
   box-shadow:var(--sombra); position:relative;
-  transition:.35s;
+  transition:transform .35s, box-shadow .35s;
 }
 .precio-card:hover { transform:translateY(-6px); box-shadow:var(--sombra-hover); }
 .precio-card.destacado {
@@ -790,7 +805,8 @@ h2 {
   background:#25D366; color:white; text-decoration:none;
   padding:1rem 1.5rem; border-radius:16px; font-weight:800; font-size:1rem;
   box-shadow:0 8px 24px rgba(37,211,102,.35);
-  transition:.3s; margin-top:.3rem;
+  transition:background .3s, transform .3s, box-shadow .3s;
+  margin-top:.3rem;
 }
 .wa-btn-grande:hover { background:#1db954; transform:translateY(-3px); box-shadow:0 12px 30px rgba(37,211,102,.5); }
 
@@ -830,32 +846,67 @@ footer {
   width:32px; height:32px; border-radius:50%;
   background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.28);
   display:flex; align-items:center; justify-content:center;
-  transition:.25s; backdrop-filter:blur(6px); text-decoration:none;
+  transition:background .25s, border-color .25s, transform .25s, box-shadow .25s;
+  backdrop-filter:blur(6px); text-decoration:none;
 }
 .nav-social a::after { display:none !important; }
 .nav-social a:hover { background:var(--rosa); border-color:var(--rosa); transform:translateY(-2px); }
+/* .nav-social a.gm usa icono blanco igual que los demás */
 .nav-social svg { width:15px; height:15px; fill:white; }
 header.scrolled .nav-social a { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,.12); }
 header.scrolled .nav-social svg { fill:var(--oscuro); }
-header.scrolled .nav-social a:hover { background:var(--rosa); border-color:var(--rosa); }
+/* Gmail en header usa icono simple, sin fondo especial */
+header.scrolled .nav-social a.ig:hover { background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); border-color:transparent; }
+header.scrolled .nav-social a.gm:hover { background:white !important; border-color:rgba(234,67,53,.4) !important; box-shadow:0 0 0 2px rgba(234,67,53,.3); }
+header.scrolled .nav-social a.tk:hover { background:#010101; border-color:#010101; }
 header.scrolled .nav-social a:hover svg { fill:white; }
+header.scrolled .nav-social a.gm:hover svg { fill:var(--oscuro); }
+/* Cuando el menú móvil está abierto, eliminar backdrop-filter para que el nav.open
+   pueda cubrir toda la pantalla con position:fixed (backdrop-filter crea containing block) */
+header.menu-open,
+header.menu-open.scrolled {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
 @media(max-width:768px) { .nav-social { display:none; } }
 
 /* ── SOCIAL FOOTER ── */
-.footer-social { display:flex; gap:.7rem; margin-top:1.2rem; }
+.footer-social { display:flex; gap:.7rem; margin-top:1.2rem; flex-wrap:wrap; }
 .footer-social a {
-  width:40px; height:40px; border-radius:50%;
-  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15);
+  width:44px; height:44px; border-radius:14px;
   display:flex; align-items:center; justify-content:center;
-  transition:.3s; text-decoration:none;
+  transition:transform .3s, filter .3s, box-shadow .3s;
+  text-decoration:none; border:none;
 }
-.footer-social a svg { width:18px; height:18px; fill:rgba(255,255,255,.8); transition:.3s; }
-.footer-social a:hover { transform:translateY(-4px); }
-.footer-social a.ig:hover { background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); border-color:transparent; }
-.footer-social a.gm:hover { background:#EA4335; border-color:transparent; }
-.footer-social a.tk:hover { background:#010101; border-color:transparent; }
-.footer-social a.yt:hover { background:#ff0000; border-color:transparent; }
-.footer-social a:hover svg { fill:white; }
+.footer-social a svg { width:20px; height:20px; fill:white; transition:fill .3s; }
+.footer-social a:hover { transform:translateY(-5px) scale(1.08); filter:brightness(1.15); }
+/* Brand colors siempre visibles */
+.footer-social a.ig {
+  background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+  box-shadow:0 4px 14px rgba(220,39,67,.35);
+}
+.footer-social a.wa {
+  background:#25D366;
+  box-shadow:0 4px 14px rgba(37,211,102,.35);
+}
+.footer-social a.gm {
+  background:white;
+  box-shadow:0 4px 14px rgba(234,67,53,.25);
+}
+.footer-social a.tk {
+  background:#010101;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 4px 14px rgba(0,0,0,.4);
+}
+.footer-social a.yt {
+  background:#FF0000;
+  box-shadow:0 4px 14px rgba(255,0,0,.35);
+}
+.footer-social a.ig:hover { box-shadow:0 10px 28px rgba(220,39,67,.6); }
+.footer-social a.wa:hover { box-shadow:0 10px 28px rgba(37,211,102,.6); }
+.footer-social a.gm:hover { box-shadow:0 10px 28px rgba(234,67,53,.45); }
+.footer-social a.tk:hover { box-shadow:0 10px 28px rgba(105,201,229,.4); }
+.footer-social a.yt:hover { box-shadow:0 10px 28px rgba(255,0,0,.6); }
 
 /* ── WHATSAPP BUBBLE ── */
 .wa-bubble {
@@ -914,8 +965,25 @@ header.scrolled .nav-social a:hover svg { fill:white; }
 }
 
 /* ── REVEAL ── */
-.reveal { opacity:0; transform:translateY(28px); transition:.6s ease; }
-.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal { opacity:0; transform:translateY(38px) scale(.97); transition:opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1); }
+.reveal.visible { opacity:1; transform:none; }
+
+/* Stagger para items dentro de grids */
+@keyframes childIn {
+  from { opacity:0; transform:translateY(28px) scale(.96); }
+  to   { opacity:1; transform:none; }
+}
+.reveal-child { animation:childIn .55s cubic-bezier(.22,1,.36,1) both; }
+
+/* ── NAV MOBILE ENTRANCE ── */
+@keyframes navLinkIn {
+  from { opacity:0; transform:translateX(-22px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+@keyframes navSocialIn {
+  from { opacity:0; transform:translateY(14px) scale(.92); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
 
 /* ── RESPONSIVE ── */
 @media(max-width:1024px) {
@@ -931,35 +999,93 @@ header.scrolled .nav-social a:hover svg { fill:white; }
   nav.open {
     display:flex; flex-direction:column;
     position:fixed; inset:0;
-    background:linear-gradient(160deg, #12151f 0%, #1a1230 55%, #0f1a28 100%);
-    backdrop-filter:blur(24px);
+    background:linear-gradient(160deg, #0e1320 0%, #1a1030 50%, #0e1a1a 100%);
+    backdrop-filter:blur(28px);
     align-items:center; justify-content:center;
-    gap:2rem; z-index:999;
+    gap:1.6rem; z-index:999;
   }
+  /* Entrada escalonada de cada enlace */
+  nav.open > a:nth-child(1) { animation:navLinkIn .38s .06s both; }
+  nav.open > a:nth-child(2) { animation:navLinkIn .38s .14s both; }
+  nav.open > a:nth-child(3) { animation:navLinkIn .38s .22s both; }
+  nav.open > a:nth-child(4) { animation:navLinkIn .38s .30s both; }
+  nav.open > a:nth-child(5) { animation:navLinkIn .38s .38s both; }
+  nav.open .nav-social      { animation:navSocialIn .42s .48s both; }
   nav.open a {
-    font-size:1.6rem; color:rgba(255,255,255,.9);
+    font-size:1.55rem; color:rgba(255,255,255,.82);
     font-weight:800; letter-spacing:.02em;
+    position:relative; padding:.2rem 0;
+    transition:color .22s, transform .22s, letter-spacing .22s;
   }
-  nav.open a:hover { color:var(--rosa); }
+  nav.open a::after {
+    content:''; position:absolute;
+    bottom:0; left:0;
+    width:0; height:2px;
+    background:linear-gradient(90deg, var(--rosa), var(--verde));
+    border-radius:2px;
+    transition:width .3s ease;
+  }
+  nav.open a:hover { color:white; transform:translateX(10px); letter-spacing:.05em; }
+  nav.open a:hover::after { width:100%; }
   nav.open .nav-cta {
-    background:var(--rosa) !important; color:white !important;
-    padding:.7rem 2rem; border-radius:50px;
-    font-size:1.1rem;
+    background:linear-gradient(135deg, var(--rosa-dark), var(--rosa)) !important;
+    color:white !important;
+    padding:.75rem 2.4rem; border-radius:50px;
+    font-size:1.05rem; letter-spacing:.03em;
+    box-shadow:0 8px 28px rgba(240,138,124,.45);
+    transition:transform .25s, box-shadow .25s !important;
   }
-  /* Iconos sociales dentro del menú móvil abierto */
+  nav.open .nav-cta::after { display:none; }
+  nav.open .nav-cta:hover {
+    transform:translateY(-4px) translateX(0) !important;
+    box-shadow:0 16px 36px rgba(240,138,124,.65) !important;
+    letter-spacing:.03em !important;
+  }
+  /* Separador visual antes de los iconos */
   nav.open .nav-social {
-    display:flex;
-    gap:.8rem;
-    margin-top:.5rem;
+    display:flex; gap:1.1rem; margin-top:.4rem;
+    padding-top:1.2rem;
+    border-top:1px solid rgba(255,255,255,.08);
+    width:60%;
+    justify-content:center;
   }
   nav.open .nav-social a {
-    width:44px; height:44px;
-    background:rgba(255,255,255,.15);
-    border-color:rgba(255,255,255,.3);
+    width:56px; height:56px; border-radius:16px;
+    display:flex; align-items:center; justify-content:center;
     font-size:initial; font-weight:initial; letter-spacing:initial;
+    transition:transform .25s, box-shadow .25s;
+    border:none;
   }
-  nav.open .nav-social a:hover { color:inherit; }
-  nav.open .nav-social svg { fill:white; }
+  nav.open .nav-social a::after { display:none !important; }
+  nav.open .nav-social a:hover { transform:translateY(-6px) scale(1.1) !important; color:inherit; }
+  /* Instagram - gradiente oficial */
+  nav.open .nav-social a.ig {
+    background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+    box-shadow:0 6px 20px rgba(220,39,67,.4);
+  }
+  nav.open .nav-social a.ig:hover { box-shadow:0 14px 32px rgba(220,39,67,.7) !important; }
+  /* WhatsApp - verde oficial */
+  nav.open .nav-social a.wa {
+    background:#25D366;
+    box-shadow:0 6px 20px rgba(37,211,102,.4);
+  }
+  nav.open .nav-social a.wa:hover { box-shadow:0 14px 32px rgba(37,211,102,.7) !important; }
+  /* Gmail - fondo blanco para icono multicolor */
+  nav.open .nav-social a.gm {
+    background:white;
+    box-shadow:0 6px 20px rgba(234,67,53,.3);
+  }
+  nav.open .nav-social a.gm:hover { box-shadow:0 14px 32px rgba(234,67,53,.55) !important; }
+  /* TikTok - negro con toque cian */
+  nav.open .nav-social a.tk {
+    background:linear-gradient(145deg,#111,#1a1a2e);
+    border:1px solid rgba(105,201,229,.25);
+    box-shadow:0 6px 20px rgba(0,0,0,.5), 0 0 0 0 rgba(105,201,229,0);
+  }
+  nav.open .nav-social a.tk:hover {
+    box-shadow:0 14px 32px rgba(0,0,0,.6), 0 0 18px rgba(105,201,229,.35) !important;
+  }
+  nav.open .nav-social svg { width:26px; height:26px; fill:white; }
   .nav-social { display:none; }
   .menu-btn { display:block; z-index:1001; color:white; }
   header.scrolled .menu-btn { color:var(--oscuro); }
@@ -991,6 +1117,39 @@ header.scrolled .nav-social a:hover svg { fill:white; }
   .galeria-grid { grid-template-columns:1fr; }
   .galeria-item:first-child { grid-column:auto; }
 }
+
+/* ── FOCUS VISIBLE ── */
+:focus-visible {
+  outline:2px solid var(--rosa);
+  outline-offset:3px;
+  border-radius:4px;
+}
+.form-group input:focus-visible,
+.form-group textarea:focus-visible,
+.form-group select:focus-visible {
+  outline:none;
+  border-color:var(--rosa);
+  box-shadow:0 0 0 3px rgba(240,138,124,.2);
+}
+.btn:focus-visible,
+.nav-cta:focus-visible,
+.btn-form:focus-visible {
+  outline:3px solid var(--rosa);
+  outline-offset:4px;
+}
+
+/* ── PREFERS REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1006,13 +1165,13 @@ header.scrolled .nav-social a:hover svg { fill:white; }
       <a href="#precios">Tarifas</a>
       <a href="#contacto" class="nav-cta">Reservar plaza</a>
       <div class="nav-social">
-        <a href="https://instagram.com/lacasitadesimba" target="_blank" aria-label="Instagram">
+        <a href="https://instagram.com/lacasitadesimba" target="_blank" class="ig" aria-label="Instagram">
           <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
         </a>
-        <a href="mailto:lacasitadesimba04@gmail.com" aria-label="Gmail">
+        <a href="mailto:lacasitadesimba04@gmail.com" class="gm" aria-label="Gmail">
           <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L12 9.641l8.073-6.148C21.69 2.28 24 3.434 24 5.457z"/></svg>
         </a>
-        <a href="https://tiktok.com/@la_casita_de_simba" target="_blank" aria-label="TikTok">
+        <a href="https://tiktok.com/@la_casita_de_simba" target="_blank" class="tk" aria-label="TikTok">
           <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
         </a>
       </div>
@@ -1339,21 +1498,21 @@ header.scrolled .nav-social a:hover svg { fill:white; }
         <form id="reservaForm" onsubmit="enviar(event)">
           <div class="form-row">
             <div class="form-group">
-              <label>Tu nombre</label>
+              <label for="fn">Tu nombre</label>
               <input type="text" id="fn" placeholder="María García" required>
             </div>
             <div class="form-group">
-              <label>Teléfono / WhatsApp</label>
+              <label for="ftel">Teléfono / WhatsApp</label>
               <input type="tel" id="ftel" placeholder="+34 600 000 000" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Nombre del perro</label>
+              <label for="fperro">Nombre del perro</label>
               <input type="text" id="fperro" placeholder="Max" required>
             </div>
             <div class="form-group">
-              <label>Servicio</label>
+              <label for="fservicio">Servicio</label>
               <select id="fservicio">
                 <option>Estancia Diurna (€18/día)</option>
                 <option>Alojamiento Nocturno (€25/noche)</option>
@@ -1363,16 +1522,16 @@ header.scrolled .nav-social a:hover svg { fill:white; }
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Fecha de entrada</label>
+              <label for="fentrada">Fecha de entrada</label>
               <input type="date" id="fentrada" required>
             </div>
             <div class="form-group">
-              <label>Fecha de salida</label>
+              <label for="fsalida">Fecha de salida</label>
               <input type="date" id="fsalida">
             </div>
           </div>
           <div class="form-group">
-            <label>Cuéntanos sobre tu perro</label>
+            <label for="fdesc">Cuéntanos sobre tu perro</label>
             <textarea id="fdesc" placeholder="Raza, edad, carácter, si es sociable con otros perros..."></textarea>
           </div>
           <button type="submit" class="btn-form">💬 Enviar por WhatsApp</button>
@@ -1420,20 +1579,6 @@ header.scrolled .nav-social a:hover svg { fill:white; }
     <div class="footer-brand">
       <a href="#inicio" class="logo" style="color:white;">🐾 La casita de <span>Simba</span></a>
       <p style="margin-top:.8rem;">Guardería Canina premium en Madrid. Cuidado con amor desde 2022.</p>
-      <div class="footer-social">
-        <a href="https://instagram.com/lacasitadesimba" target="_blank" class="ig" aria-label="Instagram">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </a>
-        <a href="mailto:lacasitadesimba04@gmail.com" class="gm" aria-label="Gmail">
-          <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L12 9.641l8.073-6.148C21.69 2.28 24 3.434 24 5.457z"/></svg>
-        </a>
-        <a href="https://tiktok.com/@la_casita_de_simba" target="_blank" class="tk" aria-label="TikTok">
-          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
-        </a>
-        <a href="https://youtube.com/@lacasitadesimba" target="_blank" class="yt" aria-label="YouTube">
-          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a>
-      </div>
     </div>
     <div class="footer-col">
       <h4>Servicios</h4>
@@ -1449,6 +1594,26 @@ header.scrolled .nav-social a:hover svg { fill:white; }
       <a href="mailto:lacasitadesimba04@gmail.com">✉️ lacasitadesimba04@gmail.com</a>
       <a href="https://tiktok.com/@la_casita_de_simba" target="_blank">🎵 @la_casita_de_simba</a>
       <a href="#contacto">📍 Calle Puentelarra 5, Madrid</a>
+      <div class="footer-social" style="margin-top:1.4rem;">
+        <a href="https://instagram.com/lacasitadesimba" target="_blank" class="ig" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="https://wa.me/34613753680" target="_blank" class="wa" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </a>
+        <a href="mailto:lacasitadesimba04@gmail.com" class="gm" aria-label="Gmail">
+          <svg viewBox="0 0 48 48">
+            <path style="fill:#4CAF50" d="M45,16.2l-5,2.75l-5,4.75L35,40h7c1.657,0,3-1.343,3-3V16.2z"/>
+            <path style="fill:#1E88E5" d="M3,16.2l3.714,1.938L13,23.7V40H6c-1.657,0-3-1.343-3-3V16.2z"/>
+            <polygon style="fill:#E53935" points="35,11.2 24,19.45 13,11.2 12,17 13,23.7 24,31.45 35,23.7 36,17"/>
+            <path style="fill:#C62828" d="M3,12.298V16.2l10,7.5V11.2L9.876,8.859C9.132,8.301,8.228,8,7.298,8h0C4.924,8,3,9.924,3,12.298z"/>
+            <path style="fill:#FBC02D" d="M45,12.298V16.2l-10,7.5V11.2l3.124-2.341C38.868,8.301,39.772,8,40.702,8h0C43.076,8,45,9.924,45,12.298z"/>
+          </svg>
+        </a>
+        <a href="https://tiktok.com/@la_casita_de_simba" target="_blank" class="tk" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
+        </a>
+      </div>
     </div>
   </div>
   <div class="footer-bottom">
@@ -1510,21 +1675,83 @@ window.addEventListener('scroll', () => {
 // Menú móvil
 document.getElementById('menuBtn').addEventListener('click', () => {
   const nav = document.getElementById('nav');
-  nav.classList.toggle('open');
-  document.getElementById('menuBtn').textContent = nav.classList.contains('open') ? '✕' : '☰';
+  const header = document.getElementById('header');
+  const isOpen = nav.classList.toggle('open');
+  header.classList.toggle('menu-open', isOpen);
+  document.getElementById('menuBtn').textContent = isOpen ? '✕' : '☰';
 });
 document.querySelectorAll('nav a').forEach(a => {
   a.addEventListener('click', () => {
     document.getElementById('nav').classList.remove('open');
+    document.getElementById('header').classList.remove('menu-open');
     document.getElementById('menuBtn').textContent = '☰';
   });
 });
 
-// Reveal al scroll
+// Reveal al scroll con stagger en grids
+const gridMap = [
+  ['.servicios-grid',  '.servicio-card'],
+  ['.porq-grid',       '.porq-item'],
+  ['.testimonios-grid','.testimonio'],
+  ['.precios-grid',    '.precio-card'],
+];
 const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.12 });
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('visible');
+    for (const [grid, child] of gridMap) {
+      if (e.target.matches(grid)) {
+        e.target.querySelectorAll(child).forEach((c, i) => {
+          c.style.animationDelay = `${.05 + i * .1}s`;
+          c.classList.add('reveal-child');
+        });
+      }
+    }
+    observer.unobserve(e.target);
+  });
+}, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// 3D tilt en cards
+document.querySelectorAll('.servicio-card, .porq-item, .testimonio').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
+    const y = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
+    card.style.transform = `perspective(700px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg) translateY(-10px)`;
+    card.style.transition = 'transform .08s';
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+    card.style.transition = 'transform .45s cubic-bezier(.22,1,.36,1), box-shadow .35s';
+  });
+});
+
+// Contador animado en stats del hero
+function countUp(el) {
+  const raw = el.textContent.trim();
+  const num = parseInt(raw.replace(/\D/g, ''));
+  const prefix = raw.match(/^[^\d]*/)?.[0] || '';
+  const suffix = raw.match(/[^\d]*$/)?.[0] || '';
+  if (isNaN(num)) return;
+  let startTs = null;
+  const dur = 1400;
+  (function step(ts) {
+    if (!startTs) startTs = ts;
+    const p = Math.min((ts - startTs) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = prefix + Math.floor(ease * num) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  })(performance.now());
+}
+const statsEl = document.querySelector('.hero-stats');
+if (statsEl) {
+  new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      statsEl.querySelectorAll('.stat-num').forEach(countUp);
+    }
+  }, { threshold: .6 }).observe(statsEl);
+}
 
 // Formulario → WhatsApp
 function enviar(e) {
@@ -1610,7 +1837,11 @@ function enviar(e) {
     if (!shown) { bubble.classList.add('show'); shown = true; }
   }, 10000);
 
-  closeBtn.addEventListener('click', () => bubble.classList.remove('show'));
+  closeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    bubble.classList.remove('show');
+  });
 
   // Al pulsar el botón flotante también abre el bubble si no estaba visible
   waBtn.addEventListener('click', (e) => {
