@@ -571,6 +571,7 @@ h2 {
 .t-precio { font-weight:800; color:var(--rosa-dark); white-space:nowrap; }
 .t-precio small { font-weight:400; font-size:.78rem; color:#aaa; }
 .tarifa-nota { margin-top:1rem; font-size:.87rem; color:#777; text-align:center; font-style:italic; }
+.tarifa-sep { border:none; border-top:1px dashed rgba(0,0,0,.12); margin:1.5rem 0; }
 @media(max-width:600px) {
   .tarifa-tabla th:last-child,.tarifa-tabla td:last-child { display:none; }
 }
@@ -1627,6 +1628,38 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
           </tr>
         </tbody>
       </table>
+      <hr class="tarifa-sep">
+      <h3 class="tarifa-std-ttl tbl2-ttl">🐶 Por número de peludos</h3>
+      <table class="tarifa-tabla">
+        <thead>
+          <tr>
+            <th class="tbl2-th1">Peludos</th>
+            <th class="tbl2-th2">Estancia Diurna</th>
+            <th class="tbl2-th3">Nocturno</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🐶 <span class="tbl2-r1">1 peludo</span></td>
+            <td class="t-precio">€18<small>/día</small></td>
+            <td class="t-precio">€25<small>/noche</small></td>
+          </tr>
+          <tr>
+            <td>🐶🐶 <span class="tbl2-r2">2 peludos</span></td>
+            <td class="t-precio">desde €32<small>/día</small></td>
+            <td class="t-precio">desde €45<small>/noche</small></td>
+          </tr>
+          <tr>
+            <td>🐶🐶🐶 <span class="tbl2-r3">3 peludos</span></td>
+            <td class="t-precio">desde €45<small>/día</small></td>
+            <td class="t-precio">desde €65<small>/noche</small></td>
+          </tr>
+          <tr>
+            <td>🐶🐶🐶🐶 <span class="tbl2-r4">4+ peludos</span></td>
+            <td class="tbl2-cons t-precio" colspan="2">A consultar</td>
+          </tr>
+        </tbody>
+      </table>
       <p class="tarifa-nota tbl-nota">🔄 Nos adaptamos a tu rutina — consulta tu bono personalizado.</p>
     </div>
 
@@ -2233,6 +2266,8 @@ function enviar(e) {
       'tbl-s4n':'Bono Mensual','tbl-s4u':'/mes','tbl-s4d':'Días adaptados · precio especial · fotos',
       'tbl-s5n':'Cumpleaños / Evento','tbl-s5p':'A consultar','tbl-s5d':'Decoración · tarta · fotos',
       'tbl-nota':'🔄 Nos adaptamos a tu rutina — consulta tu bono personalizado.',
+      'tbl2-ttl':'🐶 Por número de peludos','tbl2-th1':'Peludos','tbl2-th2':'Estancia Diurna','tbl2-th3':'Nocturno',
+      'tbl2-r1':'1 peludo','tbl2-r2':'2 peludos','tbl2-r3':'3 peludos','tbl2-r4':'4+ peludos','tbl2-cons':'A consultar',
       'test-label':'Lo que dicen','test-h2':'Familias que confían en nosotros ❤️',
       'test-desc':'Las opiniones de quienes más importan: los dueños de nuestros peludos.',
       'test1-p':'"Mi perro volvió feliz y súper tranquilo. Elena tiene un cariño increíble por los animales. Nunca lo llevaría a otro sitio."',
@@ -2308,6 +2343,8 @@ function enviar(e) {
       'tbl-s4n':'Monthly Pack','tbl-s4u':'/month','tbl-s4d':'Adapted days · special rate · photos',
       'tbl-s5n':'Birthdays / Events','tbl-s5p':'Ask for price','tbl-s5d':'Decoration · cake · photos',
       'tbl-nota':'🔄 We adapt to your routine — enquire about your personalised pack.',
+      'tbl2-ttl':'🐶 By number of dogs','tbl2-th1':'Dogs','tbl2-th2':'Day Care','tbl2-th3':'Overnight',
+      'tbl2-r1':'1 dog','tbl2-r2':'2 dogs','tbl2-r3':'3 dogs','tbl2-r4':'4+ dogs','tbl2-cons':'Ask for price',
       'test-label':'What they say','test-h2':'Families who trust us ❤️',
       'test-desc':"The opinions of those who matter most: our dogs' owners.",
       'test1-p':'"My dog came back happy and super calm. Elena has an incredible love for animals. I would never take him anywhere else."',
@@ -2462,6 +2499,10 @@ function enviar(e) {
     s('.tbl-s4n','tbl-s4n',lang); s('.tbl-s4u','tbl-s4u',lang); s('.tbl-s4d','tbl-s4d',lang);
     s('.tbl-s5n','tbl-s5n',lang); s('.tbl-s5p','tbl-s5p',lang); s('.tbl-s5d','tbl-s5d',lang);
     s('.tbl-nota','tbl-nota',lang);
+    s('.tbl2-ttl','tbl2-ttl',lang);
+    s('.tbl2-th1','tbl2-th1',lang); s('.tbl2-th2','tbl2-th2',lang); s('.tbl2-th3','tbl2-th3',lang);
+    s('.tbl2-r1','tbl2-r1',lang); s('.tbl2-r2','tbl2-r2',lang); s('.tbl2-r3','tbl2-r3',lang); s('.tbl2-r4','tbl2-r4',lang);
+    s('.tbl2-cons','tbl2-cons',lang);
     s('.testimonios-bg .section-label','test-label',lang);
     s('.testimonios-bg h2','test-h2',lang);
     s('.testimonios-bg .section-desc','test-desc',lang);
