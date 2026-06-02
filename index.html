@@ -999,8 +999,9 @@ header.menu-open.scrolled {
   nav.open {
     display:flex; flex-direction:column;
     position:fixed; inset:0;
-    background:linear-gradient(160deg, #0e1320 0%, #1a1030 50%, #0e1a1a 100%);
-    backdrop-filter:blur(28px);
+    background:rgba(6, 8, 16, 0.78);
+    backdrop-filter:blur(32px) saturate(1.8);
+    -webkit-backdrop-filter:blur(32px) saturate(1.8);
     align-items:center; justify-content:center;
     gap:1.6rem; z-index:999;
   }
@@ -1012,10 +1013,11 @@ header.menu-open.scrolled {
   nav.open > a:nth-child(5) { animation:navLinkIn .38s .38s both; }
   nav.open .nav-social      { animation:navSocialIn .42s .48s both; }
   nav.open a {
-    font-size:1.55rem; color:rgba(255,255,255,.82);
+    font-size:1.55rem; color:white;
     font-weight:800; letter-spacing:.02em;
     position:relative; padding:.2rem 0;
-    transition:color .22s, transform .22s, letter-spacing .22s;
+    text-shadow:0 2px 24px rgba(0,0,0,.6);
+    transition:color .22s, transform .22s, letter-spacing .22s, text-shadow .22s;
   }
   nav.open a::after {
     content:''; position:absolute;
@@ -1025,7 +1027,7 @@ header.menu-open.scrolled {
     border-radius:2px;
     transition:width .3s ease;
   }
-  nav.open a:hover { color:white; transform:translateX(10px); letter-spacing:.05em; }
+  nav.open a:hover { color:white; transform:translateX(10px); letter-spacing:.05em; text-shadow:0 0 28px rgba(240,138,124,.7); }
   nav.open a:hover::after { width:100%; }
   nav.open .nav-cta {
     background:linear-gradient(135deg, var(--rosa-dark), var(--rosa)) !important;
@@ -1070,12 +1072,12 @@ header.menu-open.scrolled {
     box-shadow:0 6px 20px rgba(37,211,102,.4);
   }
   nav.open .nav-social a.wa:hover { box-shadow:0 14px 32px rgba(37,211,102,.7) !important; }
-  /* Gmail - fondo blanco para icono multicolor */
+  /* Gmail - rojo oficial con icono blanco */
   nav.open .nav-social a.gm {
-    background:white;
-    box-shadow:0 6px 20px rgba(234,67,53,.3);
+    background:#EA4335;
+    box-shadow:0 6px 20px rgba(234,67,53,.4);
   }
-  nav.open .nav-social a.gm:hover { box-shadow:0 14px 32px rgba(234,67,53,.55) !important; }
+  nav.open .nav-social a.gm:hover { box-shadow:0 14px 32px rgba(234,67,53,.7) !important; }
   /* TikTok - negro con toque cian */
   nav.open .nav-social a.tk {
     background:linear-gradient(145deg,#111,#1a1a2e);
