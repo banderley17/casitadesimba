@@ -1613,12 +1613,12 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
           </tr>
           <tr>
             <td>🗓️ <span class="tbl-s3n">Bono Semanal</span></td>
-            <td class="t-precio">desde €75<small class="tbl-s3u">/semana</small></td>
+            <td class="t-precio"><span class="tbl-desde">desde</span> €75<small class="tbl-s3u">/semana</small></td>
             <td class="tbl-s3d">5 días · horario flexible · fotos</td>
           </tr>
           <tr>
             <td>🎟️ <span class="tbl-s4n">Bono Mensual</span></td>
-            <td class="t-precio">desde €280<small class="tbl-s4u">/mes</small></td>
+            <td class="t-precio"><span class="tbl-desde">desde</span> €280<small class="tbl-s4u">/mes</small></td>
             <td class="tbl-s4d">Días adaptados · precio especial · fotos</td>
           </tr>
           <tr>
@@ -2266,6 +2266,7 @@ function enviar(e) {
       'prec3-h3':'Eventos y Cumpleaños','prec3-num':'A consultar','prec3-por':'pack personalizado','prec3-li1':'Decoración incluida','prec3-li2':'Tarta perruna','prec3-li3':'Sesión de fotos','prec3-li4':'Invitados peludos','prec3-cta':'Consultar',
       'prec4-h3':'Bono Semanal','prec4-por':'precio referencial / semana','prec4-li1':'5 días a tu elección','prec4-li2':'Horario flexible','prec4-li3':'Comida incluida','prec4-li4':'Fotos y vídeos diarios','prec4-cta':'Consultar',
       'prec5-h3':'Bono Mensual','prec5-por':'precio referencial / mes','prec5-li1':'Días adaptados a tu rutina','prec5-li2':'Precio especial habitual','prec5-li3':'Comida incluida','prec5-li4':'Fotos y vídeos diarios','prec5-cta':'Consultar',
+      'tbl-desde':'desde',
       'tbl-ttl':'📋 Tarifa Estándar','tbl-th1':'Servicio','tbl-th2':'Precio','tbl-th3':'Incluye',
       'tbl-s1n':'Estancia Diurna','tbl-s1u':'/día','tbl-s1d':'8h–20h · comida · fotos',
       'tbl-s2n':'Alojamiento Nocturno','tbl-s2u':'/noche','tbl-s2d':'Noche + día · cama · comida · fotos',
@@ -2345,6 +2346,7 @@ function enviar(e) {
       'prec3-h3':'Events & Birthdays','prec3-num':'Ask for price','prec3-por':'personalised pack','prec3-li1':'Decoration included','prec3-li2':'Dog-friendly cake','prec3-li3':'Photo session','prec3-li4':'Furry guests','prec3-cta':'Enquire',
       'prec4-h3':'Weekly Pack','prec4-por':'reference price / week','prec4-li1':'5 days of your choice','prec4-li2':'Flexible hours','prec4-li3':'Food included','prec4-li4':'Daily photos & videos','prec4-cta':'Enquire',
       'prec5-h3':'Monthly Pack','prec5-por':'reference price / month','prec5-li1':'Days adapted to your routine','prec5-li2':'Special regular rate','prec5-li3':'Food included','prec5-li4':'Daily photos & videos','prec5-cta':'Enquire',
+      'tbl-desde':'from',
       'tbl-ttl':'📋 Standard Rates','tbl-th1':'Service','tbl-th2':'Price','tbl-th3':'Includes',
       'tbl-s1n':'Day Care','tbl-s1u':'/day','tbl-s1d':'8am–8pm · food · photos',
       'tbl-s2n':'Overnight Stay','tbl-s2u':'/night','tbl-s2d':'Night + next day · bed · food · photos',
@@ -2504,6 +2506,7 @@ function enviar(e) {
     s('.tbl-th1','tbl-th1',lang);
     s('.tbl-th2','tbl-th2',lang);
     s('.tbl-th3','tbl-th3',lang);
+    s('.tbl-desde','tbl-desde',lang);
     s('.tbl-s1n','tbl-s1n',lang); s('.tbl-s1u','tbl-s1u',lang); s('.tbl-s1d','tbl-s1d',lang);
     s('.tbl-s2n','tbl-s2n',lang); s('.tbl-s2u','tbl-s2u',lang); s('.tbl-s2d','tbl-s2d',lang);
     s('.tbl-s3n','tbl-s3n',lang); s('.tbl-s3u','tbl-s3u',lang); s('.tbl-s3d','tbl-s3d',lang);
