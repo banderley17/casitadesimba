@@ -923,15 +923,12 @@ footer {
 }
 .nav-social a::after { display:none !important; }
 .nav-social a:hover { background:var(--rosa); border-color:var(--rosa); transform:translateY(-2px); }
-/* Gmail: rojo oficial con icono blanco */
-.nav-social a.gm { background:#EA4335 !important; border-color:transparent !important; }
+/* Los 3 iconos (IG, Gmail, TK) usan el mismo fondo base — rojo/gradiente/negro solo en hover */
 .nav-social svg { width:15px; height:15px; fill:white; }
 header.scrolled .nav-social a { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,.12); }
 header.scrolled .nav-social svg { fill:var(--oscuro); }
-/* Gmail en header usa icono simple, sin fondo especial */
 header.scrolled .nav-social a.ig:hover { background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); border-color:transparent; }
-header.scrolled .nav-social a.gm { background:#EA4335 !important; border-color:transparent !important; }
-header.scrolled .nav-social a.gm:hover { background:#c62828 !important; }
+header.scrolled .nav-social a.gm:hover { background:#EA4335; border-color:#EA4335; }
 header.scrolled .nav-social a.tk:hover { background:#010101; border-color:#010101; }
 header.scrolled .nav-social a:hover svg { fill:white; }
 /* Cuando el menú móvil está abierto, eliminar backdrop-filter para que el nav.open
