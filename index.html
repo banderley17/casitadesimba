@@ -139,6 +139,7 @@ header.scrolled {
 header.scrolled .logo { color:var(--rosa-dark); }
 header.scrolled .logo span { color:var(--verde-dark); }
 header.scrolled nav a { color:var(--texto); }
+header.scrolled nav.open a { color:white !important; text-shadow:0 2px 20px rgba(0,0,0,.7) !important; }
 header.scrolled .nav-cta { color:white !important; }
 .header-inner {
   max-width:1200px; margin:auto;
@@ -851,7 +852,9 @@ footer {
 }
 .nav-social a::after { display:none !important; }
 .nav-social a:hover { background:var(--rosa); border-color:var(--rosa); transform:translateY(-2px); }
-/* .nav-social a.gm usa icono blanco igual que los demás */
+/* Gmail: fondo blanco para que se vean los colores del icono */
+.nav-social a.gm { background:white !important; border-color:rgba(0,0,0,.1) !important; }
+.nav-social a.gm svg, nav.open .nav-social a.gm svg { fill:unset !important; }
 .nav-social svg { width:15px; height:15px; fill:white; }
 header.scrolled .nav-social a { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,.12); }
 header.scrolled .nav-social svg { fill:var(--oscuro); }
@@ -999,9 +1002,9 @@ header.menu-open.scrolled {
   nav.open {
     display:flex; flex-direction:column;
     position:fixed; inset:0;
-    background:rgba(6, 8, 16, 0.78);
-    backdrop-filter:blur(32px) saturate(1.8);
-    -webkit-backdrop-filter:blur(32px) saturate(1.8);
+    background:rgba(0, 0, 0, 0.22);
+    backdrop-filter:blur(48px) saturate(2.2) brightness(0.7);
+    -webkit-backdrop-filter:blur(48px) saturate(2.2) brightness(0.7);
     align-items:center; justify-content:center;
     gap:1.6rem; z-index:999;
   }
@@ -1072,12 +1075,12 @@ header.menu-open.scrolled {
     box-shadow:0 6px 20px rgba(37,211,102,.4);
   }
   nav.open .nav-social a.wa:hover { box-shadow:0 14px 32px rgba(37,211,102,.7) !important; }
-  /* Gmail - rojo oficial con icono blanco */
+  /* Gmail - fondo blanco con icono multicolor */
   nav.open .nav-social a.gm {
-    background:#EA4335;
-    box-shadow:0 6px 20px rgba(234,67,53,.4);
+    background:white;
+    box-shadow:0 6px 20px rgba(234,67,53,.3);
   }
-  nav.open .nav-social a.gm:hover { box-shadow:0 14px 32px rgba(234,67,53,.7) !important; }
+  nav.open .nav-social a.gm:hover { box-shadow:0 14px 32px rgba(234,67,53,.55) !important; }
   /* TikTok - negro con toque cian */
   nav.open .nav-social a.tk {
     background:linear-gradient(145deg,#111,#1a1a2e);
@@ -1087,7 +1090,8 @@ header.menu-open.scrolled {
   nav.open .nav-social a.tk:hover {
     box-shadow:0 14px 32px rgba(0,0,0,.6), 0 0 18px rgba(105,201,229,.35) !important;
   }
-  nav.open .nav-social svg { width:26px; height:26px; fill:white; }
+  nav.open .nav-social svg:not(.gmail-svg) { width:26px; height:26px; fill:white; }
+  nav.open .nav-social svg.gmail-svg { width:26px; height:26px; }
   .nav-social { display:none; }
   .menu-btn { display:block; z-index:1001; color:white; }
   header.scrolled .menu-btn { color:var(--oscuro); }
@@ -1171,7 +1175,13 @@ header.menu-open.scrolled {
           <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
         </a>
         <a href="mailto:lacasitadesimba04@gmail.com" class="gm" aria-label="Gmail">
-          <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 010 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L12 9.641l8.073-6.148C21.69 2.28 24 3.434 24 5.457z"/></svg>
+          <svg class="gmail-svg" viewBox="0 0 48 48">
+            <path style="fill:#4CAF50" d="M45,16.2l-5,2.75l-5,4.75L35,40h7c1.657,0,3-1.343,3-3V16.2z"/>
+            <path style="fill:#1E88E5" d="M3,16.2l3.714,1.938L13,23.7V40H6c-1.657,0-3-1.343-3-3V16.2z"/>
+            <polygon style="fill:#E53935" points="35,11.2 24,19.45 13,11.2 12,17 13,23.7 24,31.45 35,23.7 36,17"/>
+            <path style="fill:#C62828" d="M3,12.298V16.2l10,7.5V11.2L9.876,8.859C9.132,8.301,8.228,8,7.298,8h0C4.924,8,3,9.924,3,12.298z"/>
+            <path style="fill:#FBC02D" d="M45,12.298V16.2l-10,7.5V11.2l3.124-2.341C38.868,8.301,39.772,8,40.702,8h0C43.076,8,45,9.924,45,12.298z"/>
+          </svg>
         </a>
         <a href="https://tiktok.com/@la_casita_de_simba" target="_blank" class="tk" aria-label="TikTok">
           <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
