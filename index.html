@@ -705,8 +705,8 @@ h2 {
 
 /* ── PRECIOS ── */
 .precios-grid {
-  display:grid; grid-template-columns:repeat(3,1fr);
-  gap:1.5rem; align-items:start;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem; align-items:start; justify-content:center;
 }
 .precio-card {
   background:white; border-radius:var(--radio);
@@ -1605,6 +1605,34 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
           <li>Tarta perruna</li>
           <li>Sesión de fotos</li>
           <li>Invitados peludos</li>
+        </ul>
+        <a href="#contacto" class="btn precio-cta precio-cta-normal">Consultar</a>
+      </div>
+      <div class="precio-card">
+        <div class="precio-icon">🗓️</div>
+        <h3>Bono Semanal</h3>
+        <div class="precio-num"><span>€</span>75</div>
+        <div class="precio-por">precio referencial / semana</div>
+        <div class="precio-divider"></div>
+        <ul class="precio-lista">
+          <li>5 días a tu elección</li>
+          <li>Horario flexible</li>
+          <li>Comida incluida</li>
+          <li>Fotos y vídeos diarios</li>
+        </ul>
+        <a href="#contacto" class="btn precio-cta precio-cta-normal">Consultar</a>
+      </div>
+      <div class="precio-card">
+        <div class="precio-icon">🎟️</div>
+        <h3>Bono Mensual</h3>
+        <div class="precio-num"><span>€</span>280</div>
+        <div class="precio-por">precio referencial / mes</div>
+        <div class="precio-divider"></div>
+        <ul class="precio-lista">
+          <li>Días adaptados a tu rutina</li>
+          <li>Precio especial habitual</li>
+          <li>Comida incluida</li>
+          <li>Fotos y vídeos diarios</li>
         </ul>
         <a href="#contacto" class="btn precio-cta precio-cta-normal">Consultar</a>
       </div>
