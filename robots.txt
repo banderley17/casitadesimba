@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://banderley17.github.io/casitadesimba/sitemap.xml
