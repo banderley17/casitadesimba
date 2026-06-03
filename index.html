@@ -674,15 +674,18 @@ h2 {
 .galeria-bg { background:var(--gris); }
 .galeria-carousel {
   position:relative; width:100%; border-radius:20px;
-  overflow:hidden; height:480px; background:#e8e8e8;
+  overflow:hidden; height:320px; background:#e8e8e8;
   margin-bottom:1.5rem;
 }
-@media(max-width:600px){ .galeria-carousel { height:260px; } }
+@media(max-width:600px){ .galeria-carousel { height:200px; } }
 .gc-slide {
   position:absolute; inset:0;
-  opacity:0; transition:opacity .85s ease; pointer-events:none;
+  transform:translateY(-100%);
+  transition:transform .65s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
 }
-.gc-slide.active { opacity:1; pointer-events:auto; }
+.gc-slide.active { transform:translateY(0); pointer-events:auto; }
+.gc-slide.gc-exit { transform:translateY(100%); }
 .gc-slide img { width:100%; height:100%; object-fit:cover; display:block; }
 .gc-caption {
   position:absolute; bottom:0; left:0; right:0;
@@ -2163,13 +2166,25 @@ document.querySelectorAll('.precio-card').forEach(card => {
   const slides = document.querySelectorAll('.gc-slide');
   const dots   = document.querySelectorAll('.gc-dot');
   if(!slides.length) return;
-  let cur = 0, timer;
+  let cur = 0, timer, busy = false;
   function goTo(n){
-    slides[cur].classList.remove('active');
-    dots[cur].classList.remove('active');
+    if(busy) return;
+    busy = true;
+    const prev = cur;
     cur = (n + slides.length) % slides.length;
+    // salida: slide actual baja hacia abajo
+    slides[prev].classList.add('gc-exit');
+    slides[prev].classList.remove('active');
+    // entrada: nueva slide llega desde arriba (resetear posición sin transición)
+    slides[cur].style.transition = 'none';
+    slides[cur].style.transform  = 'translateY(-100%)';
+    slides[cur].offsetHeight; // forzar reflow
+    slides[cur].style.transition = '';
     slides[cur].classList.add('active');
+    // dots
+    dots[prev].classList.remove('active');
     dots[cur].classList.add('active');
+    setTimeout(()=>{ slides[prev].classList.remove('gc-exit'); busy = false; }, 700);
   }
   function next(){ goTo(cur + 1); }
   function start(){ timer = setInterval(next, 3800); }
