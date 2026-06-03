@@ -769,11 +769,24 @@ h2 {
 }
 .precio-card {
   background:white; border-radius:var(--radio);
-  padding:2.5rem 2rem; text-align:center;
+  padding:2.5rem 2rem; text-align:center; cursor:pointer;
   box-shadow:var(--sombra); position:relative;
-  transition:transform .35s, box-shadow .35s;
+  transition:transform .35s, box-shadow .35s, background .35s, color .35s;
 }
 .precio-card:hover { transform:translateY(-6px); box-shadow:var(--sombra-hover); }
+.precio-card.selected {
+  background:linear-gradient(145deg, var(--verde-dark), var(--verde));
+  transform:scale(1.05) translateY(-4px);
+  box-shadow:0 20px 60px rgba(90,168,130,.35);
+}
+.precio-card.selected h3,
+.precio-card.selected .precio-num { color:white; }
+.precio-card.selected .precio-por { color:rgba(255,255,255,.8); }
+.precio-card.selected .precio-divider { background:rgba(255,255,255,.2); }
+.precio-card.selected .precio-lista li { color:rgba(255,255,255,.9); }
+.precio-card.selected .precio-lista li::before { color:white; }
+.precio-card.selected .precio-cta { background:white; color:var(--verde-dark); }
+.precio-card.selected:hover { transform:scale(1.05) translateY(-8px); }
 .precio-card.destacado {
   background:linear-gradient(145deg, var(--rosa-dark), var(--rosa));
   color:white; transform:scale(1.05);
@@ -2101,6 +2114,14 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.1 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Selección de tarifa
+document.querySelectorAll('.precio-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.precio-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+  });
+});
 
 // 3D tilt en cards
 document.querySelectorAll('.servicio-card, .porq-item, .testimonio').forEach(card => {
