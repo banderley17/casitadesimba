@@ -1718,21 +1718,6 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
         </ul>
         <a href="#contacto" class="btn precio-cta precio-cta-normal">Reservar</a>
       </div>
-      <div class="precio-card destacado">
-        <div class="precio-badge">⭐ Más popular</div>
-        <div class="precio-icon">🏡</div>
-        <h3>Alojamiento Nocturno</h3>
-        <div class="precio-num"><span>€</span>25</div>
-        <div class="precio-por">por noche</div>
-        <div class="precio-divider"></div>
-        <ul class="precio-lista">
-          <li>Noche + día siguiente</li>
-          <li>Cama y manta propias</li>
-          <li>Comida incluida</li>
-          <li>Fotos y vídeos diarios</li>
-        </ul>
-        <a href="#contacto" class="btn precio-cta precio-cta-destacado">Reservar</a>
-      </div>
       <div class="precio-card">
         <div class="precio-icon">🎂</div>
         <h3>Eventos y Cumpleaños</h3>
@@ -2505,36 +2490,28 @@ function enviar(e) {
     s('.precios-grid .precio-card:nth-child(1) .precio-lista li:nth-child(3)','prec1-li3',lang);
     s('.precios-grid .precio-card:nth-child(1) .precio-lista li:nth-child(4)','prec1-li4',lang);
     s('.precios-grid .precio-card:nth-child(1) .precio-cta','prec1-cta',lang);
-    s('.precio-badge','prec2-badge',lang);
-    s('.precios-grid .precio-card:nth-child(2) h3','prec2-h3',lang);
-    s('.precios-grid .precio-card:nth-child(2) .precio-por','prec2-por',lang);
-    s('.precios-grid .precio-card:nth-child(2) .precio-lista li:nth-child(1)','prec2-li1',lang);
-    s('.precios-grid .precio-card:nth-child(2) .precio-lista li:nth-child(2)','prec2-li2',lang);
-    s('.precios-grid .precio-card:nth-child(2) .precio-lista li:nth-child(3)','prec2-li3',lang);
-    s('.precios-grid .precio-card:nth-child(2) .precio-lista li:nth-child(4)','prec2-li4',lang);
-    s('.precios-grid .precio-card:nth-child(2) .precio-cta','prec2-cta',lang);
-    s('.precios-grid .precio-card:nth-child(3) h3','prec3-h3',lang);
-    s('.precios-grid .precio-card:nth-child(3) .precio-num','prec3-num',lang);
-    s('.precios-grid .precio-card:nth-child(3) .precio-por','prec3-por',lang);
-    s('.precios-grid .precio-card:nth-child(3) .precio-lista li:nth-child(1)','prec3-li1',lang);
-    s('.precios-grid .precio-card:nth-child(3) .precio-lista li:nth-child(2)','prec3-li2',lang);
-    s('.precios-grid .precio-card:nth-child(3) .precio-lista li:nth-child(3)','prec3-li3',lang);
-    s('.precios-grid .precio-card:nth-child(3) .precio-lista li:nth-child(4)','prec3-li4',lang);
-    s('.precios-grid .precio-card:nth-child(3) .precio-cta','prec3-cta',lang);
-    s('.precios-grid .precio-card:nth-child(4) h3','prec4-h3',lang);
-    s('.precios-grid .precio-card:nth-child(4) .precio-por','prec4-por',lang);
-    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(1)','prec4-li1',lang);
-    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(2)','prec4-li2',lang);
-    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(3)','prec4-li3',lang);
-    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(4)','prec4-li4',lang);
-    s('.precios-grid .precio-card:nth-child(4) .precio-cta','prec4-cta',lang);
-    s('.precios-grid .precio-card:nth-child(5) h3','prec5-h3',lang);
-    s('.precios-grid .precio-card:nth-child(5) .precio-por','prec5-por',lang);
-    s('.precios-grid .precio-card:nth-child(5) .precio-lista li:nth-child(1)','prec5-li1',lang);
-    s('.precios-grid .precio-card:nth-child(5) .precio-lista li:nth-child(2)','prec5-li2',lang);
-    s('.precios-grid .precio-card:nth-child(5) .precio-lista li:nth-child(3)','prec5-li3',lang);
-    s('.precios-grid .precio-card:nth-child(5) .precio-lista li:nth-child(4)','prec5-li4',lang);
-    s('.precios-grid .precio-card:nth-child(5) .precio-cta','prec5-cta',lang);
+    s('.precios-grid .precio-card:nth-child(2) h3','prec3-h3',lang);
+    s('.precios-grid .precio-card:nth-child(2) .precio-num','prec3-num',lang);
+    s('.precios-grid .precio-card:nth-child(2) .precio-por','prec3-por',lang);
+    s('.precios-grid .precio-card:nth-child(2) .precio-lista li:nth-child(1)','prec3-li1',lang);
+    s('.precios-grid .precio-card:nth-child(2) .precio-lista li:nth-child(2)','prec3-li2',lang);
+    s('.precios-grid .precio-card:nth-child(2) .precio-lista li:nth-child(3)','prec3-li3',lang);
+    s('.precios-grid .precio-card:nth-child(2) .precio-lista li:nth-child(4)','prec3-li4',lang);
+    s('.precios-grid .precio-card:nth-child(2) .precio-cta','prec3-cta',lang);
+    s('.precios-grid .precio-card:nth-child(3) h3','prec4-h3',lang);
+    s('.precios-grid .precio-card:nth-child(3) .precio-por','prec4-por',lang);
+    s('.precios-grid .precio-card:nth-child(3) .precio-lista li:nth-child(1)','prec4-li1',lang);
+    s('.precios-grid .precio-card:nth-child(3) .precio-lista li:nth-child(2)','prec4-li2',lang);
+    s('.precios-grid .precio-card:nth-child(3) .precio-lista li:nth-child(3)','prec4-li3',lang);
+    s('.precios-grid .precio-card:nth-child(3) .precio-lista li:nth-child(4)','prec4-li4',lang);
+    s('.precios-grid .precio-card:nth-child(3) .precio-cta','prec4-cta',lang);
+    s('.precios-grid .precio-card:nth-child(4) h3','prec5-h3',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-por','prec5-por',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(1)','prec5-li1',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(2)','prec5-li2',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(3)','prec5-li3',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(4)','prec5-li4',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-cta','prec5-cta',lang);
     s('.tarifa-std-ttl','tbl-ttl',lang);
     s('.tbl-th1','tbl-th1',lang);
     s('.tbl-th2','tbl-th2',lang);
