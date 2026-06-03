@@ -670,52 +670,8 @@ h2 {
 @media(max-width:768px) { .porq-grid { grid-template-columns:1fr 1fr; } }
 @media(max-width:480px) { .porq-grid { grid-template-columns:1fr; } }
 
-/* ── GALERÍA carousel ── */
+/* ── GALERÍA ── */
 .galeria-bg { background:var(--gris); }
-.galeria-carousel {
-  position:relative; width:100%; border-radius:20px;
-  overflow:hidden; height:320px; background:#e8e8e8;
-  margin-bottom:1.5rem;
-}
-@media(max-width:600px){ .galeria-carousel { height:200px; } }
-.gc-slide {
-  position:absolute; inset:0;
-  transform:translateY(-100%);
-  transition:transform .65s cubic-bezier(.4,0,.2,1);
-  pointer-events:none;
-}
-.gc-slide.active { transform:translateY(0); pointer-events:auto; }
-.gc-slide.gc-exit { transform:translateY(100%); }
-.gc-slide img { width:100%; height:100%; object-fit:cover; display:block; }
-.gc-caption {
-  position:absolute; bottom:0; left:0; right:0;
-  padding:2.5rem 1.5rem 1.2rem;
-  background:linear-gradient(0deg,rgba(0,0,0,.65) 0%,transparent 100%);
-  color:white; font-size:1rem; font-weight:600;
-}
-.gc-arrow {
-  position:absolute; top:50%; transform:translateY(-50%);
-  background:rgba(255,255,255,.88); border:none; border-radius:50%;
-  width:44px; height:44px; font-size:1.4rem;
-  cursor:pointer; color:var(--rosa-dark);
-  box-shadow:0 2px 14px rgba(0,0,0,.18);
-  transition:.25s; z-index:10;
-  display:flex; align-items:center; justify-content:center;
-}
-.gc-arrow:hover { background:white; transform:translateY(-50%) scale(1.1); }
-.gc-prev { left:1rem; }
-.gc-next { right:1rem; }
-.gc-dots {
-  position:absolute; bottom:.85rem; left:50%; transform:translateX(-50%);
-  display:flex; gap:.45rem; z-index:10;
-}
-.gc-dot {
-  width:8px; height:8px; border-radius:50%;
-  background:rgba(255,255,255,.5); border:none; cursor:pointer; padding:0;
-  transition:.35s;
-}
-.gc-dot.active { background:white; width:22px; border-radius:4px; }
-
 .galeria-grid {
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -1602,50 +1558,46 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
       <h2>Así de bien lo pasan 📸</h2>
       <p class="section-desc">Imágenes reales de nuestros peludos disfrutando en La Casita de Simba.</p>
     </div>
-    <div class="galeria-carousel reveal">
-      <div class="gc-slide active">
-        <img src="images/2c999b07-a320-4f7a-9eea-ae16b11f5069.JPG" alt="Perritos jugando en La Casita de Simba">
-        <div class="gc-caption">Jugando juntos 🐾</div>
+    <div class="galeria-grid reveal">
+      <div class="galeria-item" data-src="images/2c999b07-a320-4f7a-9eea-ae16b11f5069.JPG" data-caption="Jugando juntos 🐾">
+        <img src="images/2c999b07-a320-4f7a-9eea-ae16b11f5069.JPG" alt="Perritos jugando en La Casita de Simba" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Jugando juntos 🐾</div>
       </div>
-      <div class="gc-slide">
-        <img src="images/2e7980f1-bc5b-4599-9af2-34098b615c14.JPG" alt="Perritos en hora del recreo">
-        <div class="gc-caption">Hora del recreo 🎾</div>
+      <div class="galeria-item" data-src="images/2e7980f1-bc5b-4599-9af2-34098b615c14.JPG" data-caption="Hora del recreo 🎾">
+        <img src="images/2e7980f1-bc5b-4599-9af2-34098b615c14.JPG" alt="Perritos en hora del recreo" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Hora del recreo 🎾</div>
       </div>
-      <div class="gc-slide">
-        <img src="images/30d8a9ff-adbf-413f-9ae9-d17d70abc661.JPG" alt="Perritos descansando en guardería canina Madrid">
-        <div class="gc-caption">Descanso en familia 😴</div>
+      <div class="galeria-item" data-src="images/30d8a9ff-adbf-413f-9ae9-d17d70abc661.JPG" data-caption="Descanso en familia 😴">
+        <img src="images/30d8a9ff-adbf-413f-9ae9-d17d70abc661.JPG" alt="Perritos descansando en guardería canina Madrid" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Descanso en familia 😴</div>
       </div>
-      <div class="gc-slide">
-        <img src="images/6f7cf4c6-f635-4e8c-99d9-3a926a43727d.JPG" alt="Perros felices haciendo amigos">
-        <div class="gc-caption">Amigos peludos 🐕</div>
+      <div class="galeria-item" data-src="images/6f7cf4c6-f635-4e8c-99d9-3a926a43727d.JPG" data-caption="Amigos peludos 🐕">
+        <img src="images/6f7cf4c6-f635-4e8c-99d9-3a926a43727d.JPG" alt="Perros felices haciendo amigos" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Amigos peludos 🐕</div>
       </div>
-      <div class="gc-slide">
-        <img src="images/ac5dfbb4-fcc0-4b49-94c8-1493f78121f9.JPG" alt="Perro feliz en guardería canina">
-        <div class="gc-caption">¡Qué feliz estoy! 🐶</div>
+      <div class="galeria-item" data-src="images/ac5dfbb4-fcc0-4b49-94c8-1493f78121f9.JPG" data-caption="¡Qué feliz estoy! 🐶">
+        <img src="images/ac5dfbb4-fcc0-4b49-94c8-1493f78121f9.JPG" alt="Perro feliz en guardería canina" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">¡Qué feliz estoy! 🐶</div>
       </div>
-      <div class="gc-slide">
-        <img src="images/b0cb66bb-7b9a-4781-be74-6733ee17456b.JPG" alt="Perrito explorando La Casita de Simba">
-        <div class="gc-caption">Explorando la casita 🌿</div>
+      <div class="galeria-item" data-src="images/b0cb66bb-7b9a-4781-be74-6733ee17456b.JPG" data-caption="Explorando la casita 🌿">
+        <img src="images/b0cb66bb-7b9a-4781-be74-6733ee17456b.JPG" alt="Perrito explorando La Casita de Simba" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Explorando la casita 🌿</div>
       </div>
-      <div class="gc-slide">
-        <img src="images/a03634cc-ce55-46ee-b909-e5b249bbca59.JPG" alt="Momentos especiales en guardería canina Madrid">
-        <div class="gc-caption">Momentos especiales 💕</div>
+      <div class="galeria-item" data-src="images/a03634cc-ce55-46ee-b909-e5b249bbca59.JPG" data-caption="Momentos especiales 💕">
+        <img src="images/a03634cc-ce55-46ee-b909-e5b249bbca59.JPG" alt="Momentos especiales en guardería canina Madrid" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Momentos especiales 💕</div>
       </div>
-      <div class="gc-slide">
-        <img src="images/f0524e71-6946-48c0-b2aa-fc49e63288c7.JPG" alt="La Casita de Simba, como en casa">
-        <div class="gc-caption">Como en casa 🏡</div>
-      </div>
-      <button class="gc-arrow gc-prev" aria-label="Anterior">&#8249;</button>
-      <button class="gc-arrow gc-next" aria-label="Siguiente">&#8250;</button>
-      <div class="gc-dots">
-        <button class="gc-dot active" aria-label="Foto 1"></button>
-        <button class="gc-dot" aria-label="Foto 2"></button>
-        <button class="gc-dot" aria-label="Foto 3"></button>
-        <button class="gc-dot" aria-label="Foto 4"></button>
-        <button class="gc-dot" aria-label="Foto 5"></button>
-        <button class="gc-dot" aria-label="Foto 6"></button>
-        <button class="gc-dot" aria-label="Foto 7"></button>
-        <button class="gc-dot" aria-label="Foto 8"></button>
+      <div class="galeria-item" data-src="images/f0524e71-6946-48c0-b2aa-fc49e63288c7.JPG" data-caption="Como en casa 🏡">
+        <img src="images/f0524e71-6946-48c0-b2aa-fc49e63288c7.JPG" alt="La Casita de Simba, como en casa" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Como en casa 🏡</div>
       </div>
     </div>
     <div class="galeria-ig reveal">
@@ -2161,42 +2113,6 @@ document.querySelectorAll('.precio-card').forEach(card => {
   });
 });
 
-// Carousel galería
-(function(){
-  const slides = document.querySelectorAll('.gc-slide');
-  const dots   = document.querySelectorAll('.gc-dot');
-  if(!slides.length) return;
-  let cur = 0, timer, busy = false;
-  function goTo(n){
-    if(busy) return;
-    busy = true;
-    const prev = cur;
-    cur = (n + slides.length) % slides.length;
-    // salida: slide actual baja hacia abajo
-    slides[prev].classList.add('gc-exit');
-    slides[prev].classList.remove('active');
-    // entrada: nueva slide llega desde arriba (resetear posición sin transición)
-    slides[cur].style.transition = 'none';
-    slides[cur].style.transform  = 'translateY(-100%)';
-    slides[cur].offsetHeight; // forzar reflow
-    slides[cur].style.transition = '';
-    slides[cur].classList.add('active');
-    // dots
-    dots[prev].classList.remove('active');
-    dots[cur].classList.add('active');
-    setTimeout(()=>{ slides[prev].classList.remove('gc-exit'); busy = false; }, 700);
-  }
-  function next(){ goTo(cur + 1); }
-  function start(){ timer = setInterval(next, 3800); }
-  function reset(){ clearInterval(timer); start(); }
-  document.querySelector('.gc-prev').addEventListener('click', ()=>{ goTo(cur-1); reset(); });
-  document.querySelector('.gc-next').addEventListener('click', ()=>{ goTo(cur+1); reset(); });
-  dots.forEach((d,i) => d.addEventListener('click', ()=>{ goTo(i); reset(); }));
-  const c = document.querySelector('.galeria-carousel');
-  c.addEventListener('mouseenter', ()=> clearInterval(timer));
-  c.addEventListener('mouseleave', start);
-  start();
-})();
 
 // 3D tilt en cards
 document.querySelectorAll('.servicio-card, .porq-item, .testimonio').forEach(card => {
