@@ -1280,6 +1280,25 @@ header.menu-open.scrolled {
   .galeria-item:first-child { grid-column:auto; }
 }
 
+/* ── BANNER KIT DIGITAL ── */
+.banner-kit {
+  background:#fff;
+  border-top:1px solid #e8e8e8;
+  padding:.7rem 2rem;
+  text-align:center;
+  overflow:hidden;
+  box-sizing:border-box;
+}
+.banner-kit-img {
+  display:inline-block;
+  max-width:100%;
+  height:auto;
+  vertical-align:middle;
+}
+@media(max-width:768px) {
+  .banner-kit { padding:.6rem 1rem; }
+}
+
 /* ── FOOTER EMBLEM ── */
 .footer-emblem {
   display:inline-block; font-size:3.2rem; line-height:1;
@@ -1907,6 +1926,10 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
   </div>
 </footer>
 
+<!-- BANNER KIT DIGITAL -->
+<div class="banner-kit">
+  <img src="images/banner2.png" alt="Financiado por la Unión Europea – Next Generation EU · Kit Digital" class="banner-kit-img">
+</div>
 
 <!-- MODAL: AVISO LEGAL -->
 <div class="modal-overlay" id="modal-aviso" onclick="closeModalOutside(event,'modal-aviso')">
