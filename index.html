@@ -748,6 +748,7 @@ h2 {
 }
 
 /* ── PRECIOS ── */
+#precios { overflow-x:hidden; }
 .precios-grid {
   display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:1.5rem; align-items:start; justify-content:center;
@@ -1250,7 +1251,12 @@ header.menu-open.scrolled {
   .contacto-main { grid-template-columns:1fr; }
   .mapa-wrapper { height:240px; }
   .footer-inner { grid-template-columns:1fr; gap:2rem; }
-  .footer-bottom { flex-direction:column; gap:.5rem; text-align:center; }
+  .footer-bottom { flex-direction:column; gap:.5rem; text-align:center; align-items:center; }
+  /* Cards de precios: quitar scale para evitar overflow horizontal */
+  .precio-card.destacado { transform:none; }
+  .precio-card.destacado:hover { transform:translateY(-6px); }
+  .precio-card.selected { transform:none; }
+  .precio-card.selected:hover { transform:translateY(-8px); }
   .testimonios-grid { grid-template-columns:1fr; }
   .form-row { grid-template-columns:1fr; }
 
@@ -1649,9 +1655,9 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
           </tr>
         </tbody>
       </table>
-      <div style="background:#f8f4ec;border-left:3px solid #c8a84b;border-radius:6px;padding:12px 16px;margin:14px 0 8px;font-size:.88rem;color:#555;">
-        <strong style="color:#1a2040;">⏱️ Precios de referencia por horas:</strong>&nbsp;&nbsp;
-        1 hora: <strong>€12</strong> &nbsp;·&nbsp; 6 horas: <strong>€65</strong> &nbsp;·&nbsp; 10 horas: <strong>€100</strong>
+      <div style="background:#f8f4ec;border-left:3px solid #c8a84b;border-radius:6px;padding:12px 16px;margin:14px 0 8px;font-size:.88rem;color:#555;overflow-wrap:break-word;word-break:break-word;">
+        <strong style="color:#1a2040;">⏱️ Precios de referencia por horas:</strong><br class="movil-br">
+        1 hora: <strong>€12</strong> · 6 horas: <strong>€65</strong> · 10 horas: <strong>€100</strong>
       </div>
       <p class="tarifa-nota tbl-nota">🔄 Nos adaptamos a tu rutina — consulta tu bono personalizado.</p>
     </div>
@@ -1892,10 +1898,7 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
     </div>
   </div>
   <div class="footer-bottom">
-    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-      <span>© 2026 La Casita de Simba · Madrid</span>
-      <img src="images/banner1.png" alt="Financiado por la Unión Europea – Kit Digital" style="height:32px;width:auto;">
-    </div>
+    <span>© 2026 La Casita de Simba · Madrid</span>
     <div class="footer-legal">
       <a href="#" onclick="openModal('modal-aviso');return false;">Aviso Legal</a>
       <a href="#" onclick="openModal('modal-privacidad');return false;">Privacidad</a>
@@ -1903,6 +1906,7 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
     </div>
   </div>
 </footer>
+
 
 <!-- MODAL: AVISO LEGAL -->
 <div class="modal-overlay" id="modal-aviso" onclick="closeModalOutside(event,'modal-aviso')">
