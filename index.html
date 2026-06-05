@@ -1632,15 +1632,15 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
             <td class="t-precio">€12<small class="tbl-shu">/hora</small></td>
             <td class="tbl-shd">Flexible · comida · fotos</td>
           </tr>
-          <tr>
-            <td>🗓️ <span class="tbl-s3n">Bono Semanal</span></td>
-            <td class="t-precio"><span class="tbl-desde">desde</span> €75<small class="tbl-s3u">/semana</small></td>
+          <tr style="background:#fffbf0;">
+            <td>🗓️ <span class="tbl-s3n">Bono Semanal</span> <span style="background:#16a34a;color:#fff;font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:5px;">Ahorras €60</span></td>
+            <td class="t-precio">€340<small class="tbl-s3u">/semana</small></td>
             <td class="tbl-s3d">5 días · horario flexible · fotos</td>
           </tr>
-          <tr>
-            <td>🎟️ <span class="tbl-s4n">Bono Mensual</span></td>
-            <td class="t-precio"><span class="tbl-desde">desde</span> €280<small class="tbl-s4u">/mes</small></td>
-            <td class="tbl-s4d">Días adaptados · precio especial · fotos</td>
+          <tr style="background:#fffbf0;">
+            <td>🎟️ <span class="tbl-s4n">Bono Mensual</span> <span style="background:#c8a84b;color:#fff;font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:5px;">Ahorras €350</span></td>
+            <td class="t-precio">€1.250<small class="tbl-s4u">/mes</small></td>
+            <td class="tbl-s4d">20 días · precio especial · fotos</td>
           </tr>
           <tr>
             <td>🎂 <span class="tbl-s5n">Cumpleaños / Evento</span></td>
@@ -1685,11 +1685,13 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
         </ul>
         <a href="#contacto" class="btn precio-cta precio-cta-normal">Consultar</a>
       </div>
-      <div class="precio-card">
+      <div class="precio-card" style="position:relative;overflow:visible;">
+        <div style="position:absolute;top:-12px;right:12px;background:#16a34a;color:#fff;font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:20px;letter-spacing:.5px;box-shadow:0 2px 8px rgba(22,163,74,.35);">✂️ AHORRAS €60</div>
         <div class="precio-icon">🗓️</div>
         <h3>Bono Semanal</h3>
-        <div class="precio-num"><span>€</span>75</div>
-        <div class="precio-por">precio referencial / semana</div>
+        <div class="precio-num"><span>€</span>340</div>
+        <div class="precio-por">5 días completos</div>
+        <div style="font-size:.8rem;color:#888;text-decoration:line-through;margin-bottom:4px;">Precio normal: €400</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
           <li>5 días a tu elección</li>
@@ -1699,11 +1701,13 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
         </ul>
         <a href="#contacto" class="btn precio-cta precio-cta-normal">Consultar</a>
       </div>
-      <div class="precio-card">
+      <div class="precio-card destacado" style="position:relative;overflow:visible;">
+        <div style="position:absolute;top:-12px;right:12px;background:#c8a84b;color:#fff;font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:20px;letter-spacing:.5px;box-shadow:0 2px 8px rgba(200,168,75,.4);">⭐ AHORRAS €350</div>
         <div class="precio-icon">🎟️</div>
         <h3>Bono Mensual</h3>
-        <div class="precio-num"><span>€</span>280</div>
-        <div class="precio-por">precio referencial / mes</div>
+        <div class="precio-num"><span>€</span>1.250</div>
+        <div class="precio-por">20 días al mes</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.7);text-decoration:line-through;margin-bottom:4px;">Precio normal: €1.600</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
           <li>Días adaptados a tu rutina</li>
@@ -2243,14 +2247,14 @@ function enviar(e) {
       'prec1-h3':'Estancia Diurna','prec1-por':'por día completo','prec1-li1':'De 8h a 20h','prec1-li2':'Comida incluida','prec1-li3':'Fotos del día','prec1-li4':'Fotos y Vídeos','prec1-cta':'Reservar',
       
       'prec3-h3':'Eventos y Cumpleaños','prec3-num':'A consultar','prec3-por':'pack personalizado','prec3-li1':'Decoración incluida','prec3-li2':'Tarta perruna','prec3-li3':'Sesión de fotos','prec3-li4':'Invitados peludos','prec3-cta':'Consultar',
-      'prec4-h3':'Bono Semanal','prec4-por':'precio referencial / semana','prec4-li1':'5 días a tu elección','prec4-li2':'Horario flexible','prec4-li3':'Comida incluida','prec4-li4':'Fotos y vídeos diarios','prec4-cta':'Consultar',
-      'prec5-h3':'Bono Mensual','prec5-por':'precio referencial / mes','prec5-li1':'Días adaptados a tu rutina','prec5-li2':'Precio especial habitual','prec5-li3':'Comida incluida','prec5-li4':'Fotos y vídeos diarios','prec5-cta':'Consultar',
+      'prec4-h3':'Bono Semanal','prec4-por':'5 días completos','prec4-li1':'5 días a tu elección','prec4-li2':'Horario flexible','prec4-li3':'Comida incluida','prec4-li4':'Fotos y vídeos diarios','prec4-cta':'Consultar',
+      'prec5-h3':'Bono Mensual','prec5-por':'20 días al mes','prec5-li1':'Días adaptados a tu rutina','prec5-li2':'Precio especial habitual','prec5-li3':'Comida incluida','prec5-li4':'Fotos y vídeos diarios','prec5-cta':'Consultar',
       'tbl-desde':'desde',
       'tbl-ttl':'📋 Tarifa Estándar','tbl-th1':'Servicio','tbl-th2':'Precio','tbl-th3':'Incluye',
       'tbl-s1n':'Estancia Diurna','tbl-s1u':'/día','tbl-s1d':'8h–20h · comida · fotos','tbl-shn':'Estancia por Horas','tbl-shu':'/hora','tbl-shd':'Flexible · comida · fotos',
       
       'tbl-s3n':'Bono Semanal','tbl-s3u':'/semana','tbl-s3d':'5 días · horario flexible · fotos',
-      'tbl-s4n':'Bono Mensual','tbl-s4u':'/mes','tbl-s4d':'Días adaptados · precio especial · fotos',
+      'tbl-s4n':'Bono Mensual','tbl-s4u':'/mes','tbl-s4d':'20 días · precio especial · fotos',
       'tbl-s5n':'Cumpleaños / Evento','tbl-s5p':'A consultar','tbl-s5d':'Decoración · tarta · fotos',
       'tbl-nota':'🔄 Nos adaptamos a tu rutina — consulta tu bono personalizado.',
       
@@ -2323,8 +2327,8 @@ function enviar(e) {
       'prec1-h3':'Day Care','prec1-por':'per full day','prec1-li1':'From 8am to 8pm','prec1-li2':'Food included','prec1-li3':'Daily photos','prec1-li4':'Photos & Videos','prec1-cta':'Book',
       
       'prec3-h3':'Events & Birthdays','prec3-num':'Ask for price','prec3-por':'personalised pack','prec3-li1':'Decoration included','prec3-li2':'Dog-friendly cake','prec3-li3':'Photo session','prec3-li4':'Furry guests','prec3-cta':'Enquire',
-      'prec4-h3':'Weekly Pack','prec4-por':'reference price / week','prec4-li1':'5 days of your choice','prec4-li2':'Flexible hours','prec4-li3':'Food included','prec4-li4':'Daily photos & videos','prec4-cta':'Enquire',
-      'prec5-h3':'Monthly Pack','prec5-por':'reference price / month','prec5-li1':'Days adapted to your routine','prec5-li2':'Special regular rate','prec5-li3':'Food included','prec5-li4':'Daily photos & videos','prec5-cta':'Enquire',
+      'prec4-h3':'Weekly Pack','prec4-por':'5 full days','prec4-li1':'5 days of your choice','prec4-li2':'Flexible hours','prec4-li3':'Food included','prec4-li4':'Daily photos & videos','prec4-cta':'Enquire',
+      'prec5-h3':'Monthly Pack','prec5-por':'20 days per month','prec5-li1':'Days adapted to your routine','prec5-li2':'Special regular rate','prec5-li3':'Food included','prec5-li4':'Daily photos & videos','prec5-cta':'Enquire',
       'tbl-desde':'from',
       'tbl-ttl':'📋 Standard Rates','tbl-th1':'Service','tbl-th2':'Price','tbl-th3':'Includes',
       'tbl-s1n':'Day Care','tbl-s1u':'/day','tbl-s1d':'8am–8pm · food · photos',
