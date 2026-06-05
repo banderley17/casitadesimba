@@ -1816,6 +1816,9 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
               <label for="fservicio">Servicio</label>
               <select id="fservicio">
                 <option>Estancia Diurna (€80/día)</option>
+                <option>Estancia por Horas (€12/hora)</option>
+                <option>Bono Semanal (€340/semana)</option>
+                <option>Bono Mensual (€1.250/mes)</option>
                 <option>Cumpleaños / Evento</option>
               </select>
             </div>
@@ -2199,8 +2202,8 @@ function enviar(e) {
 
   items.forEach(function(el, i) { el.addEventListener('click', function(){ open(i); }); });
   document.getElementById('lbClose').addEventListener('click', close);
-  document.getElementById('lbPrev').addEventListener('click', prev);
-  document.getElementById('lbNext').addEventListener('click', next);
+  document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); prev(); });
+  document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); next(); });
   overlay.addEventListener('click', function(e){ if(e.target === overlay || e.target === img) return; close(); });
   img.addEventListener('click', function(e){ e.stopPropagation(); next(); });
   document.addEventListener('keydown', function(e){
@@ -2304,7 +2307,7 @@ function enviar(e) {
       'form-h3':'🐶 Datos de la reserva',
       'lbl-nombre':'Tu nombre','ph-nombre':'María García','lbl-tel':'Teléfono / WhatsApp',
       'lbl-perro':'Nombre del perro','ph-perro':'Max','lbl-serv':'Servicio',
-      'opt1':'Estancia Diurna (€80/día)','opt3':'Cumpleaños / Evento',
+      'opt1':'Estancia Diurna (€80/día)','opt2':'Estancia por Horas (€12/hora)','opt3':'Bono Semanal (€340/semana)','opt4':'Bono Mensual (€1.250/mes)','opt5':'Cumpleaños / Evento',
       'lbl-entrada':'Fecha de entrada','lbl-salida':'Fecha de salida',
       'lbl-desc':'Cuéntanos sobre tu perro','ph-desc':'Raza, edad, carácter, si es sociable con otros perros...',
       'form-btn':'💬 Enviar por WhatsApp',
@@ -2384,7 +2387,7 @@ function enviar(e) {
       'form-h3':'🐶 Booking details',
       'lbl-nombre':'Your name','ph-nombre':'John Smith','lbl-tel':'Phone / WhatsApp',
       'lbl-perro':"Dog's name",'ph-perro':'Max','lbl-serv':'Service',
-      'opt1':'Day Care (€80/day)','opt3':'Birthday / Event',
+      'opt1':'Day Care (€80/day)','opt2':'Hourly Care (€12/hour)','opt3':'Weekly Pack (€340/week)','opt4':'Monthly Pack (€1,250/month)','opt5':'Birthday / Event',
       'lbl-entrada':'Check-in date','lbl-salida':'Check-out date',
       'lbl-desc':'Tell us about your dog','ph-desc':'Breed, age, temperament, sociable with other dogs...',
       'form-btn':'💬 Send via WhatsApp',
@@ -2546,6 +2549,8 @@ function enviar(e) {
     s('#fservicio option:nth-child(1)','opt1',lang);
     s('#fservicio option:nth-child(2)','opt2',lang);
     s('#fservicio option:nth-child(3)','opt3',lang);
+    s('#fservicio option:nth-child(4)','opt4',lang);
+    s('#fservicio option:nth-child(5)','opt5',lang);
     s('.btn-form','form-btn',lang);
     var infoKeys = ['info-dir','info-tel','info-email','info-hora'];
     document.querySelectorAll('.info-card').forEach(function(card,i) {
