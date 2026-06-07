@@ -1318,11 +1318,12 @@ header.menu-open.scrolled {
     display:inline-block;
     position:absolute;
     top:1.2rem;
-    left:50%;
-    transform:translateX(-50%);
+    right:1.2rem;
+    left:auto;
+    transform:none;
     z-index:10;
-    background:white;
-    color:var(--oscuro);
+    background:var(--rosa);
+    color:white;
     padding:.5rem 1.4rem;
     border-radius:50px;
     font-weight:800;
@@ -1335,11 +1336,12 @@ header.menu-open.scrolled {
     content:'';
     position:absolute;
     bottom:-7px;
-    left:50%;
-    transform:translateX(-50%);
+    right:1.4rem;
+    left:auto;
+    transform:none;
     border-left:7px solid transparent;
     border-right:7px solid transparent;
-    border-top:7px solid white;
+    border-top:7px solid var(--rosa);
   }
   .contacto-main { grid-template-columns:1fr; }
   .mapa-wrapper { height:240px; }
@@ -2665,7 +2667,7 @@ function enviar(e) {
 
 <script>
 (function(){
-  var imgs = ['images/anfitrion.jpeg','images/anfitrion1.jpeg'];
+  var imgs = ['images/anfitrion.jpeg','images/anfitrion1.jpeg','images/anfitrion2.jpeg','images/anfitrion3.jpeg','images/anfitrion4.jpeg'];
   var i = 0;
   setInterval(function(){
     var el = document.getElementById('anfitrion-img');
