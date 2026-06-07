@@ -1868,13 +1868,17 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
           </div>
           <div class="form-row" id="fdates-row">
             <div class="form-group">
-              <label for="fentrada">Fecha de entrada</label>
+              <label for="fentrada" id="fentrada-label">Fecha de entrada</label>
               <input type="date" id="fentrada" required>
             </div>
             <div class="form-group" id="fsalida-group">
               <label for="fsalida">Fecha de salida</label>
               <input type="date" id="fsalida">
             </div>
+          </div>
+          <div class="form-group" id="finvitados-group" style="display:none;">
+            <label for="finvitados">¿Cuántos invitados peludos esperáis?</label>
+            <input type="number" id="finvitados" placeholder="Ej: 5" min="1">
           </div>
           <div class="form-group">
             <label for="fvacunas">¿Tu peludito tiene al día sus vacunas y desparasitaciones?</label>
@@ -2203,7 +2207,8 @@ function enviar(e) {
   var salida  = document.getElementById('fsalida').value;
   var desc    = document.getElementById('fdesc').value.trim();
 
-  var vacunas = document.getElementById('fvacunas').value;
+  var vacunas    = document.getElementById('fvacunas').value;
+  var invitados  = document.getElementById('finvitados').value;
   var msg = 'Hola Helena, quiero hacer una reserva en La Casita de Simba 🐾\n\n';
   msg += '👤 *Nombre:* ' + n + '\n';
   msg += '📞 *Teléfono:* ' + (tel || 'No indicado') + '\n';
@@ -2212,6 +2217,7 @@ function enviar(e) {
   if (entrada) msg += '📅 *Entrada:* ' + entrada + '\n';
   if (salida && document.getElementById('fsalida-group').style.display !== 'none')
     msg += '📅 *Salida:* ' + salida + '\n';
+  if (invitados) msg += '🐕 *Invitados peludos:* ' + invitados + '\n';
   if (vacunas) msg += '💉 *Vacunas y desparasitaciones al día:* ' + (vacunas === 'si' ? 'Sí ✅' : 'No ❌') + '\n';
   if (desc)    msg += '💬 *Sobre mi perro:* ' + desc;
 
@@ -2229,20 +2235,27 @@ function enviar(e) {
   }, 2500);
 }
 
-// Mostrar/ocultar fecha de salida según servicio
+// Mostrar/ocultar campos según servicio
 (function(){
   var soloEntrada = ['Estancia (12h)','8 Horas','1 Hora','Stay (12h)','8 Hours','1 Hour'];
-  function toggleSalida() {
+  var cumple = ['Cumpleaños / Evento','Birthday / Event'];
+  function toggleFechas() {
     var serv = document.getElementById('fservicio').value;
     var salGrp = document.getElementById('fsalida-group');
     var datesRow = document.getElementById('fdates-row');
-    var hide = soloEntrada.indexOf(serv) !== -1;
-    salGrp.style.display = hide ? 'none' : '';
-    datesRow.style.gridTemplateColumns = hide ? '1fr' : '';
-    if (hide) document.getElementById('fsalida').value = '';
+    var invGrp = document.getElementById('finvitados-group');
+    var lblEntrada = document.getElementById('fentrada-label');
+    var esCumple = cumple.indexOf(serv) !== -1;
+    var esSolo = soloEntrada.indexOf(serv) !== -1 || esCumple;
+    salGrp.style.display = esSolo ? 'none' : '';
+    datesRow.style.gridTemplateColumns = esSolo ? '1fr' : '';
+    if (esSolo) document.getElementById('fsalida').value = '';
+    invGrp.style.display = esCumple ? '' : 'none';
+    if (!esCumple) document.getElementById('finvitados').value = '';
+    lblEntrada.textContent = esCumple ? 'Fecha de celebración' : 'Fecha de entrada';
   }
   var sel = document.getElementById('fservicio');
-  if (sel) { sel.addEventListener('change', toggleSalida); toggleSalida(); }
+  if (sel) { sel.addEventListener('change', toggleFechas); toggleFechas(); }
 })();
 
 // Lightbox galería
