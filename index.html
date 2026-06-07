@@ -1551,7 +1551,7 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
       <div class="sobre-foto-wrap">
         <div class="sobre-label-mobile">🐾 El anfitrión</div>
         <div class="sobre-img reveal">
-          <img src="images/anfitrion.jpeg" alt="Simba, el anfitrión de La Casita">
+          <img id="anfitrion-img" src="images/anfitrion.jpeg" alt="Simba, el anfitrión de La Casita" style="transition:opacity .6s ease;">
         </div>
       </div>
       <div class="sobre-texto reveal">
@@ -2664,6 +2664,21 @@ function enviar(e) {
 </script>
 
 <script>
+(function(){
+  var imgs = ['images/anfitrion.jpeg','images/anfitrion1.jpeg'];
+  var i = 0;
+  setInterval(function(){
+    var el = document.getElementById('anfitrion-img');
+    if(!el) return;
+    el.style.opacity = '0';
+    setTimeout(function(){
+      i = (i + 1) % imgs.length;
+      el.src = imgs[i];
+      el.style.opacity = '1';
+    }, 600);
+  }, 4000);
+})();
+
 function openModal(id) {
   document.getElementById(id).classList.add('open');
   document.body.style.overflow = 'hidden';
