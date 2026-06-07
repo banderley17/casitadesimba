@@ -2376,8 +2376,12 @@ function enviar(e) {
       'hero-btn1':'🐶 Reservar plaza','hero-btn2':'Ver servicios',
       'stat1':'Perritos felices','stat2':'Valoración media','stat3':'Fotos al día',
       'sobre-label':'El anfitrión','sobre-label-mob':'🐾 El anfitrión','sobre-h2':'Hola, soy Simba 🐾',
-      'sobre-p1':'Soy un Shar Pei tranquilo y cariñoso, y este lugar es mi hogar. Mi cuidadora Helena creó La Casita de Simba pensando en todos los perritos que, como yo, necesitan algo más que una residencia: <strong>un hogar donde sentirse queridos</strong>.',
-      'sobre-p2':'Aquí cada perro es tratado como uno más de la familia. Nada de jaulas, nada de estrés. Solo juegos, cariño y mucha diversión.',
+      'sobre-p1':'Sí… ese de la foto. Un peludo arrugadito, gordito, tranquilo, y muy amoroso... Y hoy quiero contarte algo muy especial…',
+      'sobre-p2':'Hace un tiempo, mi mamá humana pensó en todos esos perros que, como yo, necesitan algo más que un lugar donde quedarse cuando sus familias no están. Necesitamos cariño, compañía, juegos… sentirnos como en casa.',
+      'sobre-p3':'<strong>Así nació La Casita de Simba 🏡✨</strong><br>Un lugar creado con amor, donde cada peludo es parte de la familia.',
+      'sobre-p4':'Aquí no hay jaulas ni prisas… hay siestas al sol ☀️, juegos con amigos 🐕🐕, mimos infinitos 💛 y hasta celebraciones de cumpleaños 🎂 (¡sí, nos encanta soplar velitas aunque no sepamos hacerlo!).',
+      'sobre-p5':'Yo mismo me encargo de supervisar que todo esté perfecto… bueno, cuando no estoy durmiendo 😴',
+      'sobre-p6':'Si estás buscando un lugar donde tu humano pueda dejarte tranquilo, feliz y bien cuidado…<br><strong>✨ te estoy esperando con las patitas abiertas ✨</strong>',
       'check1':'<span class="check-icon">✓</span>Cuidado personalizado para cada perro',
       'check2':'<span class="check-icon">✓</span>Ambiente familiar sin estrés ni jaulas',
       'check3':'<span class="check-icon">✓</span>Socialización con otros perritos',
@@ -2466,8 +2470,12 @@ function enviar(e) {
       'hero-btn1':'🐶 Book a spot','hero-btn2':'See services',
       'stat1':'Happy pups','stat2':'Average rating','stat3':'Photos a day',
       'sobre-label':'The host','sobre-label-mob':'🐾 The host','sobre-h2':"Hello, I'm Simba 🐾",
-      'sobre-p1':"I'm a calm and loving Shar Pei, and this place is my home. My carer Helena created La Casita de Simba for all the dogs who, like me, need more than just a kennel: <strong>a home where they feel loved</strong>.",
-      'sobre-p2':'Here every dog is treated as part of the family. No cages, no stress. Just play, love and lots of fun.',
+      'sobre-p1':"Yes… that one in the photo. A wrinkly little furball, chubby, calm, and very loving... And today I want to tell you something very special…",
+      'sobre-p2':"Some time ago, my human mum thought about all those dogs who, like me, need more than just a place to stay when their families are away. We need love, company, play… to feel right at home.",
+      'sobre-p3':'<strong>That\'s how La Casita de Simba was born 🏡✨</strong><br>A place built with love, where every furry guest is part of the family.',
+      'sobre-p4':'Here there are no cages or rushing… sunny naps ☀️, games with friends 🐕🐕, endless cuddles 💛 and even birthday celebrations 🎂 (yes, we love blowing out candles even if we can\'t quite do it!).',
+      'sobre-p5':"I personally make sure everything is perfect… well, when I'm not napping 😴",
+      'sobre-p6':'If you\'re looking for a place where your human can leave you calm, happy and well cared for…<br><strong>✨ I\'m waiting for you with open paws ✨</strong>',
       'check1':'<span class="check-icon">✓</span>Personalised care for every dog',
       'check2':'<span class="check-icon">✓</span>Family atmosphere, cage-free and stress-free',
       'check3':'<span class="check-icon">✓</span>Socialisation with other dogs',
@@ -2578,8 +2586,12 @@ function enviar(e) {
     s('#simba .section-label','sobre-label',lang);
     s('.sobre-label-mobile','sobre-label-mob',lang);
     s('#simba h2','sobre-h2',lang);
-    s('#simba .sobre-texto p:first-of-type','sobre-p1',lang,'h');
-    s('#simba .sobre-texto p:last-of-type','sobre-p2',lang);
+    s('#simba .sobre-texto p:nth-of-type(1)','sobre-p1',lang);
+    s('#simba .sobre-texto p:nth-of-type(2)','sobre-p2',lang);
+    s('#simba .sobre-texto p:nth-of-type(3)','sobre-p3',lang,'h');
+    s('#simba .sobre-texto p:nth-of-type(4)','sobre-p4',lang);
+    s('#simba .sobre-texto p:nth-of-type(5)','sobre-p5',lang);
+    s('#simba .sobre-texto p:nth-of-type(6)','sobre-p6',lang,'h');
     s('#simba .checks li:nth-child(1)','check1',lang,'h');
     s('#simba .checks li:nth-child(2)','check2',lang,'h');
     s('#simba .checks li:nth-child(3)','check3',lang,'h');
