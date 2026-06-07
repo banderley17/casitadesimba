@@ -1306,7 +1306,8 @@ header.menu-open.scrolled {
     .logo { font-size:.9rem; }
   }
   .sobre-grid { grid-template-columns:1fr; }
-  .sobre-img { aspect-ratio:4/3; max-height:320px; }
+  .sobre-img { aspect-ratio:auto; max-height:none; }
+  .sobre-img img { object-fit:contain; object-position:center top; }
   .contacto-main { grid-template-columns:1fr; }
   .mapa-wrapper { height:240px; }
   .footer-inner { grid-template-columns:1fr; gap:2rem; }
