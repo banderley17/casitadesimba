@@ -506,7 +506,8 @@ h2 {
   border:1px solid rgba(255,255,255,.08);
   pointer-events:none;
 }
-.sobre-img img { width:100%; height:100%; object-fit:cover; }
+.sobre-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:opacity .7s ease; will-change:opacity; }
+#anfitrion-img-b { opacity:0; }
 .sobre-foto-wrap { display:contents; }
 .sobre-label-mobile { display:none; }
 .sobre-texto h2 { text-align:left; color:white; }
@@ -1336,13 +1337,11 @@ header.menu-open.scrolled {
     content:'';
     position:absolute;
     bottom:-7px;
-    right:1.4rem;
-    left:auto;
+    left:1.2rem;
     transform:none;
     border-left:7px solid transparent;
     border-right:7px solid transparent;
     border-top:7px solid var(--rosa);
-    right:.9rem;
   }
   .contacto-main { grid-template-columns:1fr; }
   .mapa-wrapper { height:240px; }
@@ -1553,7 +1552,8 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
       <div class="sobre-foto-wrap">
         <div class="sobre-label-mobile">🐾 El anfitrión</div>
         <div class="sobre-img reveal">
-          <img id="anfitrion-img" src="images/anfitrion.jpeg" alt="Simba, el anfitrión de La Casita" style="transition:opacity .6s ease;transform:translateZ(0);will-change:opacity;backface-visibility:hidden;">
+          <img id="anfitrion-img-a" src="images/anfitrion.jpeg" alt="Simba, el anfitrión de La Casita">
+          <img id="anfitrion-img-b" src="images/anfitrion1.jpeg" alt="Simba, el anfitrión de La Casita">
         </div>
       </div>
       <div class="sobre-texto reveal">
@@ -2662,20 +2662,26 @@ function enviar(e) {
 
 <script>
 (function(){
-  var imgs = ['images/anfitrion.jpeg','images/anfitrion1.jpeg','images/anfitrion2.jpeg','images/anfitrion3.jpeg','images/anfitrion4.jpeg'];
+  var srcs = ['images/anfitrion.jpeg','images/anfitrion1.jpeg','images/anfitrion2.jpeg','images/anfitrion3.jpeg','images/anfitrion4.jpeg'];
   var i = 0;
-  // Precargar todas las fotos para evitar flash al cambiar
-  imgs.forEach(function(src){ var p = new Image(); p.src = src; });
+  var imgA = document.getElementById('anfitrion-img-a');
+  var imgB = document.getElementById('anfitrion-img-b');
+  if(!imgA || !imgB) return;
+  srcs.forEach(function(s){ new Image().src = s; });
+  var showA = true;
   setInterval(function(){
-    var el = document.getElementById('anfitrion-img');
-    if(!el) return;
-    var next = (i + 1) % imgs.length;
-    el.style.opacity = '0';
-    setTimeout(function(){
-      i = next;
-      el.src = imgs[i];
-      el.style.opacity = '1';
-    }, 650);
+    var next = (i + 1) % srcs.length;
+    if(showA) {
+      imgB.src = srcs[next];
+      imgB.style.opacity = '1';
+      imgA.style.opacity = '0';
+    } else {
+      imgA.src = srcs[next];
+      imgA.style.opacity = '1';
+      imgB.style.opacity = '0';
+    }
+    showA = !showA;
+    i = next;
   }, 4000);
 })();
 
