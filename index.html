@@ -1877,6 +1877,14 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
             </div>
           </div>
           <div class="form-group">
+            <label for="fvacunas">¿Tu peludito tiene al día sus vacunas y desparasitaciones?</label>
+            <select id="fvacunas" required>
+              <option value="">Seleccionar...</option>
+              <option value="si">✅ Sí</option>
+              <option value="no">❌ No</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label for="fdesc">Cuéntanos sobre tu perro</label>
             <textarea id="fdesc" placeholder="Raza, edad, carácter, si es sociable con otros perros..."></textarea>
           </div>
@@ -2377,6 +2385,7 @@ function enviar(e) {
       'lbl-perro':'Nombre del perro','ph-perro':'Max','lbl-serv':'Servicio',
       'opt1':'Estancia (12h)','opt2':'8 Horas','opt3':'1 Hora','opt4':'Bono de 7 días','opt5':'Bono Mensual','opt6':'Cumpleaños / Evento',
       'lbl-entrada':'Fecha de entrada','lbl-salida':'Fecha de salida',
+      'lbl-vacunas':'¿Tu peludito tiene al día sus vacunas y desparasitaciones?','opt-vac-sel':'Seleccionar...','opt-vac-si':'✅ Sí','opt-vac-no':'❌ No',
       'lbl-desc':'Cuéntanos sobre tu perro','ph-desc':'Raza, edad, carácter, si es sociable con otros perros...',
       'form-btn':'💬 Enviar por WhatsApp',
       'info-dir':'Dirección','info-tel':'Teléfono','info-email':'Email','info-hora':'Horario',
@@ -2458,6 +2467,7 @@ function enviar(e) {
       'lbl-perro':"Dog's name",'ph-perro':'Max','lbl-serv':'Service',
       'opt1':'Stay (12h)','opt2':'8 Hours','opt3':'1 Hour','opt4':'Weekly Pack','opt5':'Monthly Pack','opt6':'Birthday / Event',
       'lbl-entrada':'Check-in date','lbl-salida':'Check-out date',
+      'lbl-vacunas':'Is your pup up to date with vaccines and deworming?','opt-vac-sel':'Select...','opt-vac-si':'✅ Yes','opt-vac-no':'❌ No',
       'lbl-desc':'Tell us about your dog','ph-desc':'Breed, age, temperament, sociable with other dogs...',
       'form-btn':'💬 Send via WhatsApp',
       'info-dir':'Address','info-tel':'Phone','info-email':'Email','info-hora':'Hours',
@@ -2612,6 +2622,10 @@ function enviar(e) {
     s('label[for="fservicio"]','lbl-serv',lang);
     s('label[for="fentrada"]','lbl-entrada',lang);
     s('label[for="fsalida"]','lbl-salida',lang);
+    s('label[for="fvacunas"]','lbl-vacunas',lang);
+    s('#fvacunas option:nth-child(1)','opt-vac-sel',lang);
+    s('#fvacunas option:nth-child(2)','opt-vac-si',lang);
+    s('#fvacunas option:nth-child(3)','opt-vac-no',lang);
     s('label[for="fdesc"]','lbl-desc',lang);
     s('#fn','ph-nombre',lang,'p');
     s('#fperro','ph-perro',lang,'p');
