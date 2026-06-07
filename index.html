@@ -1718,9 +1718,9 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
 
     <!-- 2º PERRO -->
     <div style="background:linear-gradient(135deg,#f3e8ff,#fce7f3);border:2px solid #d8b4fe;border-radius:14px;padding:16px 20px;margin-bottom:28px;text-align:center;">
-      <div style="font-size:1.1rem;font-weight:900;color:#7c3aed;margin-bottom:4px;">🐕🐕 ¿Tienes dos perros? ¡Mejor precio!</div>
-      <div style="font-size:.9rem;color:#6b21a8;font-weight:600;">El 2º perro tiene un <strong>30% de descuento</strong> en todos nuestros servicios.<br>1h: €3.50 · 8h: €24.50 · Estancia 12h: €28 · Bono de 7 días: €139</div>
-      <a href="https://wa.me/34613753680?text=Hola!%20Tengo%20dos%20perros%20y%20me%20gustar%C3%ADa%20saber%20el%20precio%20con%20el%20descuento%20del%202%C2%BA%20perro%20%F0%9F%90%BE%F0%9F%90%BE" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:10px;background:#7c3aed;color:#fff;font-weight:800;font-size:.88rem;padding:9px 22px;border-radius:30px;text-decoration:none;">💬 Calcular mi precio para 2 perros</a>
+      <div class="dos-perros-title" style="font-size:1.1rem;font-weight:900;color:#7c3aed;margin-bottom:4px;">🐕🐕 ¿Tienes dos perros? ¡Mejor precio!</div>
+      <div class="dos-perros-desc" style="font-size:.9rem;color:#6b21a8;font-weight:600;">El 2º perro tiene un <strong>30% de descuento</strong> en todos nuestros servicios.<br>1h: €3.50 · 8h: €24.50 · Estancia 12h: €28 · Bono de 7 días: €139</div>
+      <a href="https://wa.me/34613753680?text=Hola!%20Tengo%20dos%20perros%20y%20me%20gustar%C3%ADa%20saber%20el%20precio%20con%20el%20descuento%20del%202%C2%BA%20perro%20%F0%9F%90%BE%F0%9F%90%BE" target="_blank" rel="noopener noreferrer" class="dos-perros-cta" style="display:inline-block;margin-top:10px;background:#7c3aed;color:#fff;font-weight:800;font-size:.88rem;padding:9px 22px;border-radius:30px;text-decoration:none;">💬 Calcular mi precio para 2 perros</a>
     </div>
 
     <div class="precios-grid reveal">
@@ -2396,6 +2396,9 @@ function enviar(e) {
       'serv5-h3':'Bono de 7 días','serv5-p':'Elige los días que necesitas de cada semana y paga solo por lo que usas. Perfecto para rutinas variables y agendas cambiantes.',
       'serv6-h3':'Bono Mensual','serv6-p':'La opción más económica para clientes habituales. Precio especial al contratar el mes completo. Cuéntanos tu rutina y lo diseñamos a tu medida.',
       'serv7-h3':'Horas Sueltas','serv7-p':'¿Solo necesitas unas horas? Sin problema. Deja a tu perro el tiempo justo que necesites, desde €5/hora. Ideal para citas, recados o imprevistos del día.',
+      'dos-perros-title':'🐕🐕 ¿Tienes dos perros? ¡Mejor precio!',
+      'dos-perros-desc':'El 2º perro tiene un <strong>30% de descuento</strong> en todos nuestros servicios.<br>1h: €3.50 · 8h: €24.50 · Estancia 12h: €28 · Bono de 7 días: €139',
+      'dos-perros-cta':'💬 Calcular mi precio para 2 perros',
       'serv-rutina':'🔄 <strong>Nos adaptamos a tu rutina.</strong> Dinos tus horarios y diseñamos el servicio perfecto para ti y tu peludo — sin estrés y sin complicaciones.',
       'porq-label':'¿Por qué nosotros?','porq-h2':'Lo que nos hace diferentes 🐾',
       'porq-desc':'No somos una residencia masificada. Tu perro es uno más de la familia, no un número más.',
@@ -2490,6 +2493,9 @@ function enviar(e) {
       'serv5-h3':'Weekly Pack','serv5-p':'Choose the days you need each week and pay only for what you use. Perfect for variable routines and changing schedules.',
       'serv6-h3':'Monthly Pack','serv6-p':"The most affordable option for regular clients. Special price when you book the full month. Tell us your routine and we'll design it to fit you.",
       'serv7-h3':'Hourly Care','serv7-p':'Need just a few hours? No problem. Drop off your dog for exactly the time you need, from €5/hour. Perfect for appointments, errands or unexpected plans.',
+      'dos-perros-title':'🐕🐕 Have two dogs? Better price!',
+      'dos-perros-desc':'The 2nd dog gets a <strong>30% discount</strong> on all our services.<br>1h: €3.50 · 8h: €24.50 · 12h stay: €28 · 7-day pass: €139',
+      'dos-perros-cta':'💬 Calculate my price for 2 dogs',
       'serv-rutina':"🔄 <strong>We adapt to your routine.</strong> Tell us your schedule and we'll design the perfect service for you and your furry friend — stress-free and hassle-free.",
       'porq-label':'Why us?','porq-h2':'What makes us different 🐾',
       'porq-desc':'We are not a crowded kennel. Your dog is one of the family, not just a number.',
@@ -2610,6 +2616,9 @@ function enviar(e) {
     s('#servicios .servicio-card:nth-child(4) p','serv6-p',lang);
     s('#servicios .servicio-card:nth-child(5) h3','serv7-h3',lang);
     s('#servicios .servicio-card:nth-child(5) p','serv7-p',lang);
+    s('.dos-perros-title','dos-perros-title',lang);
+    s('.dos-perros-desc','dos-perros-desc',lang,'h');
+    s('.dos-perros-cta','dos-perros-cta',lang);
     s('.servicio-rutina','serv-rutina',lang,'h');
     s('.porq-bg .section-label','porq-label',lang);
     s('.porq-bg h2','porq-h2',lang);
