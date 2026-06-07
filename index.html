@@ -1317,8 +1317,8 @@ header.menu-open.scrolled {
   .sobre-label-mobile {
     display:inline-block;
     position:absolute;
-    top:1.2rem;
-    right:1.2rem;
+    top:.8rem;
+    right:.4rem;
     left:auto;
     transform:none;
     z-index:10;
@@ -1342,6 +1342,7 @@ header.menu-open.scrolled {
     border-left:7px solid transparent;
     border-right:7px solid transparent;
     border-top:7px solid var(--rosa);
+    right:.9rem;
   }
   .contacto-main { grid-template-columns:1fr; }
   .mapa-wrapper { height:240px; }
@@ -1553,7 +1554,7 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
       <div class="sobre-foto-wrap">
         <div class="sobre-label-mobile">🐾 El anfitrión</div>
         <div class="sobre-img reveal">
-          <img id="anfitrion-img" src="images/anfitrion.jpeg" alt="Simba, el anfitrión de La Casita" style="transition:opacity .6s ease;">
+          <img id="anfitrion-img" src="images/anfitrion.jpeg" alt="Simba, el anfitrión de La Casita" style="transition:opacity .6s ease;transform:translateZ(0);will-change:opacity;backface-visibility:hidden;">
         </div>
       </div>
       <div class="sobre-texto reveal">
@@ -2669,15 +2670,18 @@ function enviar(e) {
 (function(){
   var imgs = ['images/anfitrion.jpeg','images/anfitrion1.jpeg','images/anfitrion2.jpeg','images/anfitrion3.jpeg','images/anfitrion4.jpeg'];
   var i = 0;
+  // Precargar todas las fotos para evitar flash al cambiar
+  imgs.forEach(function(src){ var p = new Image(); p.src = src; });
   setInterval(function(){
     var el = document.getElementById('anfitrion-img');
     if(!el) return;
+    var next = (i + 1) % imgs.length;
     el.style.opacity = '0';
     setTimeout(function(){
-      i = (i + 1) % imgs.length;
+      i = next;
       el.src = imgs[i];
       el.style.opacity = '1';
-    }, 600);
+    }, 650);
   }, 4000);
 })();
 
