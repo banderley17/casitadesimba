@@ -978,20 +978,22 @@ h2 {
 /* Columna derecha: mapa + info */
 .contacto-derecha { display:flex; flex-direction:column; gap:1.5rem; }
 .mapa-wrapper {
+  position:relative;
   border-radius:var(--radio); overflow:hidden;
   box-shadow:0 16px 40px rgba(0,0,0,.3);
   height:280px; flex-shrink:0;
 }
 .mapa-wrapper iframe { width:100%; height:100%; border:none; display:block; }
-.btn-abrir-maps {
-  display:block; text-align:center;
-  background:var(--verde); color:#fff;
-  padding:.75rem 1.2rem; border-radius:var(--radio);
-  font-size:.95rem; font-weight:600; text-decoration:none;
-  margin-top:.8rem;
-  transition:background .2s;
+.mapa-tap {
+  position:absolute; inset:0; z-index:2; cursor:pointer;
 }
-.btn-abrir-maps:hover { background:var(--verde-oscuro,#0a5c2a); }
+.mapa-tap::after {
+  content:'Toca para activar el mapa';
+  position:absolute; bottom:.6rem; left:50%; transform:translateX(-50%);
+  background:rgba(0,0,0,.55); color:#fff;
+  font-size:.72rem; padding:.3rem .8rem; border-radius:20px;
+  white-space:nowrap; pointer-events:none;
+}
 .info-cards { display:flex; flex-direction:column; gap:.8rem; }
 .info-card {
   display:flex; gap:1rem; align-items:center;
@@ -1917,10 +1919,8 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
             src="https://maps.google.com/maps?cid=15418317452853479791&output=embed&hl=es&z=17"
             allowfullscreen loading="lazy">
           </iframe>
+          <div class="mapa-tap" onclick="this.remove()"></div>
         </div>
-        <a href="https://maps.app.goo.gl/K8vez9C3RgssnENv5" target="_blank" rel="noopener noreferrer" class="btn-abrir-maps">
-          📍 Abrir en Google Maps
-        </a>
         <div class="info-cards">
           <div class="info-card">
             <div class="info-ico">📍</div>
