@@ -465,6 +465,7 @@ h2 {
   background-size: 300% 300%;
   animation: sobreGradient 14s ease infinite;
   position:relative; overflow:hidden;
+  will-change: transform;
 }
 @keyframes sobreGradient {
   0%   { background-position: 0% 50%; }
@@ -507,7 +508,7 @@ h2 {
   border:1px solid rgba(255,255,255,.08);
   pointer-events:none;
 }
-.sobre-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:opacity .7s ease; will-change:opacity; }
+.sobre-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 #anfitrion-img-b { opacity:0; }
 .sobre-foto-wrap { display:contents; }
 .sobre-label-mobile { display:none; }
@@ -2663,22 +2664,43 @@ function enviar(e) {
   var imgB = document.getElementById('anfitrion-img-b');
   if(!imgA || !imgB) return;
   srcs.forEach(function(s){ new Image().src = s; });
+  imgA.style.opacity = '1';
+  imgB.style.opacity = '0';
   var showA = true;
+  var busy = false;
+
+  function rafFade(incoming, outgoing, done) {
+    var start = null;
+    var dur = 800;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var ease = p < 0.5 ? 2*p*p : -1+(4-2*p)*p;
+      incoming.style.opacity = ease;
+      outgoing.style.opacity = 1 - ease;
+      if (p < 1) { requestAnimationFrame(step); } else { done(); }
+    }
+    requestAnimationFrame(step);
+  }
+
   setInterval(function(){
+    if (busy) return;
+    busy = true;
     var next = (i + 1) % srcs.length;
     var incoming = showA ? imgB : imgA;
     var outgoing = showA ? imgA : imgB;
     incoming.src = srcs[next];
-    var swap = function(){
-      incoming.style.opacity = '1';
-      outgoing.style.opacity = '0';
-      showA = !showA;
-      i = next;
+    var go = function(){
+      rafFade(incoming, outgoing, function(){
+        showA = !showA;
+        i = next;
+        busy = false;
+      });
     };
-    if(typeof incoming.decode === 'function') {
-      incoming.decode().then(swap).catch(swap);
+    if (typeof incoming.decode === 'function') {
+      incoming.decode().then(go).catch(go);
     } else {
-      swap();
+      go();
     }
   }, 4000);
 })();
