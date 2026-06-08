@@ -1874,7 +1874,7 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
               <select id="fservicio">
                 <option>Estancia (12h)</option>
                 <option>8 Horas</option>
-                <option>1 Hora</option>
+                <option>Horas Sueltas</option>
                 <option>Bono de 7 días</option>
                 <option>Bono Mensual</option>
                 <option>Cumpleaños / Evento</option>
@@ -2274,10 +2274,10 @@ function enviar(e) {
 
 // Mostrar/ocultar campos según servicio
 (function(){
-  var soloEntrada = ['Estancia (12h)','8 Horas','1 Hora','Stay (12h)','8 Hours','1 Hour'];
+  var soloEntrada = ['Estancia (12h)','8 Horas','Horas Sueltas','Stay (12h)','8 Hours','Hourly Care'];
   var cumple = ['Cumpleaños / Evento','Birthday / Event'];
-  var conHora = ['Estancia (12h)','8 Horas','1 Hora','Stay (12h)','8 Hours','1 Hour'];
-  var conDuracion = ['1 Hora','1 Hour'];
+  var conHora = ['Estancia (12h)','8 Horas','Horas Sueltas','Stay (12h)','8 Hours','Hourly Care'];
+  var conDuracion = ['Horas Sueltas','Hourly Care'];
   function toggleFechas() {
     var serv = document.getElementById('fservicio').value;
     var salGrp = document.getElementById('fsalida-group');
@@ -2474,7 +2474,7 @@ function enviar(e) {
       'form-h3':'🐶 Datos de la reserva',
       'lbl-nombre':'Tu nombre','ph-nombre':'María García','lbl-tel':'Teléfono / WhatsApp',
       'lbl-perro':'Nombre del perro','ph-perro':'Max','lbl-serv':'Servicio',
-      'opt1':'Estancia (12h)','opt2':'8 Horas','opt3':'1 Hora','opt4':'Bono de 7 días','opt5':'Bono Mensual','opt6':'Cumpleaños / Evento',
+      'opt1':'Estancia (12h)','opt2':'8 Horas','opt3':'Horas Sueltas','opt4':'Bono de 7 días','opt5':'Bono Mensual','opt6':'Cumpleaños / Evento',
       'lbl-entrada':'Fecha de entrada','lbl-celebracion':'Fecha de celebración','lbl-salida':'Fecha de salida',
       'lbl-hora':'Hora de ingreso','lbl-duracion':'Duración',
       'dur1':'1 hora','dur2':'2 horas','dur3':'3 horas','dur4':'4 horas',
@@ -2573,7 +2573,7 @@ function enviar(e) {
       'form-h3':'🐶 Booking details',
       'lbl-nombre':'Your name','ph-nombre':'John Smith','lbl-tel':'Phone / WhatsApp',
       'lbl-perro':"Dog's name",'ph-perro':'Max','lbl-serv':'Service',
-      'opt1':'Stay (12h)','opt2':'8 Hours','opt3':'1 Hour','opt4':'Weekly Pack','opt5':'Monthly Pack','opt6':'Birthday / Event',
+      'opt1':'Stay (12h)','opt2':'8 Hours','opt3':'Hourly Care','opt4':'Weekly Pack','opt5':'Monthly Pack','opt6':'Birthday / Event',
       'lbl-entrada':'Check-in date','lbl-celebracion':'Event date','lbl-salida':'Check-out date',
       'lbl-hora':'Check-in time','lbl-duracion':'Duration',
       'dur1':'1 hour','dur2':'2 hours','dur3':'3 hours','dur4':'4 hours',
