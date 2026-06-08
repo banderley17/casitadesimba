@@ -1892,6 +1892,19 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
               <input type="date" id="fsalida">
             </div>
           </div>
+          <div class="form-group" id="fhora-group" style="display:none;">
+            <label for="fhora" id="fhora-label">Hora de ingreso</label>
+            <input type="time" id="fhora" min="08:00" max="20:00">
+          </div>
+          <div class="form-group" id="fduracion-group" style="display:none;">
+            <label for="fduracion" id="fduracion-label">Duración</label>
+            <select id="fduracion">
+              <option value="1">1 hora</option>
+              <option value="2">2 horas</option>
+              <option value="3">3 horas</option>
+              <option value="4">4 horas</option>
+            </select>
+          </div>
           <div class="form-group" id="finvitados-group" style="display:none;">
             <label for="finvitados">¿Cuántos invitados peludos esperáis?</label>
             <input type="number" id="finvitados" placeholder="Ej: 5" min="1">
@@ -2226,12 +2239,19 @@ function enviar(e) {
 
   var vacunas    = document.getElementById('fvacunas').value;
   var invitados  = document.getElementById('finvitados').value;
+  var hora       = document.getElementById('fhora').value;
+  var durEl      = document.getElementById('fduracion');
+  var duracion   = durEl.options[durEl.selectedIndex].text;
   var msg = 'Hola Helena, quiero hacer una reserva en La Casita de Simba 🐾\n\n';
   msg += '👤 *Nombre:* ' + n + '\n';
   msg += '📞 *Teléfono:* ' + (tel || 'No indicado') + '\n';
   msg += '🐶 *Perro:* ' + perro + '\n';
   msg += '🏷️ *Servicio:* ' + serv + '\n';
-  if (entrada) msg += '📅 *Entrada:* ' + entrada + '\n';
+  if (entrada) msg += '📅 *Fecha:* ' + entrada + '\n';
+  if (hora && document.getElementById('fhora-group').style.display !== 'none')
+    msg += '🕐 *Hora de ingreso:* ' + hora + '\n';
+  if (document.getElementById('fduracion-group').style.display !== 'none')
+    msg += '⏱️ *Duración:* ' + duracion + '\n';
   if (salida && document.getElementById('fsalida-group').style.display !== 'none')
     msg += '📅 *Salida:* ' + salida + '\n';
   if (invitados) msg += '🐕 *Invitados peludos:* ' + invitados + '\n';
@@ -2256,19 +2276,29 @@ function enviar(e) {
 (function(){
   var soloEntrada = ['Estancia (12h)','8 Horas','1 Hora','Stay (12h)','8 Hours','1 Hour'];
   var cumple = ['Cumpleaños / Evento','Birthday / Event'];
+  var conHora = ['Estancia (12h)','8 Horas','1 Hora','Stay (12h)','8 Hours','1 Hour'];
+  var conDuracion = ['1 Hora','1 Hour'];
   function toggleFechas() {
     var serv = document.getElementById('fservicio').value;
     var salGrp = document.getElementById('fsalida-group');
     var datesRow = document.getElementById('fdates-row');
     var invGrp = document.getElementById('finvitados-group');
+    var horaGrp = document.getElementById('fhora-group');
+    var durGrp = document.getElementById('fduracion-group');
     var lblEntrada = document.getElementById('fentrada-label');
     var esCumple = cumple.indexOf(serv) !== -1;
     var esSolo = soloEntrada.indexOf(serv) !== -1 || esCumple;
+    var esConHora = conHora.indexOf(serv) !== -1;
+    var esConDuracion = conDuracion.indexOf(serv) !== -1;
     salGrp.style.display = esSolo ? 'none' : '';
     datesRow.style.gridTemplateColumns = esSolo ? '1fr' : '';
     if (esSolo) document.getElementById('fsalida').value = '';
     invGrp.style.display = esCumple ? '' : 'none';
     if (!esCumple) document.getElementById('finvitados').value = '';
+    horaGrp.style.display = esConHora ? '' : 'none';
+    if (!esConHora) document.getElementById('fhora').value = '';
+    durGrp.style.display = esConDuracion ? '' : 'none';
+    if (!esConDuracion) document.getElementById('fduracion').selectedIndex = 0;
     var lang = document.documentElement.lang || 'es';
     lblEntrada.textContent = esCumple
       ? (lang === 'en' ? 'Event date' : 'Fecha de celebración')
@@ -2446,6 +2476,8 @@ function enviar(e) {
       'lbl-perro':'Nombre del perro','ph-perro':'Max','lbl-serv':'Servicio',
       'opt1':'Estancia (12h)','opt2':'8 Horas','opt3':'1 Hora','opt4':'Bono de 7 días','opt5':'Bono Mensual','opt6':'Cumpleaños / Evento',
       'lbl-entrada':'Fecha de entrada','lbl-celebracion':'Fecha de celebración','lbl-salida':'Fecha de salida',
+      'lbl-hora':'Hora de ingreso','lbl-duracion':'Duración',
+      'dur1':'1 hora','dur2':'2 horas','dur3':'3 horas','dur4':'4 horas',
       'lbl-invitados':'¿Cuántos invitados peludos esperáis?','ph-invitados':'Ej: 5',
       'lbl-vacunas':'¿Tu peludito tiene al día sus vacunas y desparasitaciones?','opt-vac-sel':'Seleccionar...','opt-vac-si':'✅ Sí','opt-vac-no':'❌ No',
       'lbl-desc':'Cuéntanos sobre tu perro','ph-desc':'Raza, edad, carácter, si es sociable con otros perros...',
@@ -2543,6 +2575,8 @@ function enviar(e) {
       'lbl-perro':"Dog's name",'ph-perro':'Max','lbl-serv':'Service',
       'opt1':'Stay (12h)','opt2':'8 Hours','opt3':'1 Hour','opt4':'Weekly Pack','opt5':'Monthly Pack','opt6':'Birthday / Event',
       'lbl-entrada':'Check-in date','lbl-celebracion':'Event date','lbl-salida':'Check-out date',
+      'lbl-hora':'Check-in time','lbl-duracion':'Duration',
+      'dur1':'1 hour','dur2':'2 hours','dur3':'3 hours','dur4':'4 hours',
       'lbl-invitados':'How many furry guests are you expecting?','ph-invitados':'e.g. 5',
       'lbl-vacunas':'Is your pup up to date with vaccines and deworming?','opt-vac-sel':'Select...','opt-vac-si':'✅ Yes','opt-vac-no':'❌ No',
       'lbl-desc':'Tell us about your dog','ph-desc':'Breed, age, temperament, sociable with other dogs...',
@@ -2715,6 +2749,12 @@ function enviar(e) {
     s('label[for="fservicio"]','lbl-serv',lang);
     s('label[for="fentrada"]','lbl-entrada',lang);
     s('label[for="fsalida"]','lbl-salida',lang);
+    s('label[for="fhora"]','lbl-hora',lang);
+    s('label[for="fduracion"]','lbl-duracion',lang);
+    s('#fduracion option:nth-child(1)','dur1',lang);
+    s('#fduracion option:nth-child(2)','dur2',lang);
+    s('#fduracion option:nth-child(3)','dur3',lang);
+    s('#fduracion option:nth-child(4)','dur4',lang);
     s('label[for="finvitados"]','lbl-invitados',lang);
     s('#finvitados','ph-invitados',lang,'p');
     s('label[for="fvacunas"]','lbl-vacunas',lang);
