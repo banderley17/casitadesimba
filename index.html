@@ -888,16 +888,18 @@ h2 {
 .testimonios-bg { background:var(--verde-light); }
 .testimonios-grid {
   display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem;
+  align-items:stretch;
 }
 .testimonio {
   background:white; border-radius:var(--radio);
   padding:2rem; box-shadow:var(--sombra);
+  display:flex; flex-direction:column;
 }
 .estrellas { color:#FFB400; font-size:1.1rem; margin-bottom:.8rem; }
 .testimonio p {
   font-size:.98rem; color:#555;
   line-height:1.75; margin-bottom:1.2rem;
-  font-style:italic;
+  font-style:italic; flex:1;
 }
 .testimonio-autor {
   display:flex; align-items:center; gap:.8rem;
