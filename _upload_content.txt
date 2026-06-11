@@ -1,12 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>La Casita de Simba | Guardería Canina en Santa Eugenia - Villa de Vallecas, Madrid</title>
-<meta name="description" content="Guardería canina diurna en Santa Eugenia - Villa de Vallecas, Madrid. Cuidado personalizado, fotos y vídeos diarios, recogida a domicilio. ¡Consulta disponibilidad hoy!">
-<meta name="keywords" content="guarderia canina diurna Madrid, guarderia canina Madrid, residencia perros Madrid, cuidado de perros Madrid, alojamiento canino Madrid, guarderia canina Santa Eugenia, guarderia canina Villa de Vallecas, La Casita de Simba">
+<title>La Casita de Simba | Guarderia Canina Diurna sin Jaulas en Madrid</title>
+<meta name="description" content="Guarderia canina diurna premium en Madrid sin jaulas. Cuidado personalizado, fotos y vídeos diarios, recogida a domicilio. ¡Consulta disponibilidad y precios hoy!">
+<meta name="keywords" content="guarderia canina diurna Madrid, guarderia canina Madrid, residencia perros Madrid, cuidado de perros Madrid, alojamiento canino Madrid, guarderia canina diurna sin jaulas, guarderia canina sin jaulas Madrid, La Casita de Simba">
 <meta name="robots" content="index, follow">
 <meta name="author" content="La Casita de Simba">
 <link rel="canonical" href="https://lacasitadesimba.es/">
@@ -18,22 +18,18 @@
 
 <!-- Open Graph -->
 <meta property="og:type" content="business.business">
-<meta property="og:title" content="La Casita de Simba | Guardería Canina en Santa Eugenia - Villa de Vallecas, Madrid">
-<meta property="og:description" content="Guardería canina diurna en Santa Eugenia - Villa de Vallecas, Madrid. Cuidado personalizado, fotos diarias y recogida a domicilio. ¡Consulta disponibilidad hoy!">
+<meta property="og:title" content="La Casita de Simba | Guarderia Canina Diurna sin Jaulas en Madrid">
+<meta property="og:description" content="Guarderia canina premium en Madrid. Sin jaulas, cuidado personalizado, fotos diarias y recogida a domicilio. ¡Consulta precios y reserva tu plaza!">
 <meta property="og:url" content="https://lacasitadesimba.es/">
-<meta property="og:image" content="https://lacasitadesimba.es/images/link.jpeg">
-<meta property="og:image:secure_url" content="https://lacasitadesimba.es/images/link.jpeg">
-<meta property="og:image:type" content="image/jpeg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="https://lacasitadesimba.es/images/simbaperfil.JPG">
 <meta property="og:locale" content="es_ES">
 <meta property="og:site_name" content="La Casita de Simba">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="La Casita de Simba | Guardería Canina en Santa Eugenia - Villa de Vallecas, Madrid">
-<meta name="twitter:description" content="Cuidado personalizado, fotos diarias y recogida a domicilio. ¡Consulta disponibilidad hoy!">
-<meta name="twitter:image" content="https://lacasitadesimba.es/images/link.jpeg">
+<meta name="twitter:title" content="La Casita de Simba | Guarderia Canina Diurna sin Jaulas en Madrid">
+<meta name="twitter:description" content="Sin jaulas, cuidado personalizado, fotos diarias y recogida a domicilio. ¡Consulta precios y reserva hoy!">
+<meta name="twitter:image" content="https://lacasitadesimba.es/images/simbaperfil.JPG">
 
 <!-- Schema.org LocalBusiness -->
 <script type="application/ld+json">
@@ -41,19 +37,18 @@
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "La Casita de Simba",
-  "description": "Guardería canina en Santa Eugenia - Villa de Vallecas, Madrid. Cuidado personalizado, fotos y vídeos diarios, estancia diurna.",
+  "description": "Guarderia canina premium en Madrid sin jaulas. Cuidado personalizado, fotos y vídeos diarios, estancia diurna.",
   "url": "https://lacasitadesimba.es/",
   "telephone": "+34613753680",
   "email": "lacasitadesimba04@gmail.com",
-  "image": "https://lacasitadesimba.es/images/link.jpeg",
+  "image": "https://lacasitadesimba.es/images/simbaperfil.JPG",
   "priceRange": "€€",
   "currenciesAccepted": "EUR",
   "paymentAccepted": "Cash, Bizum, Transferencia",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Calle Puentelarra 5, Local 10",
-    "addressLocality": "Santa Eugenia - Villa de Vallecas, Madrid",
-    "postalCode": "28053",
+    "addressLocality": "Madrid",
     "addressRegion": "Madrid",
     "addressCountry": "ES"
   },
@@ -74,12 +69,11 @@
     "@type": "AggregateRating",
     "ratingValue": "5",
     "bestRating": "5",
-    "reviewCount": "2"
+    "reviewCount": "47"
   },
   "sameAs": [
     "https://instagram.com/lacasitadesimba",
-    "https://tiktok.com/@la_casita_de_simba",
-    "https://maps.app.goo.gl/K8vez9C3RgssnENv5"
+    "https://tiktok.com/@la_casita_de_simba"
   ],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
@@ -93,7 +87,7 @@
       },
       {
         "@type": "Offer",
-        "name": "Bono de 7 días",
+        "name": "Bono Semanal",
         "description": "5 días a elección, horario flexible, comida y fotos y vídeos incluidos.",
         "availability": "https://schema.org/InStock"
       },
@@ -135,7 +129,7 @@
       "name": "¿Dónde está La Casita de Simba en Madrid?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "La Casita de Simba está en Calle Puentelarra 5, Local 10, en el barrio de Santa Eugenia - Villa de Vallecas, Madrid (CP 28053). Puedes contactar por WhatsApp al +34 613 753 680 o por email a lacasitadesimba04@gmail.com."
+        "text": "La Casita de Simba está en Calle Puentelarra 5, Local 10, Madrid. Puedes contactar por WhatsApp al +34 613 753 680 o por email a lacasitadesimba04@gmail.com."
       }
     },
     {
@@ -374,7 +368,7 @@ nav a:hover::after { width:100%; }
 }
 .hero h1 {
   font-family:'Pacifico',cursive;
-  font-size:clamp(3.2rem,5.5vw,4.5rem);
+  font-size:clamp(3.2rem,8.5vw,6.2rem);
   line-height:1.15; margin-bottom:.6rem;
   text-shadow:0 4px 28px rgba(0,0,0,.55), 0 2px 8px rgba(0,0,0,.4);
   letter-spacing:.01em;
@@ -471,7 +465,6 @@ h2 {
   background-size: 300% 300%;
   animation: sobreGradient 14s ease infinite;
   position:relative; overflow:hidden;
-  will-change: transform;
 }
 @keyframes sobreGradient {
   0%   { background-position: 0% 50%; }
@@ -503,8 +496,7 @@ h2 {
 }
 .sobre-img {
   border-radius:28px; overflow:hidden;
-  aspect-ratio:4/5; background:#0d1f14;
-  transform:translateZ(0);
+  aspect-ratio:4/5; background:#eee;
   box-shadow:0 30px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.06);
   position:relative;
 }
@@ -514,10 +506,7 @@ h2 {
   border:1px solid rgba(255,255,255,.08);
   pointer-events:none;
 }
-.sobre-img img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-#anfitrion-img-b { opacity:0; }
-.sobre-foto-wrap { display:contents; }
-.sobre-label-mobile { display:none; }
+.sobre-img img { width:100%; height:100%; object-fit:cover; }
 .sobre-texto h2 { text-align:left; color:white; }
 .sobre-texto .section-label { background:rgba(240,138,124,.2); color:var(--rosa); border:1px solid rgba(240,138,124,.3); }
 .sobre-texto p { margin-bottom:1.2rem; color:rgba(255,255,255,.72); font-size:1.05rem; }
@@ -821,12 +810,11 @@ h2 {
 #precios { overflow-x:hidden; }
 .precios-grid {
   display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:1.5rem; align-items:stretch; justify-content:center;
+  gap:1.5rem; align-items:start; justify-content:center;
 }
 .precio-card {
   background:white; border-radius:var(--radio);
   padding:2.5rem 2rem; text-align:center; cursor:pointer;
-  display:flex; flex-direction:column;
   box-shadow:var(--sombra); position:relative;
   transition:transform .35s, box-shadow .35s, background .35s, color .35s;
 }
@@ -876,7 +864,7 @@ h2 {
 .precio-lista li::before { content:"✓ "; color:var(--verde); font-weight:800; }
 .precio-card.destacado .precio-lista li::before { color:white; }
 .precio-cta {
-  display:block; margin-top:auto; padding-top:1.8rem;
+  display:block; margin-top:1.8rem;
   padding:.75rem 1.5rem; border-radius:50px;
   text-decoration:none; font-weight:800; font-size:.95rem;
   transition:.25s;
@@ -894,18 +882,16 @@ h2 {
 .testimonios-bg { background:var(--verde-light); }
 .testimonios-grid {
   display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem;
-  align-items:stretch;
 }
 .testimonio {
   background:white; border-radius:var(--radio);
   padding:2rem; box-shadow:var(--sombra);
-  display:flex; flex-direction:column;
 }
 .estrellas { color:#FFB400; font-size:1.1rem; margin-bottom:.8rem; }
 .testimonio p {
   font-size:.98rem; color:#555;
   line-height:1.75; margin-bottom:1.2rem;
-  font-style:italic; flex:1;
+  font-style:italic;
 }
 .testimonio-autor {
   display:flex; align-items:center; gap:.8rem;
@@ -931,8 +917,7 @@ h2 {
 }
 .contacto-bg h2 { color:white; }
 .contacto-top { text-align:center; margin-bottom:3rem; }
-.contacto-top p { color:rgba(255,255,255,.8); max-width:560px; margin:.5rem auto 0; font-size:1.05rem; }
-.contacto-top p.destacado { display:block; background:white; color:var(--oscuro); border-radius:14px; padding:.9rem 1.6rem; font-size:1.05rem; font-weight:800; box-shadow:0 6px 24px rgba(0,0,0,0.15); margin-top:.8rem; width:fit-content; max-width:100%; }
+.contacto-top p { color:rgba(255,255,255,.8); max-width:500px; margin:.5rem auto 0; font-size:1.05rem; }
 .contacto-main {
   display:grid;
   grid-template-columns:1.4fr 1fr;
@@ -986,22 +971,11 @@ h2 {
 /* Columna derecha: mapa + info */
 .contacto-derecha { display:flex; flex-direction:column; gap:1.5rem; }
 .mapa-wrapper {
-  position:relative;
   border-radius:var(--radio); overflow:hidden;
   box-shadow:0 16px 40px rgba(0,0,0,.3);
   height:280px; flex-shrink:0;
 }
 .mapa-wrapper iframe { width:100%; height:100%; border:none; display:block; }
-.mapa-tap {
-  position:absolute; inset:0; z-index:2; cursor:pointer;
-}
-.mapa-tap::after {
-  content:'Toca para activar el mapa';
-  position:absolute; bottom:.6rem; left:50%; transform:translateX(-50%);
-  background:rgba(0,0,0,.55); color:#fff;
-  font-size:.72rem; padding:.3rem .8rem; border-radius:20px;
-  white-space:nowrap; pointer-events:none;
-}
 .info-cards { display:flex; flex-direction:column; gap:.8rem; }
 .info-card {
   display:flex; gap:1rem; align-items:center;
@@ -1332,39 +1306,7 @@ header.menu-open.scrolled {
     .logo { font-size:.9rem; }
   }
   .sobre-grid { grid-template-columns:1fr; }
-  .sobre-img { aspect-ratio:3/4; max-height:none; background:#0d1f14; box-shadow:0 20px 50px rgba(0,0,0,.4); transform:translateZ(0); isolation:isolate; }
-  .sobre-img::after { display:none; }
-  .sobre-img img { object-fit:cover; object-position:center top; }
-  .sobre-label-desktop { display:none; }
-  .sobre-foto-wrap { display:block; position:relative; }
-  .sobre-label-mobile {
-    display:inline-block;
-    position:absolute;
-    top:.8rem;
-    right:.4rem;
-    left:auto;
-    transform:none;
-    z-index:10;
-    background:var(--rosa);
-    color:white;
-    padding:.5rem 1.4rem;
-    border-radius:50px;
-    font-weight:800;
-    font-size:.85rem;
-    box-shadow:0 4px 20px rgba(0,0,0,.3);
-    white-space:nowrap;
-    letter-spacing:.03em;
-  }
-  .sobre-label-mobile::after {
-    content:'';
-    position:absolute;
-    bottom:-7px;
-    left:1.2rem;
-    transform:none;
-    border-left:7px solid transparent;
-    border-right:7px solid transparent;
-    border-top:7px solid var(--rosa);
-  }
+  .sobre-img { aspect-ratio:4/3; max-height:320px; }
   .contacto-main { grid-template-columns:1fr; }
   .mapa-wrapper { height:240px; }
   .footer-inner { grid-template-columns:1fr; gap:2rem; }
@@ -1378,9 +1320,7 @@ header.menu-open.scrolled {
   .form-row { grid-template-columns:1fr; }
 
   /* Hero móvil */
-  .hero { align-items:center; min-height:65svh; }
-  .hero-slide { background-position:center center; }
-  .hero-slide-h7 { background-size:75%; background-repeat:no-repeat; background-position:center center; }
+  .hero { align-items:center; min-height:100svh; }
   .hero-content { padding:1rem 1.4rem; }
   .hero-pill { font-size:.78rem; padding:.4rem 1rem; margin-bottom:.8rem; }
   .hero h1 { font-size:2.4rem; margin-bottom:.5rem; }
@@ -1502,23 +1442,6 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
 .footer-legal a { color:rgba(255,255,255,.55); font-size:.78rem; text-decoration:none; transition:color .2s; }
 .footer-legal a:hover { color:white; }
 </style>
-
-<!-- Meta Pixel -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '4281036645446757');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel -->
 </head>
 <body>
 
@@ -1556,16 +1479,13 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
 <section class="hero" id="inicio">
 
   <div class="hero-slides" id="heroSlides">
-    <div class="hero-slide active" style="background-image:url('images/hero1.jpeg')"></div>
-    <div class="hero-slide" style="background-image:url('images/hero2.jpeg')"></div>
-    <div class="hero-slide" style="background-image:url('images/hero3.jpeg')"></div>
-    <div class="hero-slide" style="background-image:url('images/hero4.jpeg')"></div>
-    <div class="hero-slide" style="background-image:url('images/hero5.jpeg')"></div>
-    <div class="hero-slide" style="background-image:url('images/hero6.jpeg')"></div>
-    <div class="hero-slide hero-slide-h7" style="background-image:url('images/hero7.jpeg');"></div>
-    <div class="hero-slide" style="background-image:url('images/hero8.jpeg')"></div>
-    <div class="hero-slide" style="background-image:url('images/hero9.jpeg')"></div>
-    <div class="hero-slide" style="background-image:url('images/hero10.jpeg')"></div>
+    <div class="hero-slide active" style="background-image:url('images/2e7980f1-bc5b-4599-9af2-34098b615c14.JPG')"></div>
+    <div class="hero-slide" style="background-image:url('images/30d8a9ff-adbf-413f-9ae9-d17d70abc661.JPG')"></div>
+    <div class="hero-slide" style="background-image:url('images/6f7cf4c6-f635-4e8c-99d9-3a926a43727d.JPG')"></div>
+    <div class="hero-slide" style="background-image:url('images/ac5dfbb4-fcc0-4b49-94c8-1493f78121f9.JPG')"></div>
+    <div class="hero-slide" style="background-image:url('images/b0cb66bb-7b9a-4781-be74-6733ee17456b.JPG')"></div>
+    <div class="hero-slide" style="background-image:url('images/a03634cc-ce55-46ee-b909-e5b249bbca59.JPG')"></div>
+    <div class="hero-slide" style="background-image:url('images/f0524e71-6946-48c0-b2aa-fc49e63288c7.JPG')"></div>
   </div>
 
   <div class="hero-overlay"></div>
@@ -1573,7 +1493,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
 
   <div class="hero-content">
     <div class="hero-pill">🏅 Guarderia Canina Diurna · Madrid</div>
-    <h1>La Casita de Simba</h1>
+    <h1>La casita de Simba</h1>
     <div class="hero-guarderia-badge">🐾 Donde tu perro es el rey</div>
     <p class="hero-tagline"><strong>Cuidado, juego y cariño como en casa</strong></p>
     <p class="hero-desc">Un hogar lleno de amor donde tu peludo se siente feliz, acompañado y seguro mientras estás trabajando o realizando otras actividades.</p>
@@ -1594,20 +1514,22 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
 <section id="simba" class="sobre-bg">
   <div class="container">
     <div class="sobre-grid">
-      <div class="sobre-foto-wrap">
-        <div class="sobre-label-mobile">🐾 El anfitrión</div>
-        <div class="sobre-img reveal">
-          <img id="anfitrion-img-a" src="images/anfitrion.jpeg" alt="Simba, el anfitrión de La Casita">
-          <img id="anfitrion-img-b" src="images/anfitrion1.jpeg" alt="Simba, el anfitrión de La Casita">
-        </div>
+      <div class="sobre-img reveal">
+        <img src="images/simbaperfil.JPG" alt="Simba, el anfitrión de La Casita">
       </div>
       <div class="sobre-texto reveal">
-        <div class="section-label label-rosa sobre-label-desktop">El anfitrión</div>
+        <div class="section-label label-rosa">El anfitrión</div>
         <h2>🐾 Hola, soy Simba 🐾</h2>
         <p>Sí… ese de la foto. Un peludo arrugadito, gordito, tranquilo, y muy amoroso... Y hoy quiero contarte algo muy especial…</p>
         <p>Hace un tiempo, mi mamá humana pensó en todos esos perros que, como yo, necesitan algo más que un lugar donde quedarse cuando sus familias no están. Necesitamos cariño, compañía, juegos… sentirnos como en casa.</p>
         <p><strong>Así nació La Casita de Simba 🏡✨</strong><br>Un lugar creado con amor, donde cada peludo es parte de la familia.</p>
         <p>Aquí no hay jaulas ni prisas… hay siestas al sol ☀️, juegos con amigos 🐕🐕, mimos infinitos 💛 y hasta celebraciones de cumpleaños 🎂 (¡sí, nos encanta soplar velitas aunque no sepamos hacerlo!).</p>
+        <ul class="checks">
+          <li><span class="check-icon">🐾</span>Cuidamos de ti como si fueras único (porque lo eres)</li>
+          <li><span class="check-icon">🐾</span>Jugamos, socializamos y aprendemos juntos</li>
+          <li><span class="check-icon">🐾</span>Respetamos tu ritmo y tu personalidad</li>
+          <li><span class="check-icon">🐾</span>Y, sobre todo… te damos muchísimo cariño</li>
+        </ul>
         <p>Yo mismo me encargo de supervisar que todo esté perfecto… bueno, cuando no estoy durmiendo 😴</p>
         <p>Si estás buscando un lugar donde tu humano pueda dejarte tranquilo, feliz y bien cuidado…<br><strong>✨ te estoy esperando con las patitas abiertas ✨</strong></p>
       </div>
@@ -1627,7 +1549,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <div class="servicio-card rosa">
         <div class="servicio-icon">🐶</div>
         <h3>Estancia Diurna</h3>
-        <p>Tu perro disfrutará del día jugando, socializando y recibiendo atención personalizada. Recogida y entrega a domicilio disponible. <a href="https://wa.me/34613753680?text=Hola!%20Me%20gustar%C3%ADa%20consultar%20disponibilidad%20de%20recogida%20a%20domicilio%20en%20La%20Casita%20de%20Simba%20%F0%9F%90%BE" target="_blank" rel="noopener noreferrer" style="color:var(--rosa-dark);font-weight:700;text-decoration:underline;">Consultar disponibilidad</a>.</p>
+        <p>Tu perro disfrutará del día jugando, socializando y recibiendo atención personalizada. Recogida y entrega a domicilio disponible (consulta disponibilidad).</p>
       </div>
       <div class="servicio-card verde">
         <div class="servicio-icon">🎂</div>
@@ -1636,18 +1558,13 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       </div>
       <div class="servicio-card rosa">
         <div class="servicio-icon">🗓️</div>
-        <h3>Bono de 7 días</h3>
+        <h3>Bono Semanal</h3>
         <p>Elige los días que necesitas de cada semana y paga solo por lo que usas. Perfecto para rutinas variables y agendas cambiantes.</p>
       </div>
       <div class="servicio-card verde">
         <div class="servicio-icon">🎟️</div>
         <h3>Bono Mensual</h3>
         <p>La opción más económica para clientes habituales. Precio especial al contratar el mes completo. Cuéntanos tu rutina y lo diseñamos a tu medida.</p>
-      </div>
-      <div class="servicio-card rosa">
-        <div class="servicio-icon">⏰</div>
-        <h3>Horas Sueltas</h3>
-        <p>¿Solo necesitas unas horas? Sin problema. Deja a tu perro el tiempo justo que necesites, desde €5/hora. Ideal para citas, recados o imprevistos del día.</p>
       </div>
     </div>
     <div class="servicio-rutina reveal">
@@ -1665,50 +1582,45 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <p class="section-desc">Imágenes reales de nuestros peludos disfrutando en La Casita de Simba.</p>
     </div>
     <div class="galeria-grid reveal">
-      <div class="galeria-item" data-src="images/galeria1.jpeg" data-caption="Jugando juntos 🐾">
-        <img src="images/galeria1.jpeg" alt="Perritos jugando en La Casita de Simba" loading="lazy">
+      <div class="galeria-item" data-src="images/2c999b07-a320-4f7a-9eea-ae16b11f5069.JPG" data-caption="Jugando juntos 🐾">
+        <img src="images/2c999b07-a320-4f7a-9eea-ae16b11f5069.JPG" alt="Perritos jugando en La Casita de Simba" loading="lazy">
         <div class="galeria-zoom">🔍</div>
         <div class="galeria-caption">Jugando juntos 🐾</div>
       </div>
-      <div class="galeria-item" data-src="images/galeria2.jpeg" data-caption="Hora del recreo 🎾">
-        <img src="images/galeria2.jpeg" alt="Perritos en hora del recreo" loading="lazy">
+      <div class="galeria-item" data-src="images/2e7980f1-bc5b-4599-9af2-34098b615c14.JPG" data-caption="Hora del recreo 🎾">
+        <img src="images/2e7980f1-bc5b-4599-9af2-34098b615c14.JPG" alt="Perritos en hora del recreo" loading="lazy">
         <div class="galeria-zoom">🔍</div>
         <div class="galeria-caption">Hora del recreo 🎾</div>
       </div>
-      <div class="galeria-item" data-src="images/galeria3.jpeg" data-caption="Descanso en familia 😴">
-        <img src="images/galeria3.jpeg" alt="Perritos descansando en guarderia canina Madrid" loading="lazy">
+      <div class="galeria-item" data-src="images/30d8a9ff-adbf-413f-9ae9-d17d70abc661.JPG" data-caption="Descanso en familia 😴">
+        <img src="images/30d8a9ff-adbf-413f-9ae9-d17d70abc661.JPG" alt="Perritos descansando en guarderia canina Madrid" loading="lazy">
         <div class="galeria-zoom">🔍</div>
         <div class="galeria-caption">Descanso en familia 😴</div>
       </div>
-      <div class="galeria-item" data-src="images/galeria4.jpeg" data-caption="Amigos peludos 🐕">
-        <img src="images/galeria4.jpeg" alt="Perros felices haciendo amigos" loading="lazy">
+      <div class="galeria-item" data-src="images/6f7cf4c6-f635-4e8c-99d9-3a926a43727d.JPG" data-caption="Amigos peludos 🐕">
+        <img src="images/6f7cf4c6-f635-4e8c-99d9-3a926a43727d.JPG" alt="Perros felices haciendo amigos" loading="lazy">
         <div class="galeria-zoom">🔍</div>
         <div class="galeria-caption">Amigos peludos 🐕</div>
       </div>
-      <div class="galeria-item" data-src="images/galeria5.jpeg" data-caption="Como en casa 🏡">
-        <img src="images/galeria5.jpeg" alt="La Casita de Simba, como en casa" loading="lazy">
+      <div class="galeria-item" data-src="images/ac5dfbb4-fcc0-4b49-94c8-1493f78121f9.JPG" data-caption="¡Qué feliz estoy! 🐶">
+        <img src="images/ac5dfbb4-fcc0-4b49-94c8-1493f78121f9.JPG" alt="Perro feliz en guarderia canina" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">¡Qué feliz estoy! 🐶</div>
+      </div>
+      <div class="galeria-item" data-src="images/b0cb66bb-7b9a-4781-be74-6733ee17456b.JPG" data-caption="Explorando la casita 🌿">
+        <img src="images/b0cb66bb-7b9a-4781-be74-6733ee17456b.JPG" alt="Perrito explorando La Casita de Simba" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Explorando la casita 🌿</div>
+      </div>
+      <div class="galeria-item" data-src="images/a03634cc-ce55-46ee-b909-e5b249bbca59.JPG" data-caption="Momentos especiales 💕">
+        <img src="images/a03634cc-ce55-46ee-b909-e5b249bbca59.JPG" alt="Momentos especiales en guarderia canina Madrid" loading="lazy">
+        <div class="galeria-zoom">🔍</div>
+        <div class="galeria-caption">Momentos especiales 💕</div>
+      </div>
+      <div class="galeria-item" data-src="images/f0524e71-6946-48c0-b2aa-fc49e63288c7.JPG" data-caption="Como en casa 🏡">
+        <img src="images/f0524e71-6946-48c0-b2aa-fc49e63288c7.JPG" alt="La Casita de Simba, como en casa" loading="lazy">
         <div class="galeria-zoom">🔍</div>
         <div class="galeria-caption">Como en casa 🏡</div>
-      </div>
-      <div class="galeria-item" data-src="images/galeria6.jpeg" data-caption="Diversión sin jaulas 🐶">
-        <img src="images/galeria6.jpeg" alt="Perritos en guardería canina sin jaulas Madrid" loading="lazy">
-        <div class="galeria-zoom">🔍</div>
-        <div class="galeria-caption">Diversión sin jaulas 🐶</div>
-      </div>
-      <div class="galeria-item" data-src="images/galeria7.jpeg" data-caption="Nuevos amigos 🐾">
-        <img src="images/galeria7.jpeg" alt="Perros haciendo amigos en La Casita de Simba" loading="lazy">
-        <div class="galeria-zoom">🔍</div>
-        <div class="galeria-caption">Nuevos amigos 🐾</div>
-      </div>
-      <div class="galeria-item" data-src="images/galeria8.jpeg" data-caption="Felices y libres 🌟">
-        <img src="images/galeria8.jpeg" alt="Perros felices en guardería canina Madrid" loading="lazy">
-        <div class="galeria-zoom">🔍</div>
-        <div class="galeria-caption">Felices y libres 🌟</div>
-      </div>
-      <div class="galeria-item" data-src="images/galeria9.jpeg" data-caption="Pura alegría 😊">
-        <img src="images/galeria9.jpeg" alt="Perritos alegres en La Casita de Simba" loading="lazy">
-        <div class="galeria-zoom">🔍</div>
-        <div class="galeria-caption">Pura alegría 😊</div>
       </div>
     </div>
     <div class="galeria-ig reveal">
@@ -1739,21 +1651,21 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <div class="junio-title">🔥 ¡Precios de Inauguración!</div>
       <div class="junio-sub">La Casita de Simba abre sus puertas con precios increíbles — ¡aprovéchalos antes de que acabe el mes!</div>
       <div class="junio-precios">
-        <div class="jp-item"><div class="jp-label" id="jpLbl1">🐶 Estancia (12h)</div><div class="jp-price">€40</div></div>
-        <div class="jp-item"><div class="jp-label" id="jpLbl2">⏱️ 8 horas</div><div class="jp-price">€35</div></div>
-        <div class="jp-item"><div class="jp-label" id="jpLbl3">⏱️ 1 hora</div><div class="jp-price">€5</div></div>
-        <div class="jp-item"><div class="jp-label" id="jpLbl4">🗓️ Bono de 7 días</div><div class="jp-price">€199</div></div>
-        <div class="jp-item" style="background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.5);"><div class="jp-label" id="jpLbl5">🐕🐕 2º perro</div><div class="jp-price" style="font-size:1.15rem;">−30%</div></div>
+        <div class="jp-item"><div class="jp-label">🐶 Estancia (12h)</div><div class="jp-price">€40</div></div>
+        <div class="jp-item"><div class="jp-label">⏱️ 8 horas</div><div class="jp-price">€35</div></div>
+        <div class="jp-item"><div class="jp-label">⏱️ 1 hora</div><div class="jp-price">€5</div></div>
+        <div class="jp-item"><div class="jp-label">🗓️ Bono Semanal</div><div class="jp-price">€199</div></div>
+        <div class="jp-item" style="background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.5);"><div class="jp-label">🐕🐕 2º perro</div><div class="jp-price" style="font-size:1.15rem;">−30%</div></div>
       </div>
-      <div id="junioTerminaLbl" style="font-size:.8rem;opacity:.8;margin-bottom:14px;">⏰ La oferta termina en:</div>
+      <div style="font-size:.8rem;opacity:.8;margin-bottom:14px;">⏰ La oferta termina en:</div>
       <div class="junio-countdown">
-        <div class="jc-block"><span id="jcDays">00</span><small id="jcDaysLbl">días</small></div>
+        <div class="jc-block"><span id="jcDays">00</span><small>días</small></div>
         <div class="jc-sep">:</div>
-        <div class="jc-block"><span id="jcHours">00</span><small id="jcHoursLbl">horas</small></div>
+        <div class="jc-block"><span id="jcHours">00</span><small>horas</small></div>
         <div class="jc-sep">:</div>
-        <div class="jc-block"><span id="jcMins">00</span><small id="jcMinsLbl">min</small></div>
+        <div class="jc-block"><span id="jcMins">00</span><small>min</small></div>
         <div class="jc-sep">:</div>
-        <div class="jc-block"><span id="jcSecs">00</span><small id="jcSegsLbl">seg</small></div>
+        <div class="jc-block"><span id="jcSecs">00</span><small>seg</small></div>
       </div>
       <a href="https://wa.me/34613753680?text=Hola!%20Me%20gustar%C3%ADa%20reservar%20con%20el%20precio%20de%20inauguraci%C3%B3n%20de%20junio%20en%20La%20Casita%20de%20Simba%20%F0%9F%90%BE" target="_blank" rel="noopener noreferrer" class="junio-cta-btn">💬 Reservar con precio de junio</a>
     </div>
@@ -1766,9 +1678,9 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
 
     <!-- 2º PERRO -->
     <div style="background:linear-gradient(135deg,#f3e8ff,#fce7f3);border:2px solid #d8b4fe;border-radius:14px;padding:16px 20px;margin-bottom:28px;text-align:center;">
-      <div class="dos-perros-title" style="font-size:1.1rem;font-weight:900;color:#7c3aed;margin-bottom:4px;">🐕🐕 ¿Tienes dos perros? ¡Mejor precio!</div>
-      <div class="dos-perros-desc" style="font-size:.9rem;color:#6b21a8;font-weight:600;">El 2º perro tiene un <strong>30% de descuento</strong> en todos nuestros servicios.<br>1h: €3.50 · 8h: €24.50 · Estancia 12h: €28 · Bono de 7 días: €139</div>
-      <a href="https://wa.me/34613753680?text=Hola!%20Tengo%20dos%20perros%20y%20me%20gustar%C3%ADa%20saber%20el%20precio%20con%20el%20descuento%20del%202%C2%BA%20perro%20%F0%9F%90%BE%F0%9F%90%BE" target="_blank" rel="noopener noreferrer" class="dos-perros-cta" style="display:inline-block;margin-top:10px;background:#7c3aed;color:#fff;font-weight:800;font-size:.88rem;padding:9px 22px;border-radius:30px;text-decoration:none;">💬 Calcular mi precio para 2 perros</a>
+      <div style="font-size:1.1rem;font-weight:900;color:#7c3aed;margin-bottom:4px;">🐕🐕 ¿Tienes dos perros? ¡Mejor precio!</div>
+      <div style="font-size:.9rem;color:#6b21a8;font-weight:600;">El 2º perro tiene un <strong>30% de descuento</strong> en todos nuestros servicios.<br>1h: €3.50 · 8h: €24.50 · Estancia 12h: €28 · Bono Semanal: €139</div>
+      <a href="https://wa.me/34613753680?text=Hola!%20Tengo%20dos%20perros%20y%20me%20gustar%C3%ADa%20saber%20el%20precio%20con%20el%20descuento%20del%202%C2%BA%20perro%20%F0%9F%90%BE%F0%9F%90%BE" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:10px;background:#7c3aed;color:#fff;font-weight:800;font-size:.88rem;padding:9px 22px;border-radius:30px;text-decoration:none;">💬 Calcular mi precio para 2 perros</a>
     </div>
 
     <div class="precios-grid reveal">
@@ -1779,7 +1691,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         <h3 class="prec1-h3">Estancia</h3>
         <div class="precio-num prec1-num"><span>€</span>40</div>
         <div class="precio-por prec1-por">día completo · 12 horas</div>
-        <div class="perro2-est" style="font-size:.78rem;color:#7c3aed;font-weight:700;margin:4px 0 2px;">🐕🐕 2º perro solo <strong>€28</strong> (−30%)</div>
+        <div style="font-size:.78rem;color:#7c3aed;font-weight:700;margin:4px 0 2px;">🐕🐕 2º perro solo <strong>€28</strong> (−30%)</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
           <li>☀️ 12h de cariño y juego</li>
@@ -1810,11 +1722,11 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <div class="precio-card selected" style="position:relative;overflow:visible;">
         <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:#ef4444;color:#fff;font-size:.7rem;font-weight:800;padding:4px 14px;border-radius:20px;white-space:nowrap;box-shadow:0 2px 8px rgba(239,68,68,.4);">🔥 MÁS POPULAR · SOLO JUNIO</div>
         <div class="precio-icon">🗓️</div>
-        <h3 class="prec1-h3" style="color:white;">Bono de 7 días</h3>
+        <h3 class="prec1-h3" style="color:white;">Bono Semanal</h3>
         <div class="precio-num prec3-num"><span>€</span>199</div>
         <div class="precio-por prec3-por">7 días</div>
         <div style="font-size:.8rem;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:2px;">= solo <strong style="font-size:1rem;">€28.43/día</strong> 🤯</div>
-        <div class="perro2-bono" style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro solo <strong>€139</strong> (−30%)</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro solo <strong>€139</strong> (−30%)</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
           <li>🗓️ 7 días a tu elección</li>
@@ -1833,7 +1745,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         <div class="precio-num prec4-num" style="font-size:2rem;">A consultar</div>
         <div class="precio-por prec4-por">diseñado para tu rutina</div>
         <div style="font-size:.78rem;color:rgba(255,255,255,.85);font-weight:600;margin-bottom:2px;">📞 Te hacemos una oferta personalizada</div>
-        <div class="perro2-mens" style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro incluye −30% también</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro incluye −30% también</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
           <li>🎯 Días adaptados a tu agenda</li>
@@ -1859,9 +1771,32 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <h2>Familias que confían en nosotros ❤️</h2>
       <p class="section-desc">Las opiniones de quienes más importan: los dueños de nuestros peludos.</p>
     </div>
-    <!-- Elfsight Google Reviews | Untitled Google Reviews -->
-    <script src="https://elfsightcdn.com/platform.js" async></script>
-    <div class="elfsight-app-813db7d5-7c88-417f-97f4-93518bfc293d" data-elfsight-app-lazy></div>
+    <div class="testimonios-grid reveal">
+      <div class="testimonio">
+        <div class="estrellas">★★★★★</div>
+        <p>"Mi perro volvió feliz y súper tranquilo. Helena tiene un cariño increíble por los animales. Nunca lo llevaría a otro sitio."</p>
+        <div class="testimonio-autor">
+          <div class="autor-avatar av-mg" aria-label="Marta G.">MG</div>
+          <div><div class="autor-nombre">Marta G.</div><div class="autor-perro">Dueña de Toby 🐕</div></div>
+        </div>
+      </div>
+      <div class="testimonio">
+        <div class="estrellas">★★★★★</div>
+        <p>"La mejor guarderia canina sin jaulas que hemos probado en Madrid. Las fotos que nos manda Helena durante el día nos dejan muy tranquilos."</p>
+        <div class="testimonio-autor">
+          <div class="autor-avatar av-cr" aria-label="Carlos R.">CR</div>
+          <div><div class="autor-nombre">Carlos R.</div><div class="autor-perro">Dueño de Luna 🐩</div></div>
+        </div>
+      </div>
+      <div class="testimonio">
+        <div class="estrellas">★★★★★</div>
+        <p>"Las fotos que nos mandaba Helena durante el día nos dieron muchísima tranquilidad. Y llegó a casa agotada de tanto jugar, ¡señal de que lo pasó genial!"</p>
+        <div class="testimonio-autor">
+          <div class="autor-avatar av-lp" aria-label="Laura P.">LP</div>
+          <div><div class="autor-nombre">Laura P.</div><div class="autor-perro">Dueña de Nala 🐾</div></div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1871,7 +1806,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
     <div class="contacto-top reveal">
       <div class="section-label" style="background:rgba(255,255,255,.15);color:white;">🐾 Reservas y ubicación</div>
       <h2>Reserva y encuéntranos</h2>
-      <p class="destacado">✅ Rellena el formulario y te confirmamos disponibilidad en menos de 24h. También puedes escribirnos por WhatsApp.</p>
+      <p><strong>✅ Rellena el formulario y te confirmamos disponibilidad en menos de 24h. También puedes escribirnos por WhatsApp.</strong></p>
     </div>
     <div class="contacto-main">
 
@@ -1899,48 +1834,23 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
               <select id="fservicio">
                 <option>Estancia (12h)</option>
                 <option>8 Horas</option>
-                <option>Horas Sueltas</option>
-                <option>Bono de 7 días</option>
+                <option>1 Hora</option>
+                <option>Bono Semanal</option>
                 <option>Bono Mensual</option>
                 <option>Cumpleaños / Evento</option>
 
               </select>
             </div>
           </div>
-          <div class="form-row" id="fdates-row">
+          <div class="form-row">
             <div class="form-group">
-              <label for="fentrada" id="fentrada-label">Fecha de entrada</label>
+              <label for="fentrada">Fecha de entrada</label>
               <input type="date" id="fentrada" required>
             </div>
-            <div class="form-group" id="fsalida-group">
+            <div class="form-group">
               <label for="fsalida">Fecha de salida</label>
               <input type="date" id="fsalida">
             </div>
-          </div>
-          <div class="form-group" id="fhora-group" style="display:none;">
-            <label for="fhora" id="fhora-label">Hora de ingreso</label>
-            <input type="time" id="fhora" min="08:00" max="20:00">
-          </div>
-          <div class="form-group" id="fduracion-group" style="display:none;">
-            <label for="fduracion" id="fduracion-label">Duración</label>
-            <select id="fduracion">
-              <option value="1">1 hora</option>
-              <option value="2">2 horas</option>
-              <option value="3">3 horas</option>
-              <option value="4">4 horas</option>
-            </select>
-          </div>
-          <div class="form-group" id="finvitados-group" style="display:none;">
-            <label for="finvitados">¿Cuántos invitados peludos esperáis?</label>
-            <input type="number" id="finvitados" placeholder="Ej: 5" min="1">
-          </div>
-          <div class="form-group">
-            <label for="fvacunas">¿Tu peludito tiene al día sus vacunas y desparasitaciones?</label>
-            <select id="fvacunas" required>
-              <option value="">Seleccionar...</option>
-              <option value="si">✅ Sí</option>
-              <option value="no">❌ No</option>
-            </select>
           </div>
           <div class="form-group">
             <label for="fdesc">Cuéntanos sobre tu perro</label>
@@ -1954,15 +1864,14 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <div class="contacto-derecha reveal">
         <div class="mapa-wrapper">
           <iframe
-            src="https://maps.google.com/maps?cid=15418317452853479791&output=embed&hl=es&z=15"
+            src="https://maps.google.com/maps?q=Calle+Puentelarra+5,+Local+10,+Madrid&hl=es&z=17&output=embed"
             allowfullscreen loading="lazy">
           </iframe>
-          <div class="mapa-tap" onclick="this.remove()"></div>
         </div>
         <div class="info-cards">
           <div class="info-card">
             <div class="info-ico">📍</div>
-            <div><strong>Dirección</strong><a href="https://maps.app.goo.gl/K8vez9C3RgssnENv5" target="_blank" rel="noopener noreferrer"><span>Calle Puentelarra 5, Local 10, Madrid</span></a></div>
+            <div><strong>Dirección</strong><a href="https://www.google.com/maps/search/?api=1&query=Calle+Puentelarra+5,+Local+10,+Madrid" target="_blank" rel="noopener noreferrer"><span>Calle Puentelarra 5, Local 10, Madrid</span></a></div>
           </div>
           <div class="info-card">
             <div class="info-ico">📞</div>
@@ -1991,7 +1900,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
   <div class="footer-inner">
     <div class="footer-brand">
       <a href="#inicio" class="logo" style="color:white;">🐾 La casita de <span>Simba</span></a>
-      <p style="margin-top:.8rem;">Guarderia Canina Diurna premium en Madrid. Cuidado con amor.</p>
+      <p style="margin-top:.8rem;">Guarderia Canina Diurna premium en Madrid. Cuidado con amor desde 2022.</p>
     </div>
     <div class="footer-col">
       <h4>Servicios</h4>
@@ -2262,25 +2171,13 @@ function enviar(e) {
   var salida  = document.getElementById('fsalida').value;
   var desc    = document.getElementById('fdesc').value.trim();
 
-  var vacunas    = document.getElementById('fvacunas').value;
-  var invitados  = document.getElementById('finvitados').value;
-  var hora       = document.getElementById('fhora').value;
-  var durEl      = document.getElementById('fduracion');
-  var duracion   = durEl.options[durEl.selectedIndex].text;
   var msg = 'Hola Helena, quiero hacer una reserva en La Casita de Simba 🐾\n\n';
   msg += '👤 *Nombre:* ' + n + '\n';
   msg += '📞 *Teléfono:* ' + (tel || 'No indicado') + '\n';
   msg += '🐶 *Perro:* ' + perro + '\n';
   msg += '🏷️ *Servicio:* ' + serv + '\n';
-  if (entrada) msg += '📅 *Fecha:* ' + entrada + '\n';
-  if (hora && document.getElementById('fhora-group').style.display !== 'none')
-    msg += '🕐 *Hora de ingreso:* ' + hora + '\n';
-  if (document.getElementById('fduracion-group').style.display !== 'none')
-    msg += '⏱️ *Duración:* ' + duracion + '\n';
-  if (salida && document.getElementById('fsalida-group').style.display !== 'none')
-    msg += '📅 *Salida:* ' + salida + '\n';
-  if (invitados) msg += '🐕 *Invitados peludos:* ' + invitados + '\n';
-  if (vacunas) msg += '💉 *Vacunas y desparasitaciones al día:* ' + (vacunas === 'si' ? 'Sí ✅' : 'No ❌') + '\n';
+  if (entrada) msg += '📅 *Entrada:* ' + entrada + '\n';
+  if (salida)  msg += '📅 *Salida:* '  + salida  + '\n';
   if (desc)    msg += '💬 *Sobre mi perro:* ' + desc;
 
   window.open('https://wa.me/34613753680?text=' + encodeURIComponent(msg), '_blank');
@@ -2296,43 +2193,6 @@ function enviar(e) {
     btn.style.background = '';
   }, 2500);
 }
-
-// Mostrar/ocultar campos según servicio
-(function(){
-  var soloEntrada = ['Estancia (12h)','8 Horas','Horas Sueltas','Stay (12h)','8 Hours','Hourly Care'];
-  var cumple = ['Cumpleaños / Evento','Birthday / Event'];
-  var conHora = ['Estancia (12h)','8 Horas','Horas Sueltas','Stay (12h)','8 Hours','Hourly Care'];
-  var conDuracion = ['Horas Sueltas','Hourly Care'];
-  function toggleFechas() {
-    var serv = document.getElementById('fservicio').value;
-    var salGrp = document.getElementById('fsalida-group');
-    var datesRow = document.getElementById('fdates-row');
-    var invGrp = document.getElementById('finvitados-group');
-    var horaGrp = document.getElementById('fhora-group');
-    var durGrp = document.getElementById('fduracion-group');
-    var lblEntrada = document.getElementById('fentrada-label');
-    var esCumple = cumple.indexOf(serv) !== -1;
-    var esSolo = soloEntrada.indexOf(serv) !== -1 || esCumple;
-    var esConHora = conHora.indexOf(serv) !== -1;
-    var esConDuracion = conDuracion.indexOf(serv) !== -1;
-    salGrp.style.display = esSolo ? 'none' : '';
-    datesRow.style.gridTemplateColumns = esSolo ? '1fr' : '';
-    if (esSolo) document.getElementById('fsalida').value = '';
-    invGrp.style.display = esCumple ? '' : 'none';
-    if (!esCumple) document.getElementById('finvitados').value = '';
-    horaGrp.style.display = esConHora ? '' : 'none';
-    if (!esConHora) document.getElementById('fhora').value = '';
-    durGrp.style.display = esConDuracion ? '' : 'none';
-    if (!esConDuracion) document.getElementById('fduracion').selectedIndex = 0;
-    var lang = document.documentElement.lang || 'es';
-    lblEntrada.textContent = esCumple
-      ? (lang === 'en' ? 'Event date' : 'Fecha de celebración')
-      : (lang === 'en' ? 'Check-in date' : 'Fecha de entrada');
-  }
-  var sel = document.getElementById('fservicio');
-  if (sel) { sel.addEventListener('change', toggleFechas); toggleFechas(); }
-  window._toggleFechas = toggleFechas;
-})();
 
 // Lightbox galería
 (function() {
@@ -2404,7 +2264,7 @@ function enviar(e) {
     var now = new Date(), diff = end - now;
     if (diff <= 0) {
       var cd = document.getElementById('jcDays');
-      if (cd) { var endMsg = document.documentElement.lang === 'en' ? 'Offer ended — thank you for your trust! 🐾' : '¡Oferta finalizada — gracias por confiar en nosotros! 🐾'; cd.closest('.junio-countdown').innerHTML = '<div style="font-size:1rem;font-weight:700;opacity:.9;">'+endMsg+'</div>'; }
+      if (cd) cd.closest('.junio-countdown').innerHTML = '<div style="font-size:1rem;font-weight:700;opacity:.9;">¡Oferta finalizada — gracias por confiar en nosotros! 🐾</div>';
       return;
     }
     var d = Math.floor(diff/86400000);
@@ -2430,13 +2290,9 @@ function enviar(e) {
       'hero-desc':'Un hogar lleno de amor donde tu peludo se siente feliz, acompañado y seguro mientras estás trabajando o realizando otras actividades.',
       'hero-btn1':'🐶 Reservar plaza','hero-btn2':'Ver servicios',
       'stat1':'Perritos felices','stat2':'Valoración media','stat3':'Fotos al día',
-      'sobre-label':'El anfitrión','sobre-label-mob':'🐾 El anfitrión','sobre-h2':'Hola, soy Simba 🐾',
-      'sobre-p1':'Sí… ese de la foto. Un peludo arrugadito, gordito, tranquilo, y muy amoroso... Y hoy quiero contarte algo muy especial…',
-      'sobre-p2':'Hace un tiempo, mi mamá humana pensó en todos esos perros que, como yo, necesitan algo más que un lugar donde quedarse cuando sus familias no están. Necesitamos cariño, compañía, juegos… sentirnos como en casa.',
-      'sobre-p3':'<strong>Así nació La Casita de Simba 🏡✨</strong><br>Un lugar creado con amor, donde cada peludo es parte de la familia.',
-      'sobre-p4':'Aquí no hay jaulas ni prisas… hay siestas al sol ☀️, juegos con amigos 🐕🐕, mimos infinitos 💛 y hasta celebraciones de cumpleaños 🎂 (¡sí, nos encanta soplar velitas aunque no sepamos hacerlo!).',
-      'sobre-p5':'Yo mismo me encargo de supervisar que todo esté perfecto… bueno, cuando no estoy durmiendo 😴',
-      'sobre-p6':'Si estás buscando un lugar donde tu humano pueda dejarte tranquilo, feliz y bien cuidado…<br><strong>✨ te estoy esperando con las patitas abiertas ✨</strong>',
+      'sobre-label':'El anfitrión','sobre-h2':'Hola, soy Simba 🐾',
+      'sobre-p1':'Soy un Shar Pei tranquilo y cariñoso, y este lugar es mi hogar. Mi cuidadora Helena creó La Casita de Simba pensando en todos los perritos que, como yo, necesitan algo más que una residencia: <strong>un hogar donde sentirse queridos</strong>.',
+      'sobre-p2':'Aquí cada perro es tratado como uno más de la familia. Nada de jaulas, nada de estrés. Solo juegos, cariño y mucha diversión.',
       'check1':'<span class="check-icon">✓</span>Cuidado personalizado para cada perro',
       'check2':'<span class="check-icon">✓</span>Ambiente familiar sin estrés ni jaulas',
       'check3':'<span class="check-icon">✓</span>Socialización con otros perritos',
@@ -2444,19 +2300,12 @@ function enviar(e) {
       'check5':'<span class="check-icon">✓</span>Celebraciones de cumpleaños perrunos 🎂',
       'serv-label':'Lo que ofrecemos','serv-h2':'Servicios Premium 🐾',
       'serv-desc':'Todo lo que tu perro necesita para pasar el mejor día de su vida mientras tú tranquilamente trabajas o realizas otras actividades.',
-      'serv1-h3':'Estancia Diurna','serv1-p':'Tu perro disfrutará del día jugando, socializando y recibiendo atención personalizada. Recogida y entrega a domicilio disponible.',
+      'serv1-h3':'Estancia Diurna','serv1-p':'Tu perro disfrutará del día jugando, socializando y recibiendo atención personalizada. Recogida y entrega a domicilio disponible (consulta disponibilidad).',
       
       'serv3-h3':'Fotos y Vídeos','serv3-p':'Te enviamos fotos y vídeos de tu peludo durante el día para que estés siempre tranquila. ¡Verás lo bien que lo pasa!',
       'serv4-h3':'Cumpleaños Perrunos','serv4-p':'Celebraciones especiales con decoración, tarta y fotos. ¡Porque tu peludo también merece su fiesta!',
-      'serv5-h3':'Bono de 7 días','serv5-p':'Elige los días que necesitas de cada semana y paga solo por lo que usas. Perfecto para rutinas variables y agendas cambiantes.',
+      'serv5-h3':'Bono Semanal','serv5-p':'Elige los días que necesitas de cada semana y paga solo por lo que usas. Perfecto para rutinas variables y agendas cambiantes.',
       'serv6-h3':'Bono Mensual','serv6-p':'La opción más económica para clientes habituales. Precio especial al contratar el mes completo. Cuéntanos tu rutina y lo diseñamos a tu medida.',
-      'serv7-h3':'Horas Sueltas','serv7-p':'¿Solo necesitas unas horas? Sin problema. Deja a tu perro el tiempo justo que necesites, desde €5/hora. Ideal para citas, recados o imprevistos del día.',
-      'perro2-est':'🐕🐕 2º perro solo <strong>€28</strong> (−30%)',
-      'perro2-bono':'🐕🐕 2º perro solo <strong>€139</strong> (−30%)',
-      'perro2-mens':'🐕🐕 2º perro incluye −30% también',
-      'dos-perros-title':'🐕🐕 ¿Tienes dos perros? ¡Mejor precio!',
-      'dos-perros-desc':'El 2º perro tiene un <strong>30% de descuento</strong> en todos nuestros servicios.<br>1h: €3.50 · 8h: €24.50 · Estancia 12h: €28 · Bono de 7 días: €139',
-      'dos-perros-cta':'💬 Calcular mi precio para 2 perros',
       'serv-rutina':'🔄 <strong>Nos adaptamos a tu rutina.</strong> Dinos tus horarios y diseñamos el servicio perfecto para ti y tu peludo — sin estrés y sin complicaciones.',
       'porq-label':'¿Por qué nosotros?','porq-h2':'Lo que nos hace diferentes 🐾',
       'porq-desc':'No somos una residencia masificada. Tu perro es uno más de la familia, no un número más.',
@@ -2465,7 +2314,7 @@ function enviar(e) {
       'porq3-h3':'Atención 1 a 1','porq3-p':'Máximo 5 perritos a la vez. Tu peludo no es uno más del montón — es el protagonista del día.',
       'porq4-h3':'Recogida a domicilio','porq4-p':'Recogemos y devolvemos a tu perro en tu puerta. Sin que tengas que moverte de casa.',
       'porq5-h3':'Helena siempre disponible','porq5-p':'Cualquier duda o novedad, Helena responde por WhatsApp al momento. Siempre comunicados.',
-      'porq6-h3':'Familias que confían en nosotros','porq6-p':'Cuidando peludos en Madrid con valoración de 5 estrellas. Sin una sola queja.',
+      'porq6-h3':'+200 familias confían en nosotros','porq6-p':'Desde 2022 cuidando peludos en Madrid con valoración de 5 estrellas. Sin una sola queja.',
       'gal-label':'Un día en La Casita','gal-h2':'Así de bien lo pasan 📸',
       'gal-desc':'Imágenes reales de nuestros peludos disfrutando en La Casita de Simba.',
       'gal-ig':'Seguir en Instagram · @lacasitadesimba',
@@ -2474,13 +2323,13 @@ function enviar(e) {
       'prec1-h3':'Estancia Diurna','prec1-por':'por día completo','prec1-li1':'De 8h a 20h','prec1-li2':'Comida incluida','prec1-li3':'Fotos del día','prec1-li4':'Fotos y Vídeos','prec1-cta':'Reservar',
       
       'prec3-h3':'Eventos y Cumpleaños','prec3-num':'A consultar','prec3-por':'pack personalizado','prec3-li1':'Decoración incluida','prec3-li2':'Tarta perruna','prec3-li3':'Sesión de fotos','prec3-li4':'Invitados peludos','prec3-cta':'Consultar',
-      'prec4-h3':'Bono de 7 días','prec4-por':'7 días','prec4-li1':'7 días a tu elección','prec4-li2':'Horario flexible','prec4-li3':'Chuches y snacks incluidos','prec4-li4':'Fotos y vídeos diarios','prec4-cta':'Consultar',
+      'prec4-h3':'Bono Semanal','prec4-por':'7 días','prec4-li1':'7 días a tu elección','prec4-li2':'Horario flexible','prec4-li3':'Chuches y snacks incluidos','prec4-li4':'Fotos y vídeos diarios','prec4-cta':'Consultar',
       'prec5-h3':'Bono Mensual','prec5-por':'20 días al mes','prec5-li1':'Días adaptados a tu rutina','prec5-li2':'Precio especial habitual','prec5-li3':'Chuches y snacks incluidos','prec5-li4':'Fotos y vídeos diarios','prec5-cta':'Consultar',
       'tbl-desde':'desde',
       'tbl-ttl':'📋 Tarifa Estándar','tbl-th1':'Servicio','tbl-th2':'Precio','tbl-th3':'Incluye',
       'tbl-s1n':'Estancia Diurna','tbl-s1u':'/día','tbl-s1d':'8h–20h · comida · fotos','tbl-shn':'Estancia por Horas','tbl-shu':'/hora','tbl-shd':'Flexible · comida · fotos',
       
-      'tbl-s3n':'Bono de 7 días','tbl-s3u':'/semana','tbl-s3d':'5 días · horario flexible · fotos',
+      'tbl-s3n':'Bono Semanal','tbl-s3u':'/semana','tbl-s3d':'5 días · horario flexible · fotos',
       'tbl-s4n':'Bono Mensual','tbl-s4u':'/mes','tbl-s4d':'20 días · precio especial · fotos',
       'tbl-s5n':'Cumpleaños / Evento','tbl-s5p':'A consultar','tbl-s5d':'Decoración · tarta · fotos',
       'tbl-nota':'🔄 Nos adaptamos a tu rutina — consulta tu bono personalizado.',
@@ -2491,8 +2340,8 @@ function enviar(e) {
       
       'test-label':'Lo que dicen','test-h2':'Familias que confían en nosotros ❤️',
       'test-desc':'Las opiniones de quienes más importan: los dueños de nuestros peludos.',
-      'test1-p':'"Prudy no podría estar en mejores manos!! Cuando nos dirigíamos por primera vez a La Casita de Simba, no nos imaginábamos que ella se adaptaría tan fácilmente. Helena trata a nuestros pequeños peludos con tanto cariño que ellos se sienten enseguida como en su propia familia. Gracias a la casita de Simba me siento tranquila cuando voy a trabajar o tengo algún compromiso, hoy sé que Prudy está muy bien y segura."',
-      'test1-perro':'Dueña de Prudy 🐕',
+      'test1-p':'"Mi perro volvió feliz y súper tranquilo. Helena tiene un cariño increíble por los animales. Nunca lo llevaría a otro sitio."',
+      'test1-perro':'Dueña de Toby 🐕',
       'test2-p':'"La mejor guarderia canina sin jaulas que hemos probado en Madrid. Las fotos que nos manda Helena durante el día nos dejan muy tranquilos."',
       'test2-perro':'Dueño de Luna 🐩',
       'test3-p':'"Las fotos que nos mandaba Helena durante el día nos dieron muchísima tranquilidad. Y llegó a casa agotada de tanto jugar, ¡señal de que lo pasó genial!"',
@@ -2502,27 +2351,17 @@ function enviar(e) {
       'form-h3':'🐶 Datos de la reserva',
       'lbl-nombre':'Tu nombre','ph-nombre':'María García','lbl-tel':'Teléfono / WhatsApp',
       'lbl-perro':'Nombre del perro','ph-perro':'Max','lbl-serv':'Servicio',
-      'opt1':'Estancia (12h)','opt2':'8 Horas','opt3':'Horas Sueltas','opt4':'Bono de 7 días','opt5':'Bono Mensual','opt6':'Cumpleaños / Evento',
-      'lbl-entrada':'Fecha de entrada','lbl-celebracion':'Fecha de celebración','lbl-salida':'Fecha de salida',
-      'lbl-hora':'Hora de ingreso','lbl-duracion':'Duración',
-      'dur1':'1 hora','dur2':'2 horas','dur3':'3 horas','dur4':'4 horas',
-      'lbl-invitados':'¿Cuántos invitados peludos esperáis?','ph-invitados':'Ej: 5',
-      'lbl-vacunas':'¿Tu peludito tiene al día sus vacunas y desparasitaciones?','opt-vac-sel':'Seleccionar...','opt-vac-si':'✅ Sí','opt-vac-no':'❌ No',
+      'opt1':'Estancia (12h)','opt2':'8 Horas','opt3':'1 Hora','opt4':'Bono Semanal','opt5':'Bono Mensual','opt6':'Cumpleaños / Evento',
+      'lbl-entrada':'Fecha de entrada','lbl-salida':'Fecha de salida',
       'lbl-desc':'Cuéntanos sobre tu perro','ph-desc':'Raza, edad, carácter, si es sociable con otros perros...',
       'form-btn':'💬 Enviar por WhatsApp',
       'info-dir':'Dirección','info-tel':'Teléfono','info-email':'Email','info-hora':'Horario',
       'info-hora-val':'Lun–Vie: 08:00–20:00 · Fines de semana: consultar',
       'cont-wa':'💬 Escríbenos por WhatsApp',
-      'foot-desc':'Guarderia Canina Diurna premium en Madrid. Cuidado con amor.',
+      'foot-desc':'Guarderia Canina Diurna premium en Madrid. Cuidado con amor desde 2022.',
       'foot-serv':'Servicios','foot-s1':'Estancia Diurna','foot-s2':'Fotos y Vídeos','foot-s3':'Fotos y Vídeos','foot-s4':'Cumpleaños Perrunos',
       'foot-cont':'Contacto','foot-copy':'© 2026 La Casita de Simba · Madrid','foot-love':'Hecho con ❤️ para los peludos de Madrid',
-      'bubble':'¿Quieres reservar una plaza en La Casita de Simba? 🐾','bubble-hi':'¡Hola! 👋','lang-btn':'🇬🇧 EN',
-      'junio-tag':'🎉 Oferta especial · Solo junio 2026','junio-title':'🔥 ¡Precios de Inauguración!',
-      'junio-sub':'La Casita de Simba abre sus puertas con precios increíbles — ¡aprovéchalos antes de que acabe el mes!',
-      'junio-termina':'⏰ La oferta termina en:','junio-cta':'💬 Reservar con precio de junio',
-      'jc-dias':'días','jc-horas':'horas','jc-mins':'min','jc-segs':'seg',
-      'junio-end':'¡Oferta finalizada — gracias por confiar en nosotros! 🐾',
-      'jp-lbl1':'🐶 Estancia (12h)','jp-lbl2':'⏱️ 8 horas','jp-lbl3':'⏱️ 1 hora','jp-lbl4':'🗓️ Bono de 7 días','jp-lbl5':'🐕🐕 2º perro',
+      'bubble':'¿Quieres reservar una plaza en La Casita de Simba? 🐾','lang-btn':'🇬🇧 EN',
       'caps':['Jugando juntos 🐾','Hora del recreo 🎾','Descanso en familia 😴','Amigos peludos 🐕','¡Qué feliz estoy! 🐶','Explorando la casita 🌿','Momentos especiales 💕','Como en casa 🏡']
     },
     en: {
@@ -2532,13 +2371,9 @@ function enviar(e) {
       'hero-desc':"A home full of love where your furry friend feels happy, safe and cared for while you work or go about your day.",
       'hero-btn1':'🐶 Book a spot','hero-btn2':'See services',
       'stat1':'Happy pups','stat2':'Average rating','stat3':'Photos a day',
-      'sobre-label':'The host','sobre-label-mob':'🐾 The host','sobre-h2':"Hello, I'm Simba 🐾",
-      'sobre-p1':"Yes… that one in the photo. A wrinkly little furball, chubby, calm, and very loving... And today I want to tell you something very special…",
-      'sobre-p2':"Some time ago, my human mum thought about all those dogs who, like me, need more than just a place to stay when their families are away. We need love, company, play… to feel right at home.",
-      'sobre-p3':'<strong>That\'s how La Casita de Simba was born 🏡✨</strong><br>A place built with love, where every furry guest is part of the family.',
-      'sobre-p4':'Here there are no cages or rushing… sunny naps ☀️, games with friends 🐕🐕, endless cuddles 💛 and even birthday celebrations 🎂 (yes, we love blowing out candles even if we can\'t quite do it!).',
-      'sobre-p5':"I personally make sure everything is perfect… well, when I'm not napping 😴",
-      'sobre-p6':'If you\'re looking for a place where your human can leave you calm, happy and well cared for…<br><strong>✨ I\'m waiting for you with open paws ✨</strong>',
+      'sobre-label':'The host','sobre-h2':"Hello, I'm Simba 🐾",
+      'sobre-p1':"I'm a calm and loving Shar Pei, and this place is my home. My carer Helena created La Casita de Simba for all the dogs who, like me, need more than just a kennel: <strong>a home where they feel loved</strong>.",
+      'sobre-p2':'Here every dog is treated as part of the family. No cages, no stress. Just play, love and lots of fun.',
       'check1':'<span class="check-icon">✓</span>Personalised care for every dog',
       'check2':'<span class="check-icon">✓</span>Family atmosphere, cage-free and stress-free',
       'check3':'<span class="check-icon">✓</span>Socialisation with other dogs',
@@ -2552,13 +2387,6 @@ function enviar(e) {
       'serv4-h3':'Dog Birthdays','serv4-p':'Special celebrations with decorations, cake and photos. Because your furry friend deserves their own party!',
       'serv5-h3':'Weekly Pack','serv5-p':'Choose the days you need each week and pay only for what you use. Perfect for variable routines and changing schedules.',
       'serv6-h3':'Monthly Pack','serv6-p':"The most affordable option for regular clients. Special price when you book the full month. Tell us your routine and we'll design it to fit you.",
-      'serv7-h3':'Hourly Care','serv7-p':'Need just a few hours? No problem. Drop off your dog for exactly the time you need, from €5/hour. Perfect for appointments, errands or unexpected plans.',
-      'perro2-est':'🐕🐕 2nd dog only <strong>€28</strong> (−30%)',
-      'perro2-bono':'🐕🐕 2nd dog only <strong>€139</strong> (−30%)',
-      'perro2-mens':'🐕🐕 2nd dog includes −30% too',
-      'dos-perros-title':'🐕🐕 Have two dogs? Better price!',
-      'dos-perros-desc':'The 2nd dog gets a <strong>30% discount</strong> on all our services.<br>1h: €3.50 · 8h: €24.50 · 12h stay: €28 · 7-day pass: €139',
-      'dos-perros-cta':'💬 Calculate my price for 2 dogs',
       'serv-rutina':"🔄 <strong>We adapt to your routine.</strong> Tell us your schedule and we'll design the perfect service for you and your furry friend — stress-free and hassle-free.",
       'porq-label':'Why us?','porq-h2':'What makes us different 🐾',
       'porq-desc':'We are not a crowded kennel. Your dog is one of the family, not just a number.',
@@ -2567,7 +2395,7 @@ function enviar(e) {
       'porq3-h3':'1-to-1 attention','porq3-p':"Maximum 5 dogs at a time. Your furry friend is not just another dog — they're the star of the day.",
       'porq4-h3':'Home pick-up','porq4-p':'We pick up and drop off your dog at your door. No need to leave home.',
       'porq5-h3':'Helena always available','porq5-p':'Any question or update, Helena replies on WhatsApp instantly. Always in touch.',
-      'porq6-h3':'Families that trust us','porq6-p':'Caring for dogs in Madrid with a 5-star rating. Not a single complaint.',
+      'porq6-h3':'+200 families trust us','porq6-p':'Since 2022 caring for dogs in Madrid with a 5-star rating. Not a single complaint.',
       'gal-label':'A day at La Casita','gal-h2':'This is how much fun they have 📸',
       'gal-desc':'Real photos of our furry guests enjoying La Casita de Simba.',
       'gal-ig':'Follow on Instagram · @lacasitadesimba',
@@ -2593,8 +2421,8 @@ function enviar(e) {
       
       'test-label':'What they say','test-h2':'Families who trust us ❤️',
       'test-desc':"The opinions of those who matter most: our dogs' owners.",
-      'test1-p':'"Prudy couldn\'t be in better hands!! When we first came to La Casita de Simba, we never imagined she would adapt so easily. Helena treats our little furry ones with so much love that they immediately feel like part of the family. Thanks to La Casita de Simba I feel at ease when I go to work or have commitments — today I know Prudy is very safe and happy."',
-      'test1-perro':"Prudy's owner 🐕",
+      'test1-p':'"My dog came back happy and super calm. Helena has an incredible love for animals. I would never take him anywhere else."',
+      'test1-perro':"Toby's owner 🐕",
       'test2-p':'"The best dog residence we\'ve tried in Madrid. The daily photos Helena sends are very reassuring."',
       'test2-perro':"Luna's owner 🐩",
       'test3-p':'"The daily photos Helena sent were so reassuring. She came home exhausted from all the playing — a sign she had a great time!"',
@@ -2604,27 +2432,17 @@ function enviar(e) {
       'form-h3':'🐶 Booking details',
       'lbl-nombre':'Your name','ph-nombre':'John Smith','lbl-tel':'Phone / WhatsApp',
       'lbl-perro':"Dog's name",'ph-perro':'Max','lbl-serv':'Service',
-      'opt1':'Stay (12h)','opt2':'8 Hours','opt3':'Hourly Care','opt4':'Weekly Pack','opt5':'Monthly Pack','opt6':'Birthday / Event',
-      'lbl-entrada':'Check-in date','lbl-celebracion':'Event date','lbl-salida':'Check-out date',
-      'lbl-hora':'Check-in time','lbl-duracion':'Duration',
-      'dur1':'1 hour','dur2':'2 hours','dur3':'3 hours','dur4':'4 hours',
-      'lbl-invitados':'How many furry guests are you expecting?','ph-invitados':'e.g. 5',
-      'lbl-vacunas':'Is your pup up to date with vaccines and deworming?','opt-vac-sel':'Select...','opt-vac-si':'✅ Yes','opt-vac-no':'❌ No',
+      'opt1':'Stay (12h)','opt2':'8 Hours','opt3':'1 Hour','opt4':'Weekly Pack','opt5':'Monthly Pack','opt6':'Birthday / Event',
+      'lbl-entrada':'Check-in date','lbl-salida':'Check-out date',
       'lbl-desc':'Tell us about your dog','ph-desc':'Breed, age, temperament, sociable with other dogs...',
       'form-btn':'💬 Send via WhatsApp',
       'info-dir':'Address','info-tel':'Phone','info-email':'Email','info-hora':'Hours',
       'info-hora-val':'Mon–Fri: 08:00–20:00 · Weekends on request',
       'cont-wa':'💬 Write us on WhatsApp',
-      'foot-desc':'Premium Dog Day Care in Madrid. Caring with love.',
+      'foot-desc':'Premium Dog Day Care in Madrid. Caring with love since 2022.',
       'foot-serv':'Services','foot-s1':'Day Care','foot-s2':'Photos & Videos','foot-s3':'Photos & Videos','foot-s4':'Dog Birthdays',
       'foot-cont':'Contact','foot-copy':'© 2026 La Casita de Simba · Madrid','foot-love':"Made with ❤️ for Madrid's furry friends",
-      'bubble':'Would you like to book a spot at La Casita de Simba? 🐾','bubble-hi':'Hi! 👋','lang-btn':'🇪🇸 ES',
-      'junio-tag':'🎉 Special offer · June 2026 only','junio-title':'🔥 Opening Prices!',
-      'junio-sub':'La Casita de Simba opens its doors with incredible prices — grab them before the month ends!',
-      'junio-termina':'⏰ Offer ends in:','junio-cta':'💬 Book at June price',
-      'jc-dias':'days','jc-horas':'hours','jc-mins':'min','jc-segs':'sec',
-      'junio-end':'Offer ended — thank you for your trust! 🐾',
-      'jp-lbl1':'🐶 Stay (12h)','jp-lbl2':'⏱️ 8 hours','jp-lbl3':'⏱️ 1 hour','jp-lbl4':'🗓️ 7-day pack','jp-lbl5':'🐕🐕 2nd dog',
+      'bubble':'Would you like to book a spot at La Casita de Simba? 🐾','lang-btn':'🇪🇸 ES',
       'caps':['Playing together 🐾','Playtime 🎾','Family nap 😴','Furry friends 🐕','So happy! 🐶','Exploring the house 🌿','Special moments 💕','Home away from home 🏡']
     }
   };
@@ -2655,14 +2473,9 @@ function enviar(e) {
     s('.hero-stats .stat:nth-child(2) .stat-txt','stat2',lang);
     s('.hero-stats .stat:nth-child(3) .stat-txt','stat3',lang);
     s('#simba .section-label','sobre-label',lang);
-    s('.sobre-label-mobile','sobre-label-mob',lang);
     s('#simba h2','sobre-h2',lang);
-    s('#simba .sobre-texto p:nth-of-type(1)','sobre-p1',lang);
-    s('#simba .sobre-texto p:nth-of-type(2)','sobre-p2',lang);
-    s('#simba .sobre-texto p:nth-of-type(3)','sobre-p3',lang,'h');
-    s('#simba .sobre-texto p:nth-of-type(4)','sobre-p4',lang);
-    s('#simba .sobre-texto p:nth-of-type(5)','sobre-p5',lang);
-    s('#simba .sobre-texto p:nth-of-type(6)','sobre-p6',lang,'h');
+    s('#simba .sobre-texto p:first-of-type','sobre-p1',lang,'h');
+    s('#simba .sobre-texto p:last-of-type','sobre-p2',lang);
     s('#simba .checks li:nth-child(1)','check1',lang,'h');
     s('#simba .checks li:nth-child(2)','check2',lang,'h');
     s('#simba .checks li:nth-child(3)','check3',lang,'h');
@@ -2679,14 +2492,6 @@ function enviar(e) {
     s('#servicios .servicio-card:nth-child(3) p','serv5-p',lang);
     s('#servicios .servicio-card:nth-child(4) h3','serv6-h3',lang);
     s('#servicios .servicio-card:nth-child(4) p','serv6-p',lang);
-    s('#servicios .servicio-card:nth-child(5) h3','serv7-h3',lang);
-    s('#servicios .servicio-card:nth-child(5) p','serv7-p',lang);
-    s('.perro2-est','perro2-est',lang,'h');
-    s('.perro2-bono','perro2-bono',lang,'h');
-    s('.perro2-mens','perro2-mens',lang);
-    s('.dos-perros-title','dos-perros-title',lang);
-    s('.dos-perros-desc','dos-perros-desc',lang,'h');
-    s('.dos-perros-cta','dos-perros-cta',lang);
     s('.servicio-rutina','serv-rutina',lang,'h');
     s('.porq-bg .section-label','porq-label',lang);
     s('.porq-bg h2','porq-h2',lang);
@@ -2783,18 +2588,6 @@ function enviar(e) {
     s('label[for="fservicio"]','lbl-serv',lang);
     s('label[for="fentrada"]','lbl-entrada',lang);
     s('label[for="fsalida"]','lbl-salida',lang);
-    s('label[for="fhora"]','lbl-hora',lang);
-    s('label[for="fduracion"]','lbl-duracion',lang);
-    s('#fduracion option:nth-child(1)','dur1',lang);
-    s('#fduracion option:nth-child(2)','dur2',lang);
-    s('#fduracion option:nth-child(3)','dur3',lang);
-    s('#fduracion option:nth-child(4)','dur4',lang);
-    s('label[for="finvitados"]','lbl-invitados',lang);
-    s('#finvitados','ph-invitados',lang,'p');
-    s('label[for="fvacunas"]','lbl-vacunas',lang);
-    s('#fvacunas option:nth-child(1)','opt-vac-sel',lang);
-    s('#fvacunas option:nth-child(2)','opt-vac-si',lang);
-    s('#fvacunas option:nth-child(3)','opt-vac-no',lang);
     s('label[for="fdesc"]','lbl-desc',lang);
     s('#fn','ph-nombre',lang,'p');
     s('#fperro','ph-perro',lang,'p');
@@ -2821,18 +2614,8 @@ function enviar(e) {
     s('.footer-col:nth-child(3) h4','foot-cont',lang);
     s('.footer-bottom span:nth-child(1)','foot-copy',lang);
     s('.footer-bottom span:nth-child(2)','foot-love',lang);
-    s('.junio-tag','junio-tag',lang);
-    s('.junio-title','junio-title',lang);
-    s('.junio-sub','junio-sub',lang);
-    s('#junioTerminaLbl','junio-termina',lang);
-    s('.junio-cta-btn','junio-cta',lang);
-    s('#jcDaysLbl','jc-dias',lang); s('#jcHoursLbl','jc-horas',lang);
-    s('#jcMinsLbl','jc-mins',lang); s('#jcSegsLbl','jc-segs',lang);
-    s('#jpLbl1','jp-lbl1',lang); s('#jpLbl2','jp-lbl2',lang); s('#jpLbl3','jp-lbl3',lang);
-    s('#jpLbl4','jp-lbl4',lang); s('#jpLbl5','jp-lbl5',lang);
     var bub = document.querySelector('.wa-bubble-text');
-    if (bub) bub.innerHTML = '<strong>Helena</strong> — ' + (tr[lang]['bubble-hi']||'') + '<br>' + tr[lang]['bubble'];
-    if (typeof window._toggleFechas === 'function') window._toggleFechas();
+    if (bub) bub.innerHTML = '<strong>Helena</strong> — ¡Hola! 👋<br>' + tr[lang]['bubble'];
     var flag = document.getElementById('langFlag');
     var langText = document.getElementById('langText');
     if (flag) { flag.src = lang==='es' ? 'https://flagcdn.com/20x15/gb.png' : 'https://flagcdn.com/20x15/es.png'; flag.alt = lang==='es' ? 'EN' : 'ES'; }
@@ -2850,54 +2633,6 @@ function enviar(e) {
 </script>
 
 <script>
-(function(){
-  var srcs = ['images/anfitrion.jpeg','images/anfitrion1.jpeg','images/anfitrion2.jpeg','images/anfitrion3.jpeg','images/anfitrion4.jpeg'];
-  var i = 0;
-  var imgA = document.getElementById('anfitrion-img-a');
-  var imgB = document.getElementById('anfitrion-img-b');
-  if(!imgA || !imgB) return;
-  srcs.forEach(function(s){ new Image().src = s; });
-  imgA.style.opacity = '1';
-  imgB.style.opacity = '0';
-  var showA = true;
-  var busy = false;
-
-  function rafFade(incoming, outgoing, done) {
-    var start = null;
-    var dur = 800;
-    function step(ts) {
-      if (!start) start = ts;
-      var p = Math.min((ts - start) / dur, 1);
-      var ease = p < 0.5 ? 2*p*p : -1+(4-2*p)*p;
-      incoming.style.opacity = ease;
-      outgoing.style.opacity = 1 - ease;
-      if (p < 1) { requestAnimationFrame(step); } else { done(); }
-    }
-    requestAnimationFrame(step);
-  }
-
-  setInterval(function(){
-    if (busy) return;
-    busy = true;
-    var next = (i + 1) % srcs.length;
-    var incoming = showA ? imgB : imgA;
-    var outgoing = showA ? imgA : imgB;
-    incoming.src = srcs[next];
-    var go = function(){
-      rafFade(incoming, outgoing, function(){
-        showA = !showA;
-        i = next;
-        busy = false;
-      });
-    };
-    if (typeof incoming.decode === 'function') {
-      incoming.decode().then(go).catch(go);
-    } else {
-      go();
-    }
-  }, 4000);
-})();
-
 function openModal(id) {
   document.getElementById(id).classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -2912,63 +2647,6 @@ function closeModalOutside(e, id) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => { m.classList.remove('open'); document.body.style.overflow = ''; });
 });
-</script>
-
-<!-- Pixel tracking + CAPI -->
-<script>
-var CAPI_URL = 'https://casitadesimba.vercel.app/api/track';
-var SITE_URL = 'https://lacasitadesimba.es/';
-
-function _genId() { return Date.now() + '_' + Math.random().toString(36).slice(2,8); }
-function _getCookie(n) { var m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)'); return m ? m.pop() : ''; }
-
-function sendCAPI(event_name, custom_data, event_id) {
-  fetch(CAPI_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      event_name: event_name,
-      event_id: event_id,
-      event_source_url: SITE_URL,
-      fbp: _getCookie('_fbp'),
-      fbc: _getCookie('_fbc'),
-      custom_data: custom_data || {}
-    })
-  }).catch(function(){});
-}
-
-function _trackPair(event_name, custom_data) {
-  var id = _genId();
-  fbq('track', event_name, custom_data || {}, { eventID: id });
-  sendCAPI(event_name, custom_data, id);
-}
-
-// PageView CAPI
-(function() {
-  var id = _genId();
-  fbq('track', 'PageView', {}, { eventID: id });
-  sendCAPI('PageView', {}, id);
-})();
-
-// Clics en WhatsApp y teléfono → Contact
-document.addEventListener('click', function(e) {
-  var el = e.target.closest('a');
-  if (!el) return;
-  var href = el.getAttribute('href') || '';
-  if (href.indexOf('wa.me') !== -1) {
-    _trackPair('Contact', { content_name: 'WhatsApp' });
-  } else if (href.indexOf('tel:') === 0) {
-    _trackPair('Contact', { content_name: 'Telefono' });
-  }
-});
-
-// Formulario → Lead
-var formBtn = document.querySelector('.btn-form');
-if (formBtn) {
-  formBtn.addEventListener('click', function() {
-    _trackPair('Lead', {});
-  });
-}
 </script>
 </body>
 </html>
