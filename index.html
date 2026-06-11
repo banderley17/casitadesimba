@@ -1502,6 +1502,24 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
 .footer-legal a { color:rgba(255,255,255,.55); font-size:.78rem; text-decoration:none; transition:color .2s; }
 .footer-legal a:hover { color:white; }
 </style>
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '4281036645446757');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel -->
 </head>
 <body>
 
@@ -2895,6 +2913,28 @@ function closeModalOutside(e, id) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => { m.classList.remove('open'); document.body.style.overflow = ''; });
 });
+</script>
+
+<!-- Pixel tracking -->
+<script>
+document.addEventListener('click', function(e) {
+  var el = e.target.closest('a');
+  if (!el) return;
+  var href = el.getAttribute('href') || '';
+  if (href.indexOf('wa.me') !== -1) {
+    fbq('track', 'Contact', { content_name: 'WhatsApp' });
+  } else if (href.indexOf('tel:') === 0) {
+    fbq('track', 'Contact', { content_name: 'Telefono' });
+  }
+});
+
+// Formulario → Lead cuando envían por WhatsApp
+var formBtn = document.querySelector('.btn-form');
+if (formBtn) {
+  formBtn.addEventListener('click', function() {
+    fbq('track', 'Lead');
+  });
+}
 </script>
 </body>
 </html>
