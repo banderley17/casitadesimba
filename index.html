@@ -1513,6 +1513,35 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
 .footer-legal { display:flex; gap:1.2rem; flex-wrap:wrap; justify-content:center; }
 .footer-legal a { color:rgba(255,255,255,.55); font-size:.78rem; text-decoration:none; transition:color .2s; }
 .footer-legal a:hover { color:white; }
+
+/* ── PANEL ADMIN ── */
+#admin-panel {
+  display:none; position:fixed; bottom:1.5rem; right:1.5rem; z-index:99999;
+  background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);
+  border:1px solid rgba(255,255,255,.12); border-radius:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5); padding:1.4rem 1.6rem 1.2rem;
+  min-width:310px; font-family:inherit; color:white;
+  animation:panelIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes panelIn { from{opacity:0;transform:translateY(20px) scale(.95)} to{opacity:1;transform:none} }
+#admin-panel.visible { display:block; }
+.ap-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
+.ap-title { font-size:.95rem; font-weight:800; color:white; letter-spacing:.02em; }
+.ap-close { background:rgba(255,255,255,.1); border:none; color:white; width:26px; height:26px; border-radius:50%; cursor:pointer; font-size:.85rem; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+.ap-close:hover { background:rgba(255,255,255,.25); }
+.ap-table { width:100%; border-collapse:collapse; }
+.ap-table th { font-size:.68rem; font-weight:700; color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.08em; padding:.3rem .5rem; text-align:center; }
+.ap-table th:first-child { text-align:left; }
+.ap-table td { padding:.45rem .5rem; text-align:center; font-size:.9rem; font-weight:700; border-top:1px solid rgba(255,255,255,.06); }
+.ap-table td:first-child { text-align:left; font-size:.82rem; font-weight:500; color:rgba(255,255,255,.75); }
+.ap-pv td:first-child::before { content:'👁 '; }
+.ap-ct td:first-child::before { content:'💬 '; }
+.ap-ld td:first-child::before { content:'📝 '; }
+.ap-num { color:#a78bfa; }
+.ap-footer { margin-top:.8rem; font-size:.68rem; color:rgba(255,255,255,.3); text-align:right; }
+.ap-loading { text-align:center; padding:1rem; color:rgba(255,255,255,.4); font-size:.85rem; }
+.ap-refresh { background:none; border:1px solid rgba(255,255,255,.15); color:rgba(255,255,255,.5); border-radius:8px; padding:.25rem .7rem; font-size:.7rem; cursor:pointer; transition:all .2s; }
+.ap-refresh:hover { border-color:rgba(255,255,255,.4); color:white; }
 </style>
 
 <!-- Meta Pixel -->
@@ -2991,7 +3020,75 @@ if (formBtn) {
     _trackPair('Lead', {});
   });
 }
+
+// ── PANEL ADMIN ──
+(function() {
+  if (!new URLSearchParams(location.search).has('panel')) return;
+
+  var panel = document.getElementById('admin-panel');
+  if (!panel) return;
+  panel.classList.add('visible');
+
+  function fmt(n) { return n >= 1000 ? (n/1000).toFixed(1)+'k' : n; }
+
+  function render(s) {
+    document.getElementById('ap-pv-h').textContent = fmt(s.hoy.pv);
+    document.getElementById('ap-pv-s').textContent = fmt(s.semana.pv);
+    document.getElementById('ap-pv-m').textContent = fmt(s.mes.pv);
+    document.getElementById('ap-ct-h').textContent = fmt(s.hoy.ct);
+    document.getElementById('ap-ct-s').textContent = fmt(s.semana.ct);
+    document.getElementById('ap-ct-m').textContent = fmt(s.mes.ct);
+    document.getElementById('ap-ld-h').textContent = fmt(s.hoy.ld);
+    document.getElementById('ap-ld-s').textContent = fmt(s.semana.ld);
+    document.getElementById('ap-ld-m').textContent = fmt(s.mes.ld);
+    document.getElementById('ap-body').style.display = '';
+    document.getElementById('ap-loading').style.display = 'none';
+    document.getElementById('ap-date').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+  }
+
+  function load() {
+    document.getElementById('ap-loading').style.display = '';
+    document.getElementById('ap-body').style.display = 'none';
+    fetch('https://casitadesimba.vercel.app/api/stats?t=simba2026')
+      .then(function(r){ return r.json(); })
+      .then(render)
+      .catch(function(){ document.getElementById('ap-loading').textContent = 'Error al cargar datos'; });
+  }
+
+  document.getElementById('ap-close').addEventListener('click', function(){ panel.classList.remove('visible'); });
+  document.getElementById('ap-btn-refresh').addEventListener('click', load);
+  load();
+  setInterval(load, 60000);
+})();
 </script>
+
+<!-- PANEL ADMIN (visible solo con ?panel en la URL) -->
+<div id="admin-panel" role="dialog" aria-label="Panel de estadísticas">
+  <div class="ap-header">
+    <span class="ap-title">📊 La Casita · Panel</span>
+    <button class="ap-close" id="ap-close" aria-label="Cerrar">✕</button>
+  </div>
+  <div id="ap-loading" class="ap-loading">Cargando estadísticas…</div>
+  <div id="ap-body" style="display:none">
+    <table class="ap-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Hoy</th>
+          <th>7 días</th>
+          <th>30 días</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="ap-pv"><td>Visitas</td><td class="ap-num" id="ap-pv-h">—</td><td class="ap-num" id="ap-pv-s">—</td><td class="ap-num" id="ap-pv-m">—</td></tr>
+        <tr class="ap-ct"><td>WhatsApp</td><td class="ap-num" id="ap-ct-h">—</td><td class="ap-num" id="ap-ct-s">—</td><td class="ap-num" id="ap-ct-m">—</td></tr>
+        <tr class="ap-ld"><td>Formularios</td><td class="ap-num" id="ap-ld-h">—</td><td class="ap-num" id="ap-ld-s">—</td><td class="ap-num" id="ap-ld-m">—</td></tr>
+      </tbody>
+    </table>
+    <div class="ap-footer"><span id="ap-date"></span> &nbsp;·&nbsp; <button class="ap-refresh" id="ap-btn-refresh">↻ Actualizar</button></div>
+  </div>
+</div>
+
 </body>
 </html>
 

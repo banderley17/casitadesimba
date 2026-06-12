@@ -44,6 +44,22 @@ export default async function handler(req) {
       }
     );
     const result = await fb.json();
+
+    // Incrementar contadores del panel de estadísticas
+    const kvUrl = process.env.UPSTASH_REDIS_REST_URL;
+    const kvTok = process.env.UPSTASH_REDIS_REST_TOKEN;
+    if (kvUrl && kvTok) {
+      const prefix = body.event_name === 'PageView' ? 'pv'
+                   : body.event_name === 'Contact'  ? 'ct'
+                   : body.event_name === 'Lead'     ? 'ld' : null;
+      if (prefix) {
+        const date = new Date().toISOString().slice(0, 10);
+        fetch(`${kvUrl}/incr/${prefix}:${date}`, {
+          headers: { Authorization: `Bearer ${kvTok}` },
+        }).catch(() => {});
+      }
+    }
+
     return new Response(JSON.stringify(result), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
