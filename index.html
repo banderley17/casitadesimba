@@ -1582,6 +1582,17 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
 .ap-cl-empty { text-align:center; color:rgba(255,255,255,.3); font-size:.8rem; padding:1.2rem 0; }
 .ap-export-btn { width:100%; margin-top:.7rem; background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.3); color:#34d399; border-radius:10px; padding:.5rem; font-size:.78rem; font-weight:700; cursor:pointer; transition:all .2s; flex-shrink:0; }
 .ap-export-btn:hover { background:rgba(52,211,153,.2); }
+/* ── ACCESO ADMIN ── */
+#admin-access {
+  display:none; position:fixed; bottom:5.5rem; left:1rem; z-index:9990;
+  width:34px; height:34px; border-radius:50%;
+  background:rgba(124,58,237,.18); border:1px solid rgba(124,58,237,.35);
+  backdrop-filter:blur(6px); cursor:pointer; text-decoration:none;
+  align-items:center; justify-content:center; font-size:.95rem;
+  transition:all .3s; opacity:.55;
+}
+#admin-access:hover { opacity:1; background:rgba(124,58,237,.5); transform:scale(1.1); }
+#admin-access.visible { display:flex; }
 </style>
 
 <!-- Meta Pixel -->
@@ -3061,6 +3072,16 @@ if (formBtn) {
   });
 }
 
+// ── ACCESO ADMIN ──
+(function() {
+  var hasParam = new URLSearchParams(location.search).has('panel');
+  if (hasParam) localStorage.setItem('ap_auth', '1');
+  if (localStorage.getItem('ap_auth') === '1') {
+    var btn = document.getElementById('admin-access');
+    if (btn) btn.classList.add('visible');
+  }
+})();
+
 // ── PANEL ADMIN ──
 window.addEventListener('load', function() {
 (function() {
@@ -3216,6 +3237,9 @@ window.addEventListener('load', function() {
 })();
 }); // window load
 </script>
+
+<!-- ACCESO ADMIN (visible solo en dispositivos autorizados) -->
+<a href="/admin.html" id="admin-access" title="Admin" aria-label="Panel admin">🐾</a>
 
 <!-- PANEL ADMIN (visible solo con ?panel en la URL) -->
 <div id="admin-panel" role="dialog" aria-label="Panel administración La Casita">
