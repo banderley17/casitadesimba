@@ -1079,6 +1079,7 @@ header.scrolled .nav-social svg { fill:var(--oscuro); }
 header.scrolled .nav-social a.ig:hover { background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); border-color:transparent; }
 header.scrolled .nav-social a.gm:hover { background:#EA4335; border-color:#EA4335; }
 header.scrolled .nav-social a.tk:hover { background:#010101; border-color:#010101; }
+header.scrolled .nav-social a.fb:hover { background:#1877F2; border-color:#1877F2; }
 header.scrolled .nav-social a:hover svg { fill:white; }
 /* Cuando el menú móvil está abierto, eliminar backdrop-filter para que el nav.open
    pueda cubrir toda la pantalla con position:fixed (backdrop-filter crea containing block) */
@@ -1126,6 +1127,11 @@ header.menu-open.scrolled {
 .footer-social a.gm:hover { box-shadow:0 10px 28px rgba(234,67,53,.45); }
 .footer-social a.tk:hover { box-shadow:0 10px 28px rgba(105,201,229,.4); }
 .footer-social a.yt:hover { box-shadow:0 10px 28px rgba(255,0,0,.6); }
+.footer-social a.fb {
+  background:#1877F2;
+  box-shadow:0 4px 14px rgba(24,119,242,.35);
+}
+.footer-social a.fb:hover { box-shadow:0 10px 28px rgba(24,119,242,.6); }
 
 /* ── WHATSAPP BUBBLE ── */
 .wa-bubble {
@@ -1306,6 +1312,12 @@ header.menu-open.scrolled {
   nav.open .nav-social a.tk:hover {
     box-shadow:0 14px 32px rgba(0,0,0,.6), 0 0 18px rgba(105,201,229,.35) !important;
   }
+  /* Facebook - azul oficial */
+  nav.open .nav-social a.fb {
+    background:#1877F2;
+    box-shadow:0 6px 20px rgba(24,119,242,.4);
+  }
+  nav.open .nav-social a.fb:hover { box-shadow:0 14px 32px rgba(24,119,242,.7) !important; }
   nav.open .nav-social svg:not(.gmail-svg) { width:26px; height:26px; fill:white; }
   nav.open .nav-social svg.gmail-svg { width:26px; height:26px; }
   .nav-social { display:none; }
@@ -1541,6 +1553,9 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         </a>
         <a href="https://tiktok.com/@la_casita_de_simba" target="_blank" rel="noopener noreferrer" class="tk" aria-label="TikTok">
           <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61590799738148" target="_blank" rel="noopener noreferrer" class="fb" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
         </a>
       </div>
     </nav>
@@ -2025,6 +2040,9 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         </a>
         <a href="https://tiktok.com/@la_casita_de_simba" target="_blank" rel="noopener noreferrer" class="tk" aria-label="TikTok">
           <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61590799738148" target="_blank" rel="noopener noreferrer" class="fb" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
         </a>
       </div>
     </div>
