@@ -1828,7 +1828,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         <h3 class="prec1-h3" style="color:white;">Bono de 7 días</h3>
         <div class="precio-num prec3-num"><span>€</span>199</div>
         <div class="precio-por prec3-por">7 días</div>
-        <div style="font-size:.8rem;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:2px;">= solo <strong style="font-size:1rem;">€28.43/día</strong> 🤯</div>
+        <div class="bono-dia-solo" style="font-size:.8rem;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:2px;">= solo <strong style="font-size:1rem;">€28.43/día</strong> 🤯</div>
         <div class="perro2-bono" style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro solo <strong>€139</strong> (−30%)</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
@@ -2493,7 +2493,8 @@ function enviar(e) {
       
       'prec3-h3':'Eventos y Cumpleaños','prec3-num':'A consultar','prec3-por':'pack personalizado','prec3-li1':'Decoración incluida','prec3-li2':'Tarta perruna','prec3-li3':'Sesión de fotos','prec3-li4':'Invitados peludos','prec3-cta':'Consultar',
       'prec4-h3':'Bono de 7 días','prec4-por':'7 días','prec4-li1':'7 días a tu elección','prec4-li2':'Horario flexible','prec4-li3':'Chuches y snacks incluidos','prec4-li4':'Fotos y vídeos diarios','prec4-cta':'Consultar',
-      'prec5-h3':'Bono Mensual','prec5-por':'20 días al mes','prec5-li1':'Días adaptados a tu rutina','prec5-li2':'Precio especial habitual','prec5-li3':'Chuches y snacks incluidos','prec5-li4':'Fotos y vídeos diarios','prec5-cta':'Consultar',
+      'bono-dia-solo':'= solo <strong style="font-size:1rem;">€28.43/día</strong> 🤯',
+      'prec5-h3':'Bono Mensual','prec5-num':'A consultar','prec5-por':'20 días al mes','prec5-li1':'Días adaptados a tu rutina','prec5-li2':'Precio especial habitual','prec5-li3':'Chuches y snacks incluidos','prec5-li4':'Fotos y vídeos diarios','prec5-cta':'Consultar',
       'tbl-desde':'desde',
       'tbl-ttl':'📋 Tarifa Estándar','tbl-th1':'Servicio','tbl-th2':'Precio','tbl-th3':'Incluye',
       'tbl-s1n':'Estancia Diurna','tbl-s1u':'/día','tbl-s1d':'8h–20h · comida · fotos','tbl-shn':'Estancia por Horas','tbl-shu':'/hora','tbl-shd':'Flexible · comida · fotos',
@@ -2595,7 +2596,8 @@ function enviar(e) {
       
       'prec3-h3':'Events & Birthdays','prec3-num':'Ask for price','prec3-por':'personalised pack','prec3-li1':'Decoration included','prec3-li2':'Dog-friendly cake','prec3-li3':'Photo session','prec3-li4':'Furry guests','prec3-cta':'Enquire',
       'prec4-h3':'Weekly Pack','prec4-por':'5 full days','prec4-li1':'5 days of your choice','prec4-li2':'Flexible hours','prec4-li3':'Food included','prec4-li4':'Daily photos & videos','prec4-cta':'Enquire',
-      'prec5-h3':'Monthly Pack','prec5-por':'20 days per month','prec5-li1':'Days adapted to your routine','prec5-li2':'Special regular rate','prec5-li3':'Food included','prec5-li4':'Daily photos & videos','prec5-cta':'Enquire',
+      'bono-dia-solo':'= only <strong style="font-size:1rem;">€28.43/day</strong> 🤯',
+      'prec5-h3':'Monthly Pack','prec5-num':'Ask for price','prec5-por':'20 days per month','prec5-li1':'Days adapted to your routine','prec5-li2':'Special regular rate','prec5-li3':'Food included','prec5-li4':'Daily photos & videos','prec5-cta':'Enquire',
       'tbl-desde':'from',
       'tbl-ttl':'📋 Standard Rates','tbl-th1':'Service','tbl-th2':'Price','tbl-th3':'Includes',
       'tbl-s1n':'Day Care','tbl-s1u':'/day','tbl-s1d':'8am–8pm · food · photos',
@@ -2763,7 +2765,9 @@ function enviar(e) {
     s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(2)','prec5-li2',lang);
     s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(3)','prec5-li3',lang);
     s('.precios-grid .precio-card:nth-child(4) .precio-lista li:nth-child(4)','prec5-li4',lang);
+    s('.precios-grid .precio-card:nth-child(4) .precio-num','prec5-num',lang);
     s('.precios-grid .precio-card:nth-child(4) .precio-cta','prec5-cta',lang);
+    s('.bono-dia-solo','bono-dia-solo',lang,'h');
     s('.tarifa-std-ttl','tbl-ttl',lang);
     s('.tbl-th1','tbl-th1',lang);
     s('.tbl-th2','tbl-th2',lang);
