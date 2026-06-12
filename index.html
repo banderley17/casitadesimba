@@ -3022,6 +3022,7 @@ if (formBtn) {
 }
 
 // ── PANEL ADMIN ──
+window.addEventListener('load', function() {
 (function() {
   if (!new URLSearchParams(location.search).has('panel')) return;
 
@@ -3060,6 +3061,7 @@ if (formBtn) {
   load();
   setInterval(load, 60000);
 })();
+}); // window load
 </script>
 
 <!-- PANEL ADMIN (visible solo con ?panel en la URL) -->
