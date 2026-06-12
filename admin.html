@@ -147,13 +147,21 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .cl-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.9rem}
 .cl-empty-icon{font-size:2rem;margin-bottom:.5rem}
 
-/* Exportar */
+/* Botones de acción */
+.action-row{display:flex;gap:.6rem;margin-top:.7rem}
+.btn-sync{
+  flex:2;background:var(--purple);border:none;color:white;
+  border-radius:12px;padding:.75rem;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;
+}
+.btn-sync:hover{background:var(--purple2)}
+.btn-sync:disabled{opacity:.5;cursor:not-allowed}
 .btn-export{
-  width:100%;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);
-  color:var(--green);border-radius:12px;padding:.75rem;font-size:.85rem;font-weight:700;
+  flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border);
+  color:var(--muted);border-radius:12px;padding:.75rem;font-size:.82rem;font-weight:700;
   cursor:pointer;transition:all .2s;
 }
-.btn-export:hover{background:rgba(16,185,129,.2)}
+.btn-export:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.sync-status{font-size:.78rem;text-align:center;margin-top:.5rem;min-height:1.2em;color:var(--muted)}
 
 /* Loading / toast */
 .toast{
@@ -291,7 +299,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <div class="cl-empty"><div class="cl-empty-icon">🐕</div>Sin contactos aún</div>
       </div>
 
-      <button class="btn-export" id="btn-export">⬇ Exportar CSV para Meta Ads</button>
+      <div class="action-row">
+        <button class="btn-sync" id="btn-sync">🔄 Sincronizar con Meta</button>
+        <button class="btn-export" id="btn-export" title="Descarga CSV como respaldo">⬇ CSV</button>
+      </div>
+      <div class="sync-status" id="sync-status"></div>
     </div>
 
   </div><!-- /dash-content -->
@@ -479,7 +491,32 @@ document.getElementById('f-save').addEventListener('click', function(){
   }).catch(function(){ btn.textContent='Error — reintenta'; btn.disabled=false; });
 });
 
-// Exportar CSV
+// Sincronizar con Meta
+document.getElementById('btn-sync').addEventListener('click', function(){
+  var to = filterVal==='todos' ? clients : clients.filter(function(c){return c.estado===filterVal;});
+  if (!to.length){ showToast('Sin contactos para sincronizar'); return; }
+  var btn = this; var status = document.getElementById('sync-status');
+  btn.disabled = true;
+  btn.textContent = '⏳ Sincronizando…';
+  status.textContent = '';
+  fetch(API+'/sync-audience?t='+T+'&filter='+filterVal, { method:'POST' })
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d.ok) {
+        status.style.color = 'var(--green)';
+        status.textContent = d.msg + ' · Público ID: ' + d.audienceId;
+        showToast(d.msg);
+      } else {
+        status.style.color = 'var(--red)';
+        status.textContent = '❌ ' + d.msg;
+        showToast('❌ ' + d.msg);
+      }
+    })
+    .catch(function(e){ status.style.color='var(--red)'; status.textContent='Error de conexión'; showToast('Error de conexión'); })
+    .finally(function(){ btn.disabled=false; btn.textContent='🔄 Sincronizar con Meta'; });
+});
+
+// Exportar CSV (respaldo)
 document.getElementById('btn-export').addEventListener('click', function(){
   var to = filterVal==='todos' ? clients : clients.filter(function(c){return c.estado===filterVal;});
   if (!to.length){ showToast('Sin contactos para exportar'); return; }
