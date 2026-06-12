@@ -3077,8 +3077,10 @@ if (formBtn) {
   var hasParam = new URLSearchParams(location.search).has('panel');
   if (hasParam) localStorage.setItem('ap_auth', '1');
   if (localStorage.getItem('ap_auth') === '1') {
-    var btn = document.getElementById('admin-access');
-    if (btn) btn.classList.add('visible');
+    document.addEventListener('DOMContentLoaded', function() {
+      var btn = document.getElementById('admin-access');
+      if (btn) btn.classList.add('visible');
+    });
   }
 })();
 
