@@ -1584,14 +1584,13 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
 .ap-export-btn:hover { background:rgba(52,211,153,.2); }
 /* ── ACCESO ADMIN ── */
 #admin-access {
-  display:none; width:24px; height:24px; border-radius:50%;
+  display:flex; width:24px; height:24px; border-radius:50%;
   background:rgba(124,58,237,.1); border:1px solid rgba(124,58,237,.18);
   cursor:pointer; text-decoration:none;
   align-items:center; justify-content:center; font-size:.65rem;
   transition:all .3s; opacity:.35; margin:0 auto;
 }
 #admin-access:hover { opacity:1; background:rgba(124,58,237,.4); }
-#admin-access.visible { display:flex; }
 </style>
 
 <!-- Meta Pixel -->
@@ -3071,17 +3070,6 @@ if (formBtn) {
   });
 }
 
-// ── ACCESO ADMIN ──
-(function() {
-  var hasParam = new URLSearchParams(location.search).has('panel');
-  if (hasParam) localStorage.setItem('ap_auth', '1');
-  if (localStorage.getItem('ap_auth') === '1') {
-    document.addEventListener('DOMContentLoaded', function() {
-      var btn = document.getElementById('admin-access');
-      if (btn) btn.classList.add('visible');
-    });
-  }
-})();
 
 // ── PANEL ADMIN ──
 window.addEventListener('load', function() {
