@@ -157,10 +157,16 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .btn-sync:disabled{opacity:.5;cursor:not-allowed}
 .btn-export{
   flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border);
-  color:var(--muted);border-radius:12px;padding:.75rem;font-size:.82rem;font-weight:700;
-  cursor:pointer;transition:all .2s;
+  color:var(--muted);border-radius:12px;padding:.75rem;font-size:.8rem;font-weight:700;
+  cursor:pointer;transition:all .2s;text-align:center;
 }
 .btn-export:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.btn-excel{
+  flex:1;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);
+  color:#4ade80;border-radius:12px;padding:.75rem;font-size:.8rem;font-weight:700;
+  cursor:pointer;transition:all .2s;text-align:center;
+}
+.btn-excel:hover{background:rgba(34,197,94,.18);color:#86efac}
 .sync-status{font-size:.78rem;text-align:center;margin-top:.5rem;min-height:1.2em;color:var(--muted)}
 
 /* Loading / toast */
@@ -301,7 +307,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 
       <div class="action-row">
         <button class="btn-sync" id="btn-sync">🔄 Sincronizar con Meta</button>
-        <button class="btn-export" id="btn-export" title="Descarga CSV como respaldo">⬇ CSV</button>
+        <button class="btn-excel" id="btn-excel">📊 Excel</button>
+        <button class="btn-export" id="btn-export" title="CSV para Meta Ads">⬇ CSV</button>
       </div>
       <div class="sync-status" id="sync-status"></div>
     </div>
@@ -533,6 +540,49 @@ document.getElementById('btn-export').addEventListener('click', function(){
   a.click();
   showToast('⬇ CSV descargado — '+to.length+' contactos');
 });
+
+// Exportar Excel (.xlsx)
+document.getElementById('btn-excel').addEventListener('click', function(){
+  var to = filterVal==='todos' ? clients : clients.filter(function(c){return c.estado===filterVal;});
+  if (!to.length){ showToast('Sin contactos para exportar'); return; }
+
+  if (typeof XLSX === 'undefined') {
+    showToast('Cargando librería Excel…');
+    var s = document.createElement('script');
+    s.src = 'https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js';
+    s.onload = function(){ doExcelExport(to); };
+    document.head.appendChild(s);
+  } else {
+    doExcelExport(to);
+  }
+});
+
+function doExcelExport(rows) {
+  var data = rows.map(function(c){
+    return {
+      'Nombre'  : c.nombre   || '',
+      'Teléfono': c.tel      || '',
+      'Servicio': c.servicio || '',
+      'Estado'  : c.estado === 'cliente' ? 'Cliente' : 'Consulta',
+      'Fecha'   : c.fecha    || '',
+      'Notas'   : c.notas    || '',
+    };
+  });
+
+  var ws = XLSX.utils.json_to_sheet(data);
+
+  // Ancho de columnas
+  ws['!cols'] = [
+    {wch:22}, {wch:16}, {wch:20}, {wch:12}, {wch:12}, {wch:35}
+  ];
+
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Clientes');
+
+  var filename = 'casita_clientes_' + new Date().toISOString().slice(0,10) + '.xlsx';
+  XLSX.writeFile(wb, filename);
+  showToast('📊 Excel descargado — ' + rows.length + ' contactos');
+}
 
 // Toast
 function showToast(msg){
