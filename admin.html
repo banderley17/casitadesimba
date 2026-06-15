@@ -263,14 +263,16 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <span class="cl-badge cliente">✅ <span class="cl-cnt" id="cnt-cliente">0</span> ventas</span>
       </div>
 
-      <button class="btn-new" id="btn-new">＋ Añadir contacto</button>
+      <button class="btn-new" id="btn-new" style="display:none">＋ Añadir contacto</button>
 
       <!-- Formulario -->
-      <div class="cl-form" id="cl-form">
+      <div class="cl-form open" id="cl-form">
         <label>Teléfono *</label>
-        <input type="tel" id="f-tel" placeholder="612 345 678" />
+        <input type="tel" id="f-tel" placeholder="+34 612 345 678" value="+34 6" />
         <label>Nombre <span style="font-weight:400;opacity:.5">(opcional)</span></label>
         <input type="text" id="f-nombre" placeholder="Nombre del cliente" autocomplete="off" />
+        <label>Mascota</label>
+        <input type="text" id="f-mascota" placeholder="Nombre del perro" autocomplete="off" />
         <label>Servicio</label>
         <select id="f-servicio">
           <option value="">Seleccionar servicio…</option>
@@ -420,7 +422,7 @@ function renderClients() {
       '<div class="cl-avatar">'+initial(c.nombre)+'</div>'+
       '<div class="cl-info">'+
         '<div class="cl-name">'+esc(c.nombre)+'</div>'+
-        '<div class="cl-meta">'+esc(c.tel||'Sin teléfono')+' · '+esc(c.servicio||'Sin servicio')+'</div>'+
+        '<div class="cl-meta">'+esc(c.tel||'Sin teléfono')+(c.mascota?' · 🐶 '+esc(c.mascota):'')+(c.servicio?' · '+esc(c.servicio):'')+'</div>'+
         (c.notas?'<div class="cl-notes">'+esc(c.notas)+'</div>':'')+
       '</div>'+
       '<div class="cl-right">'+
@@ -469,7 +471,8 @@ document.getElementById('f-cancel').addEventListener('click', closeForm);
 function closeForm(){
   document.getElementById('cl-form').classList.remove('open');
   document.getElementById('btn-new').style.display = '';
-  ['f-tel','f-nombre','f-notas'].forEach(function(id){document.getElementById(id).value='';});
+  ['f-nombre','f-mascota','f-notas'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('f-tel').value = '+34 6';
   document.getElementById('f-servicio').value = '';
   setEstado('consulta');
 }
@@ -490,6 +493,7 @@ document.getElementById('f-save').addEventListener('click', function(){
   fetch(API+'/clients?t='+T,{
     method:'POST', headers:{'Content-Type':'application/json'},
     body:JSON.stringify({nombre:nombre, tel:tel,
+      mascota:document.getElementById('f-mascota').value.trim(),
       servicio:document.getElementById('f-servicio').value, estado:estadoSel,
       notas:document.getElementById('f-notas').value.trim()})
   }).then(function(){
@@ -563,8 +567,9 @@ function doExcelExport(rows) {
     return {
       'Nombre'  : c.nombre   || '',
       'Teléfono': c.tel      || '',
+      'Mascota' : c.mascota  || '',
       'Servicio': c.servicio || '',
-      'Estado'  : c.estado === 'cliente' ? 'Cliente' : 'Consulta',
+      'Estado'  : c.estado === 'cliente' ? 'Venta' : 'Consulta',
       'Fecha'   : c.fecha    || '',
       'Notas'   : c.notas    || '',
     };
@@ -574,7 +579,7 @@ function doExcelExport(rows) {
 
   // Ancho de columnas
   ws['!cols'] = [
-    {wch:22}, {wch:16}, {wch:20}, {wch:12}, {wch:12}, {wch:35}
+    {wch:22}, {wch:16}, {wch:16}, {wch:20}, {wch:12}, {wch:12}, {wch:35}
   ];
 
   var wb = XLSX.utils.book_new();
