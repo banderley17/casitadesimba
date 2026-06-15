@@ -3043,11 +3043,16 @@ function _trackPair(event_name, custom_data) {
   sendCAPI(event_name, custom_data, id);
 }
 
-// PageView CAPI
+// PageView CAPI — espera a que fbevents.js cargue y setee _fbp antes de enviar
+function _waitFbp(cb, tries) {
+  var fbp = _getCookie('_fbp');
+  if (fbp || (tries || 0) >= 15) { cb(fbp); return; }
+  setTimeout(function(){ _waitFbp(cb, (tries||0)+1); }, 200);
+}
 (function() {
   var id = _genId();
   fbq('track', 'PageView', {}, { eventID: id });
-  sendCAPI('PageView', {}, id);
+  _waitFbp(function(){ sendCAPI('PageView', {}, id); });
 })();
 
 // Clics en WhatsApp y teléfono → Contact
