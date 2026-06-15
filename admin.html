@@ -260,17 +260,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <div id="section-cl" style="display:none">
       <div class="cl-summary">
         <span class="cl-badge consulta">💬 <span class="cl-cnt" id="cnt-consulta">0</span> consultas</span>
-        <span class="cl-badge cliente">✅ <span class="cl-cnt" id="cnt-cliente">0</span> clientes</span>
+        <span class="cl-badge cliente">✅ <span class="cl-cnt" id="cnt-cliente">0</span> ventas</span>
       </div>
 
       <button class="btn-new" id="btn-new">＋ Añadir contacto</button>
 
       <!-- Formulario -->
       <div class="cl-form" id="cl-form">
-        <label>Nombre *</label>
-        <input type="text" id="f-nombre" placeholder="Nombre del cliente" autocomplete="off" />
-        <label>Teléfono</label>
+        <label>Teléfono *</label>
         <input type="tel" id="f-tel" placeholder="612 345 678" />
+        <label>Nombre <span style="font-weight:400;opacity:.5">(opcional)</span></label>
+        <input type="text" id="f-nombre" placeholder="Nombre del cliente" autocomplete="off" />
         <label>Servicio</label>
         <select id="f-servicio">
           <option value="">Seleccionar servicio…</option>
@@ -283,7 +283,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <label>Estado</label>
         <div class="estado-row">
           <button class="estado-btn sel-consulta" id="e-consulta">💬 Solo consulta</button>
-          <button class="estado-btn" id="e-cliente">✅ Cliente cerrado</button>
+          <button class="estado-btn" id="e-cliente">✅ Venta cerrada</button>
         </div>
         <label>Notas</label>
         <textarea id="f-notas" placeholder="Raza, edad, horario, observaciones…"></textarea>
@@ -297,7 +297,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       <div class="cl-filters">
         <button class="cl-filter-btn active" data-f="todos">Todos</button>
         <button class="cl-filter-btn" data-f="consulta">Consultas</button>
-        <button class="cl-filter-btn" data-f="cliente">Clientes</button>
+        <button class="cl-filter-btn" data-f="cliente">Ventas</button>
       </div>
 
       <!-- Lista -->
@@ -425,7 +425,7 @@ function renderClients() {
       '</div>'+
       '<div class="cl-right">'+
         '<button class="cl-status-btn '+c.estado+'" data-toggle="'+c.id+'">'+
-          (c.estado==='cliente'?'✅ Cliente':'💬 Consulta')+
+          (c.estado==='cliente'?'✅ Venta':'💬 Consulta')+
         '</button>'+
         '<span class="cl-date">'+esc(c.fecha||'')+'</span>'+
         '<button class="cl-del" data-del="'+c.id+'" title="Eliminar">✕</button>'+
@@ -441,7 +441,7 @@ document.getElementById('cl-list').addEventListener('click', function(e) {
     if (!c) return;
     var nv = c.estado==='cliente'?'consulta':'cliente';
     fetch(API+'/clients?t='+T+'&id='+tid,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({estado:nv})})
-      .then(function(){loadClients(); showToast(nv==='cliente'?'✅ Marcado como cliente':'💬 Marcado como consulta');});
+      .then(function(){loadClients(); showToast(nv==='cliente'?'✅ Marcado como venta':'💬 Marcado como consulta');});
   }
   var did = e.target.getAttribute('data-del');
   if (did && confirm('¿Eliminar este contacto?')) {
@@ -462,14 +462,14 @@ document.querySelectorAll('.cl-filter-btn').forEach(function(b){
 document.getElementById('btn-new').addEventListener('click', function(){
   document.getElementById('cl-form').classList.add('open');
   this.style.display = 'none';
-  document.getElementById('f-nombre').focus();
+  document.getElementById('f-tel').focus();
 });
 document.getElementById('f-cancel').addEventListener('click', closeForm);
 
 function closeForm(){
   document.getElementById('cl-form').classList.remove('open');
   document.getElementById('btn-new').style.display = '';
-  ['f-nombre','f-tel','f-notas'].forEach(function(id){document.getElementById(id).value='';});
+  ['f-tel','f-nombre','f-notas'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('f-servicio').value = '';
   setEstado('consulta');
 }
@@ -483,12 +483,13 @@ function setEstado(v){
 }
 
 document.getElementById('f-save').addEventListener('click', function(){
-  var nombre = document.getElementById('f-nombre').value.trim();
-  if (!nombre){ document.getElementById('f-nombre').focus(); return; }
+  var tel = document.getElementById('f-tel').value.trim();
+  if (!tel){ document.getElementById('f-tel').focus(); return; }
+  var nombre = document.getElementById('f-nombre').value.trim() || tel;
   var btn = this; btn.textContent = 'Guardando…'; btn.disabled = true;
   fetch(API+'/clients?t='+T,{
     method:'POST', headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({nombre:nombre, tel:document.getElementById('f-tel').value.trim(),
+    body:JSON.stringify({nombre:nombre, tel:tel,
       servicio:document.getElementById('f-servicio').value, estado:estadoSel,
       notas:document.getElementById('f-notas').value.trim()})
   }).then(function(){
