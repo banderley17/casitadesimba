@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>La Casita de Simba · Admin</title>
 <meta name="robots" content="noindex, nofollow">
+<script src="https://upload-widget.cloudinary.com/global/all.js" async></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -184,6 +185,36 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
   .stats-grid{grid-template-columns:repeat(3,1fr)}
   .cl-form{padding:1.3rem}
 }
+
+/* ── RESEÑAS ── */
+.rev-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.1rem;margin-bottom:1.2rem;display:flex;flex-direction:column;gap:.7rem}
+.rev-form input,.rev-form textarea{background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:.65rem .9rem;font-size:.9rem;width:100%;}
+.rev-form input:focus,.rev-form textarea:focus{outline:none;border-color:var(--purple)}
+.rev-form input::placeholder,.rev-form textarea::placeholder{color:var(--muted)}
+.rev-form textarea{resize:none;height:80px}
+.rev-form label{font-size:.78rem;font-weight:700;color:var(--muted)}
+.stars-sel{display:flex;gap:.4rem}
+.star-btn{font-size:1.4rem;background:none;border:none;cursor:pointer;opacity:.3;transition:opacity .15s}
+.star-btn.on{opacity:1}
+.btn-add-rev{width:100%;background:var(--purple);border:none;color:white;border-radius:12px;padding:.75rem;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s}
+.btn-add-rev:hover{background:var(--purple2)}
+.btn-add-rev:disabled{opacity:.5;cursor:not-allowed}
+.rev-list{display:flex;flex-direction:column;gap:.7rem}
+.rev-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;position:relative}
+.rev-top{display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem}
+.rev-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;background:var(--purple);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:white;flex-shrink:0;text-transform:uppercase;overflow:hidden}
+.rev-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.rev-meta{flex:1}
+.rev-name{font-size:.92rem;font-weight:700}
+.rev-date{font-size:.72rem;color:var(--muted)}
+.rev-stars{color:#FFB400;font-size:.9rem;margin-bottom:.3rem}
+.rev-text{font-size:.85rem;color:rgba(241,245,249,.75);line-height:1.55}
+.rev-del{position:absolute;top:.7rem;right:.7rem;background:none;border:none;color:rgba(255,255,255,.18);cursor:pointer;font-size:.85rem;transition:color .2s}
+.rev-del:hover{color:var(--red)}
+.btn-foto-rev{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:.65rem;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+.btn-foto-rev:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.foto-preview{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--purple);display:none}
+.foto-row{display:flex;align-items:center;gap:.8rem}
 </style>
 </head>
 <body>
@@ -214,8 +245,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <button class="dash-logout" id="logout-btn">Cerrar sesión</button>
   </header>
   <div class="dash-tabs">
-    <button class="dash-tab active" id="tab-stats-btn">📊 Estadísticas</button>
+    <button class="dash-tab active" id="tab-stats-btn">📊 Stats</button>
     <button class="dash-tab" id="tab-cl-btn">👥 Clientes</button>
+    <button class="dash-tab" id="tab-rev-btn">⭐ Reseñas</button>
   </div>
   <div class="dash-content">
 
@@ -315,6 +347,42 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       <div class="sync-status" id="sync-status"></div>
     </div>
 
+    <!-- RESEÑAS -->
+    <div id="section-rev" style="display:none">
+
+      <div class="rev-form">
+        <label>Nombre del cliente *</label>
+        <input type="text" id="rv-nombre" placeholder="Ej: María García" autocomplete="off">
+
+        <label>Puntuación *</label>
+        <div class="stars-sel" id="stars-sel">
+          <button class="star-btn" data-s="1">★</button>
+          <button class="star-btn" data-s="2">★</button>
+          <button class="star-btn" data-s="3">★</button>
+          <button class="star-btn" data-s="4">★</button>
+          <button class="star-btn on" data-s="5">★</button>
+        </div>
+
+        <label>Reseña *</label>
+        <textarea id="rv-texto" placeholder="Escribe el texto de la reseña de Google…"></textarea>
+
+        <label>Fecha <span style="font-weight:400;opacity:.5">(opcional)</span></label>
+        <input type="month" id="rv-fecha">
+
+        <label>Foto del cliente <span style="font-weight:400;opacity:.5">(opcional)</span></label>
+        <div class="foto-row">
+          <img id="rv-foto-preview" class="foto-preview" src="" alt="">
+          <button class="btn-foto-rev" id="btn-foto-rev" onclick="subirFotoReseña()">📷 Subir foto</button>
+        </div>
+
+        <button class="btn-add-rev" id="btn-add-rev" onclick="guardarReseña()">⭐ Guardar reseña</button>
+      </div>
+
+      <div class="rev-list" id="rev-list">
+        <div class="cl-empty"><div class="cl-empty-icon">⭐</div>Sin reseñas aún</div>
+      </div>
+    </div>
+
   </div><!-- /dash-content -->
 </div><!-- /dashboard -->
 
@@ -356,13 +424,16 @@ document.getElementById('logout-btn').addEventListener('click', function() {
 
 // ── Tabs ──
 document.getElementById('tab-stats-btn').addEventListener('click', function(){ showTab('stats'); });
-document.getElementById('tab-cl-btn').addEventListener('click', function(){ showTab('cl'); loadClients(); });
+document.getElementById('tab-cl-btn').addEventListener('click',  function(){ showTab('cl'); loadClients(); });
+document.getElementById('tab-rev-btn').addEventListener('click', function(){ showTab('rev'); loadReseñas(); });
 
 function showTab(t) {
-  document.getElementById('section-stats').style.display = t==='stats' ? '' : 'none';
-  document.getElementById('section-cl').style.display    = t==='cl'    ? '' : 'none';
+  ['stats','cl','rev'].forEach(function(s){
+    document.getElementById('section-'+s).style.display = t===s ? '' : 'none';
+  });
   document.getElementById('tab-stats-btn').classList.toggle('active', t==='stats');
   document.getElementById('tab-cl-btn').classList.toggle('active',    t==='cl');
+  document.getElementById('tab-rev-btn').classList.toggle('active',   t==='rev');
 }
 
 // ── Stats ──
@@ -595,6 +666,113 @@ function showToast(msg){
   var t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+
+// ── Reseñas ──
+var CLOUD_NAME  = 'CLOUD_NAME_AQUI';
+var PRESET_REV  = 'casita_resenas';
+var revStars    = 5;
+var revFotoUrl  = '';
+
+document.getElementById('stars-sel').addEventListener('click', function(e){
+  var s = e.target.getAttribute('data-s');
+  if (!s) return;
+  revStars = parseInt(s);
+  document.querySelectorAll('.star-btn').forEach(function(b){
+    b.classList.toggle('on', parseInt(b.getAttribute('data-s')) <= revStars);
+  });
+});
+
+function subirFotoReseña() {
+  if (CLOUD_NAME === 'CLOUD_NAME_AQUI') { showToast('⚠️ Cloudinary pendiente de configurar'); return; }
+  cloudinary.openUploadWidget({
+    cloudName: CLOUD_NAME,
+    uploadPreset: PRESET_REV,
+    folder: 'casita/resenas',
+    tags: ['resena'],
+    sources: ['local','camera'],
+    multiple: false,
+    clientAllowedFormats: ['jpg','jpeg','png','webp'],
+    maxFileSize: 5000000,
+    cropping: true,
+    croppingAspectRatio: 1,
+  }, function(error, result) {
+    if (!error && result && result.event === 'success') {
+      revFotoUrl = result.info.secure_url;
+      var prev = document.getElementById('rv-foto-preview');
+      prev.src = revFotoUrl;
+      prev.style.display = 'block';
+      document.getElementById('btn-foto-rev').textContent = '✅ Foto lista';
+      showToast('✅ Foto subida');
+    }
+  });
+}
+
+function guardarReseña() {
+  var nombre = document.getElementById('rv-nombre').value.trim();
+  var texto  = document.getElementById('rv-texto').value.trim();
+  var fecha  = document.getElementById('rv-fecha').value;
+  if (!nombre || !texto) { showToast('⚠️ Nombre y reseña son obligatorios'); return; }
+  var btn = document.getElementById('btn-add-rev');
+  btn.disabled = true; btn.textContent = 'Guardando…';
+  fetch(API+'/reviews?t='+T, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ nombre: nombre, foto: revFotoUrl, estrellas: revStars, texto: texto, fecha: fecha })
+  }).then(function(r){ return r.json(); })
+  .then(function(d){
+    if (d.ok) {
+      showToast('✅ Reseña guardada');
+      document.getElementById('rv-nombre').value = '';
+      document.getElementById('rv-texto').value  = '';
+      document.getElementById('rv-fecha').value  = '';
+      revFotoUrl = '';
+      document.getElementById('rv-foto-preview').style.display = 'none';
+      document.getElementById('btn-foto-rev').textContent = '📷 Subir foto';
+      revStars = 5;
+      document.querySelectorAll('.star-btn').forEach(function(b){ b.classList.add('on'); });
+      loadReseñas();
+    } else { showToast('❌ '+d.msg); }
+  })
+  .catch(function(){ showToast('❌ Error de conexión'); })
+  .finally(function(){ btn.disabled=false; btn.textContent='⭐ Guardar reseña'; });
+}
+
+function loadReseñas() {
+  fetch(API+'/reviews?t='+T).then(function(r){ return r.json(); }).then(renderReseñas).catch(function(){
+    document.getElementById('rev-list').innerHTML = '<div class="cl-empty">Error cargando reseñas</div>';
+  });
+}
+
+function renderReseñas(reviews) {
+  var list = document.getElementById('rev-list');
+  if (!reviews.length) {
+    list.innerHTML = '<div class="cl-empty"><div class="cl-empty-icon">⭐</div>Sin reseñas aún</div>';
+    return;
+  }
+  list.innerHTML = reviews.map(function(r){
+    var avatar = r.foto
+      ? '<div class="rev-avatar"><img src="'+esc(r.foto)+'" alt=""></div>'
+      : '<div class="rev-avatar">'+esc(initial(r.nombre))+'</div>';
+    var stars  = '★'.repeat(r.estrellas)+'☆'.repeat(5-r.estrellas);
+    var fecha  = r.fecha ? r.fecha.slice(0,7).replace('-',' / ') : '';
+    return '<div class="rev-item">'+
+      '<div class="rev-top">'+avatar+
+        '<div class="rev-meta"><div class="rev-name">'+esc(r.nombre)+'</div><div class="rev-date">'+esc(fecha)+'</div></div>'+
+      '</div>'+
+      '<div class="rev-stars">'+stars+'</div>'+
+      '<div class="rev-text">'+esc(r.texto)+'</div>'+
+      '<button class="rev-del" data-rid="'+esc(r.id)+'" title="Eliminar">✕</button>'+
+    '</div>';
+  }).join('');
+
+  list.addEventListener('click', function(e){
+    var rid = e.target.getAttribute('data-rid');
+    if (rid && confirm('¿Eliminar esta reseña?')) {
+      fetch(API+'/reviews?t='+T, { method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:rid}) })
+        .then(function(){ loadReseñas(); showToast('Reseña eliminada'); });
+    }
+  }, { once: true });
 }
 </script>
 </body>
