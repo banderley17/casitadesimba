@@ -234,6 +234,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .btn-add-rev{width:100%;background:var(--purple);border:none;color:white;border-radius:12px;padding:.75rem;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s}
 .btn-add-rev:hover{background:var(--purple2)}
 .btn-add-rev:disabled{opacity:.5;cursor:not-allowed}
+.rev-ord{display:flex;gap:.25rem;}
+.rev-ord-btn{background:rgba(255,255,255,.08);border:1px solid var(--border);color:var(--muted);border-radius:7px;width:28px;height:28px;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;line-height:1;}
+.rev-ord-btn:hover:not(:disabled){background:rgba(124,58,237,.25);border-color:var(--purple);color:white;}
+.rev-ord-btn:disabled{opacity:.2;cursor:default;}
 .rev-list{display:flex;flex-direction:column;gap:.7rem}
 .rev-item{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;position:relative}
 .rev-top{display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem}
@@ -372,9 +376,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <label>Teléfono *</label>
         <input type="tel" id="f-tel" placeholder="+34 612 345 678" value="+34 6" />
         <label>Nombre <span style="font-weight:400;opacity:.5">(opcional)</span></label>
-        <input type="text" id="f-nombre" placeholder="Nombre del cliente" autocomplete="off" />
+        <input type="text" id="f-nombre" placeholder="ej. Ana López" autocomplete="off" />
         <label>Mascota</label>
-        <input type="text" id="f-mascota" placeholder="Nombre del perro" autocomplete="off" />
+        <input type="text" id="f-mascota" placeholder="ej. Toby" autocomplete="off" />
         <label>Servicio</label>
         <select id="f-servicio">
           <option value="">Seleccionar servicio…</option>
@@ -393,7 +397,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <textarea id="f-notas" placeholder="Raza, edad, horario, observaciones…"></textarea>
         <div class="form-actions">
           <button class="btn-cancel" id="f-cancel">Cancelar</button>
-          <button class="btn-save" id="f-save">Guardar contacto</button>
+          <button class="btn-save" id="f-save">Guardar</button>
         </div>
       </div>
 
@@ -421,10 +425,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <div id="section-rev" style="display:none">
 
       <div class="rev-form">
-        <label>Nombre del cliente *</label>
-        <input type="text" id="rv-nombre" placeholder="Ej: María García" autocomplete="off">
+        <label>Nombre *</label>
+        <input type="text" id="rv-nombre" placeholder="ej. María García" autocomplete="off">
 
-        <label>Puntuación *</label>
+        <label>Estrellas</label>
         <div class="stars-sel" id="stars-sel">
           <button class="star-btn on" data-s="1">★</button>
           <button class="star-btn on" data-s="2">★</button>
@@ -434,7 +438,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         </div>
 
         <label>Reseña *</label>
-        <textarea id="rv-texto" placeholder="Escribe el texto de la reseña de Google…"></textarea>
+        <textarea id="rv-texto" placeholder="Lo que puso en Google..."></textarea>
 
         <label>Fecha <span style="font-weight:400;opacity:.5">(opcional)</span></label>
         <input type="month" id="rv-fecha">
@@ -444,8 +448,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 
           <!-- Foto perfil -->
           <div>
-            <div style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;">👤 Foto de perfil del cliente</div>
-            <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:.5rem;">El avatar circular (captura de pantalla del nombre en Google Maps)</div>
+            <div style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;">👤 Foto de perfil</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:.5rem;">El avatar circular que aparece en Google (screenshot del nombre)</div>
             <div class="foto-row">
               <div style="position:relative;display:inline-block;">
                 <img id="rv-foto-preview" class="foto-preview" src="" alt="">
@@ -460,7 +464,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
           <!-- Foto de la reseña -->
           <div>
             <div style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;">🖼 Foto de la reseña</div>
-            <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:.5rem;">La foto que el cliente dejó en Google Maps (captura de pantalla)</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:.5rem;">Si adjuntó una foto en su reseña de Google</div>
             <div class="foto-row">
               <div style="position:relative;display:inline-block;">
                 <img id="rv-imagen-preview" class="imagen-preview" src="" alt="">
@@ -472,16 +476,16 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 
         </div>
 
-        <label>Respuesta de La Casita de Simba <span style="font-weight:400;opacity:.5">(opcional)</span></label>
+        <label>Tu respuesta <span style="font-weight:400;opacity:.5">(opcional)</span></label>
         <div class="rv-resp-wrap">
-          <textarea id="rv-respuesta" placeholder="Escribe aquí la respuesta de la guardería a esta reseña…" style="height:72px;"></textarea>
+          <textarea id="rv-respuesta" placeholder="Escribe tu respuesta a esta reseña..." style="height:72px;"></textarea>
           <button type="button" class="btn-main-emoji" onclick="toggleMainEmoji()">😊</button>
         </div>
         <div class="emoji-panel" id="main-emoji-panel" style="max-width:100%;margin-bottom:.2rem;"></div>
 
         <div class="rev-edit-banner" id="rev-edit-banner">
-          <span>✏️ Editando reseña existente</span>
-          <button class="rev-cancel-edit" onclick="cancelarEdicion()">Cancelar edición</button>
+          <span>✏️ Editando reseña</span>
+          <button class="rev-cancel-edit" onclick="cancelarEdicion()">Cancelar</button>
         </div>
 
         <button class="btn-add-rev" id="btn-add-rev" onclick="guardarReseña()">⭐ Guardar reseña</button>
@@ -507,12 +511,12 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       </div>
 
       <div class="fotos-info">
-        <strong>🖼 Galería</strong> — fotos del día a día, los perros jugando, actividades.<br>
-        <strong>🌅 Portada</strong> — fotos bonitas para el fondo principal de la web (horizontales preferiblemente).
+        <strong>🖼 Galería</strong> — lo de cada día: perros jugando, descansando, conociéndose.<br>
+        <strong>🌅 Portada</strong> — el fondo principal de la web. Mejor horizontales.
       </div>
 
-      <label style="display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:.4rem;">🐶 Nombre del perro o descripción <span style="font-weight:400;opacity:.6">(opcional)</span></label>
-      <input type="text" class="foto-caption-input" id="foto-caption" placeholder="Ej: Simba y Rocky jugando">
+      <label style="display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:.4rem;">🐶 Título o descripción <span style="font-weight:400;opacity:.6">(opcional)</span></label>
+      <input type="text" class="foto-caption-input" id="foto-caption" placeholder="ej. Simba y Rocky jugando">
 
       <div class="fotos-size-tip">
         📐 <strong style="color:var(--text)">Galería:</strong> mínimo 800×600 px · ratio 4:3 · JPG/WEBP<br>
@@ -995,7 +999,7 @@ function renderReseñas(reviews) {
     list.innerHTML = '<div class="cl-empty"><div class="cl-empty-icon">⭐</div>Sin reseñas aún</div>';
     return;
   }
-  list.innerHTML = reviews.map(function(r){
+  list.innerHTML = reviews.map(function(r, i){
     var avatar = r.foto
       ? '<div class="rev-avatar"><img src="'+esc(r.foto)+'" alt=""></div>'
       : '<div class="rev-avatar">'+esc(initial(r.nombre))+'</div>';
@@ -1012,14 +1016,14 @@ function renderReseñas(reviews) {
           (r.respuesta ? '✏️ Editar respuesta' : '💬 Responder')+
         '</button>'+
         '<div class="rev-resp-form" id="rform-'+rid+'">'+
-          '<textarea class="rev-resp-ta" id="rta-'+rid+'" placeholder="Escribe tu respuesta…"></textarea>'+
+          '<textarea class="rev-resp-ta" id="rta-'+rid+'" placeholder="Escribe tu respuesta..."></textarea>'+
           '<div class="resp-emoji-row">'+
             '<button type="button" class="btn-emoji" onclick="toggleRespEmoji(\''+rid+'\')">😊 Emoji</button>'+
             '<div class="emoji-panel" id="epanel-'+rid+'"></div>'+
           '</div>'+
           '<div class="resp-save-row">'+
             '<button type="button" class="btn-resp-cancel" onclick="toggleRespForm(\''+rid+'\')">Cancelar</button>'+
-            '<button type="button" class="btn-resp-save" id="rsave-'+rid+'" onclick="guardarRespuesta(\''+rid+'\')">💾 Guardar</button>'+
+            '<button type="button" class="btn-resp-save" id="rsave-'+rid+'" onclick="guardarRespuesta(\''+rid+'\')">Guardar</button>'+
           '</div>'+
         '</div>'+
       '</div>';
@@ -1032,7 +1036,11 @@ function renderReseñas(reviews) {
       imgHtml+
       respSection+
       '<div class="rev-actions">'+
-        '<button class="rev-edit-btn" data-edit="'+rid+'">✏️ Editar todo</button>'+
+        '<div class="rev-ord">'+
+          '<button class="rev-ord-btn" data-ord="up" data-oid="'+rid+'" '+(i===0?'disabled':'')+' title="Subir">↑</button>'+
+          '<button class="rev-ord-btn" data-ord="down" data-oid="'+rid+'" '+(i===reviews.length-1?'disabled':'')+' title="Bajar">↓</button>'+
+        '</div>'+
+        '<button class="rev-edit-btn" data-edit="'+rid+'">✏️ Editar</button>'+
         '<button class="rev-del" data-rid="'+rid+'">✕ Borrar</button>'+
       '</div>'+
     '</div>';
@@ -1113,10 +1121,24 @@ function guardarRespuesta(id) {
   .finally(function(){ if (btn) { btn.disabled=false; btn.textContent='💾 Guardar'; } });
 }
 
+function moverResena(id, dir) {
+  fetch(API+'/reviews?t='+T, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ action:'reorder', id:id, dir:dir })
+  }).then(function(){ loadReseñas(); });
+}
+
 // Listeners permanentes de lista de reseñas
 document.getElementById('rev-list').addEventListener('click', function(e){
   var delBtn  = e.target.closest('[data-rid]');
   var editBtn = e.target.closest('[data-edit]');
+  var ordBtn  = e.target.closest('[data-ord]');
+
+  if (ordBtn && !ordBtn.disabled) {
+    moverResena(ordBtn.getAttribute('data-oid'), ordBtn.getAttribute('data-ord'));
+    return;
+  }
 
   if (delBtn) {
     var rid = delBtn.getAttribute('data-rid');

@@ -42,10 +42,22 @@ export default async function handler(req) {
 
   if (req.method === 'POST') {
     const body = await req.json();
-    const { id, nombre, foto, imagen, estrellas, texto, fecha, respuesta } = body;
+    const { action, id, nombre, foto, imagen, estrellas, texto, fecha, respuesta } = body;
 
     const raw = await kvGet('casita_reviews', kvUrl, kvTok);
     let reviews = raw ? JSON.parse(raw) : [];
+
+    if (action === 'reorder') {
+      const { dir } = body;
+      const idx = reviews.findIndex(r => r.id === id);
+      if (idx < 0) return err('Reseña no encontrada');
+      const newIdx = dir === 'up' ? idx - 1 : idx + 1;
+      if (newIdx >= 0 && newIdx < reviews.length) {
+        const tmp = reviews[idx]; reviews[idx] = reviews[newIdx]; reviews[newIdx] = tmp;
+        await kvSet('casita_reviews', JSON.stringify(reviews), kvUrl, kvTok);
+      }
+      return ok({ ok: true });
+    }
 
     if (id) {
       // Actualizar reseña existente — solo se sobrescriben los campos presentes
