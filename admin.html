@@ -237,7 +237,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .btn-foto-rev{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:.65rem;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
 .btn-foto-rev:hover{background:rgba(255,255,255,.1);color:var(--text)}
 .foto-preview{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--purple);display:none}
+.imagen-preview{width:90px;height:64px;border-radius:8px;object-fit:cover;border:2px solid var(--purple);display:none}
 .foto-row{display:flex;align-items:center;gap:.8rem}
+.rev-edit-banner{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);border-radius:10px;padding:.6rem .9rem;font-size:.8rem;color:#a78bfa;display:none;align-items:center;justify-content:space-between;}
+.rev-cancel-edit{background:none;border:none;color:#a78bfa;cursor:pointer;font-size:.8rem;font-weight:700;text-decoration:underline;}
+.rev-actions{display:flex;align-items:center;gap:.5rem;margin-top:.8rem;justify-content:flex-end;}
+.rev-edit-btn{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:#a78bfa;cursor:pointer;font-size:.72rem;font-weight:700;border-radius:8px;padding:.25rem .65rem;transition:all .2s;}
+.rev-edit-btn:hover{background:rgba(124,58,237,.25);color:white;}
+.rev-img{width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:.5rem;}
 </style>
 </head>
 <body>
@@ -400,6 +407,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <div class="foto-row">
           <img id="rv-foto-preview" class="foto-preview" src="" alt="">
           <button class="btn-foto-rev" id="btn-foto-rev" onclick="subirFotoReseña()">📷 Subir foto</button>
+        </div>
+
+        <label>Imagen de la reseña <span style="font-weight:400;opacity:.5">(opcional)</span></label>
+        <div class="foto-row">
+          <img id="rv-imagen-preview" class="imagen-preview" src="" alt="">
+          <button class="btn-foto-rev" id="btn-imagen-rev" onclick="subirImagenReseña()">🖼 Añadir imagen</button>
+        </div>
+
+        <div class="rev-edit-banner" id="rev-edit-banner">
+          <span>✏️ Editando reseña existente</span>
+          <button class="rev-cancel-edit" onclick="cancelarEdicion()">Cancelar edición</button>
         </div>
 
         <button class="btn-add-rev" id="btn-add-rev" onclick="guardarReseña()">⭐ Guardar reseña</button>
@@ -737,6 +755,8 @@ var PRESET_GAL  = 'casita_galeria';
 var PRESET_HERO = 'casita_hero';
 var revStars    = 5;
 var revFotoUrl  = '';
+var revImageUrl = '';
+var revEditId   = null;
 
 document.getElementById('stars-sel').addEventListener('click', function(e){
   var s = e.target.getAttribute('data-s');
@@ -746,6 +766,28 @@ document.getElementById('stars-sel').addEventListener('click', function(e){
     b.classList.toggle('on', parseInt(b.getAttribute('data-s')) <= revStars);
   });
 });
+
+function subirImagenReseña() {
+  cloudinary.openUploadWidget({
+    cloudName: CLOUD_NAME,
+    uploadPreset: PRESET_REV,
+    folder: 'casita/resenas',
+    tags: ['resena','imagen'],
+    sources: ['local','camera'],
+    multiple: false,
+    clientAllowedFormats: ['jpg','jpeg','png','webp'],
+    maxFileSize: 8000000,
+  }, function(error, result) {
+    if (!error && result && result.event === 'success') {
+      revImageUrl = result.info.secure_url;
+      var prev = document.getElementById('rv-imagen-preview');
+      prev.src = revImageUrl;
+      prev.style.display = 'block';
+      document.getElementById('btn-imagen-rev').textContent = '✅ Imagen lista';
+      showToast('✅ Imagen subida');
+    }
+  });
+}
 
 function subirFotoReseña() {
   if (CLOUD_NAME === 'CLOUD_NAME_AQUI') { showToast('⚠️ Cloudinary pendiente de configurar'); return; }
@@ -778,28 +820,69 @@ function guardarReseña() {
   var fecha  = document.getElementById('rv-fecha').value;
   if (!nombre || !texto) { showToast('⚠️ Nombre y reseña son obligatorios'); return; }
   var btn = document.getElementById('btn-add-rev');
-  btn.disabled = true; btn.textContent = 'Guardando…';
+  btn.disabled = true; btn.textContent = revEditId ? 'Actualizando…' : 'Guardando…';
+
+  var method = revEditId ? 'PATCH' : 'POST';
+  var payload = { nombre: nombre, foto: revFotoUrl, imagen: revImageUrl, estrellas: revStars, texto: texto, fecha: fecha };
+  if (revEditId) payload.id = revEditId;
+
   fetch(API+'/reviews?t='+T, {
-    method: 'POST',
+    method: method,
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ nombre: nombre, foto: revFotoUrl, estrellas: revStars, texto: texto, fecha: fecha })
+    body: JSON.stringify(payload)
   }).then(function(r){ return r.json(); })
   .then(function(d){
     if (d.ok) {
-      showToast('✅ Reseña guardada');
-      document.getElementById('rv-nombre').value = '';
-      document.getElementById('rv-texto').value  = '';
-      document.getElementById('rv-fecha').value  = '';
-      revFotoUrl = '';
-      document.getElementById('rv-foto-preview').style.display = 'none';
-      document.getElementById('btn-foto-rev').textContent = '📷 Subir foto';
-      revStars = 5;
-      document.querySelectorAll('.star-btn').forEach(function(b){ b.classList.add('on'); });
+      showToast(revEditId ? '✅ Reseña actualizada' : '✅ Reseña guardada');
+      resetRevForm();
       loadReseñas();
     } else { showToast('❌ '+d.msg); }
   })
   .catch(function(){ showToast('❌ Error de conexión'); })
-  .finally(function(){ btn.disabled=false; btn.textContent='⭐ Guardar reseña'; });
+  .finally(function(){ btn.disabled=false; btn.textContent = revEditId ? '💾 Actualizar reseña' : '⭐ Guardar reseña'; });
+}
+
+function resetRevForm() {
+  document.getElementById('rv-nombre').value = '';
+  document.getElementById('rv-texto').value  = '';
+  document.getElementById('rv-fecha').value  = '';
+  revFotoUrl  = ''; revImageUrl = ''; revEditId = null;
+  document.getElementById('rv-foto-preview').style.display   = 'none';
+  document.getElementById('rv-imagen-preview').style.display = 'none';
+  document.getElementById('btn-foto-rev').textContent   = '📷 Subir foto';
+  document.getElementById('btn-imagen-rev').textContent = '🖼 Añadir imagen';
+  document.getElementById('rev-edit-banner').style.display = 'none';
+  document.getElementById('btn-add-rev').textContent = '⭐ Guardar reseña';
+  revStars = 5;
+  document.querySelectorAll('.star-btn').forEach(function(b){ b.classList.add('on'); });
+}
+
+function cancelarEdicion() { resetRevForm(); }
+
+function editarReseña(r) {
+  document.getElementById('rv-nombre').value = r.nombre || '';
+  document.getElementById('rv-texto').value  = r.texto  || '';
+  document.getElementById('rv-fecha').value  = r.fecha  || '';
+  revStars   = r.estrellas || 5;
+  revEditId  = r.id;
+  revFotoUrl  = r.foto   || '';
+  revImageUrl = r.imagen || '';
+  document.querySelectorAll('.star-btn').forEach(function(b){
+    b.classList.toggle('on', parseInt(b.getAttribute('data-s')) <= revStars);
+  });
+  if (revFotoUrl) {
+    var fp = document.getElementById('rv-foto-preview');
+    fp.src = revFotoUrl; fp.style.display = 'block';
+    document.getElementById('btn-foto-rev').textContent = '✅ Foto lista';
+  }
+  if (revImageUrl) {
+    var ip = document.getElementById('rv-imagen-preview');
+    ip.src = revImageUrl; ip.style.display = 'block';
+    document.getElementById('btn-imagen-rev').textContent = '✅ Imagen lista';
+  }
+  document.getElementById('rev-edit-banner').style.display = 'flex';
+  document.getElementById('btn-add-rev').textContent = '💾 Actualizar reseña';
+  document.getElementById('section-rev').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function loadReseñas() {
@@ -820,23 +903,33 @@ function renderReseñas(reviews) {
       : '<div class="rev-avatar">'+esc(initial(r.nombre))+'</div>';
     var stars  = '★'.repeat(r.estrellas)+'☆'.repeat(5-r.estrellas);
     var fecha  = r.fecha ? r.fecha.slice(0,7).replace('-',' / ') : '';
+    var imgHtml = r.imagen ? '<img class="rev-img" src="'+esc(r.imagen)+'" alt="imagen reseña" loading="lazy">' : '';
     return '<div class="rev-item">'+
       '<div class="rev-top">'+avatar+
         '<div class="rev-meta"><div class="rev-name">'+esc(r.nombre)+'</div><div class="rev-date">'+esc(fecha)+'</div></div>'+
       '</div>'+
       '<div class="rev-stars">'+stars+'</div>'+
       '<div class="rev-text">'+esc(r.texto)+'</div>'+
-      '<button class="rev-del" data-rid="'+esc(r.id)+'" title="Eliminar reseña">✕ Borrar</button>'+
+      imgHtml+
+      '<div class="rev-actions">'+
+        '<button class="rev-edit-btn" data-edit="'+esc(r.id)+'" data-rev="'+esc(JSON.stringify(r))+'">✏️ Editar</button>'+
+        '<button class="rev-del" data-rid="'+esc(r.id)+'" title="Eliminar reseña">✕ Borrar</button>'+
+      '</div>'+
     '</div>';
   }).join('');
 }
 
-// Listener permanente (fuera de render para evitar duplicados)
+// Listeners permanentes de lista de reseñas
 document.getElementById('rev-list').addEventListener('click', function(e){
   var rid = e.target.getAttribute('data-rid');
   if (rid && confirm('¿Eliminar esta reseña?')) {
     fetch(API+'/reviews?t='+T, { method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:rid}) })
       .then(function(){ loadReseñas(); showToast('Reseña eliminada'); });
+  }
+  var eid = e.target.getAttribute('data-edit');
+  if (eid) {
+    try { editarReseña(JSON.parse(e.target.getAttribute('data-rev'))); }
+    catch(ex) { showToast('Error al cargar reseña'); }
   }
 });
 

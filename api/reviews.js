@@ -3,7 +3,7 @@ export const config = { runtime: 'edge' };
 const PANEL_TOK = 'simba2026';
 const CORS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
@@ -46,10 +46,12 @@ export default async function handler(req) {
     const raw = await kvGet('casita_reviews', kvUrl, kvTok);
     const reviews = raw ? JSON.parse(raw) : [];
 
+    const { imagen } = body;
     const nueva = {
       id: 'rev_' + Date.now(),
       nombre: nombre.trim(),
       foto: foto || '',
+      imagen: imagen || '',
       estrellas: parseInt(estrellas),
       texto: texto.trim(),
       fecha: fecha || new Date().toISOString().slice(0, 7),
@@ -59,6 +61,28 @@ export default async function handler(req) {
     reviews.unshift(nueva);
     await kvSet('casita_reviews', JSON.stringify(reviews), kvUrl, kvTok);
     return ok({ ok: true, review: nueva });
+  }
+
+  if (req.method === 'PATCH') {
+    const body = await req.json();
+    const { id, nombre, foto, imagen, estrellas, texto, fecha } = body;
+    if (!id) return err('Falta id');
+    const raw = await kvGet('casita_reviews', kvUrl, kvTok);
+    let reviews = raw ? JSON.parse(raw) : [];
+    reviews = reviews.map(r => {
+      if (r.id !== id) return r;
+      return {
+        ...r,
+        nombre:   (nombre   != null) ? nombre.trim()        : r.nombre,
+        foto:     (foto     != null) ? foto                  : r.foto,
+        imagen:   (imagen   != null) ? imagen                : (r.imagen || ''),
+        estrellas:(estrellas!= null) ? parseInt(estrellas)   : r.estrellas,
+        texto:    (texto    != null) ? texto.trim()          : r.texto,
+        fecha:    (fecha    != null) ? fecha                  : r.fecha,
+      };
+    });
+    await kvSet('casita_reviews', JSON.stringify(reviews), kvUrl, kvTok);
+    return ok({ ok: true });
   }
 
   if (req.method === 'DELETE') {
