@@ -1952,76 +1952,75 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <h2>Familias que confían en nosotros ❤️</h2>
       <p class="section-desc">Las opiniones de quienes más importan: los dueños de nuestros peludos.</p>
     </div>
-    <!-- Widget Google Reviews realista -->
-    <div style="max-width:660px;margin:2rem auto 0;background:white;border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,.13);overflow:hidden;">
+    <!-- Widget Google Reviews — grid horizontal -->
+    <div style="background:white;border-radius:20px;padding:1.5rem 1.8rem 1.2rem;box-shadow:0 4px 28px rgba(0,0,0,.1);margin-top:2rem;">
 
       <!-- Cabecera -->
-      <div style="padding:1.3rem 1.6rem 1.1rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid #f0f0f0;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="52" height="52" style="flex-shrink:0;">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-        </svg>
-        <div>
-          <div style="font-size:.78rem;color:#888;font-weight:600;letter-spacing:.03em;text-transform:uppercase;margin-bottom:.2rem;">Reseñas de Google</div>
-          <div style="display:flex;align-items:center;gap:.5rem;">
-            <span style="font-size:2.4rem;font-weight:900;color:#1a1a1a;line-height:1;">5.0</span>
-            <div>
-              <div style="color:#FFB400;font-size:1.25rem;line-height:1.1;letter-spacing:.04em;">★★★★★</div>
-              <div style="font-size:.72rem;color:#888;" id="rev-count-lbl">Cargando…</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem;">
+        <div style="display:flex;align-items:center;gap:.9rem;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="42" height="42" style="flex-shrink:0;">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <div>
+            <div style="display:flex;align-items:center;gap:.55rem;">
+              <span style="font-size:1.9rem;font-weight:900;color:#1a1a1a;line-height:1;">5.0</span>
+              <span style="color:#FFB400;font-size:1.3rem;letter-spacing:.06em;">★★★★★</span>
+              <span id="rev-count-lbl" style="color:#888;font-size:.82rem;"></span>
             </div>
+            <div style="font-size:.75rem;color:#aaa;margin-top:.1rem;font-weight:600;">Reseñas de Google</div>
           </div>
         </div>
+        <a href="https://maps.app.goo.gl/K8vez9C3RgssnENv5" target="_blank" rel="noopener"
+           style="background:#1a73e8;color:white;border-radius:20px;padding:.5rem 1.2rem;font-size:.82rem;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;">
+          ✏️ Escribe una reseña
+        </a>
       </div>
 
-      <!-- Cards -->
-      <div id="reviews-grid"></div>
-      <div id="reviews-loading" style="text-align:center;padding:2rem;color:#aaa;font-size:.9rem;">Cargando reseñas…</div>
+      <!-- Grid de tarjetas -->
+      <div id="reviews-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.9rem;"></div>
+      <div id="reviews-loading" style="text-align:center;padding:1.5rem;color:#bbb;font-size:.88rem;">Cargando reseñas…</div>
 
-      <!-- Pie -->
-      <a href="https://maps.app.goo.gl/K8vez9C3RgssnENv5" target="_blank" rel="noopener"
-         style="display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.2rem;background:#fafafa;border-top:1px solid #f0f0f0;color:#4285F4;font-size:.82rem;font-weight:700;text-decoration:none;transition:background .2s;"
-         onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='#fafafa'">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15"><path fill="#EA4335" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#4285F4" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-        Ver todas las reseñas en Google Maps
-      </a>
     </div>
 
     <script>
     (function(){
-      var GLOGO_SM = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" style="flex-shrink:0;"><path fill="#EA4335" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#4285F4" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>';
-      var MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+      var GLOGO_SM = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" style="flex-shrink:0;margin-top:1px;"><path fill="#EA4335" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#4285F4" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>';
+      var CHECK   = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="13" height="13" style="flex-shrink:0;"><circle cx="12" cy="12" r="12" fill="#1a73e8"/><path d="M9 12.5l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
+      var MESES   = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
       fetch('https://casitadesimba.vercel.app/api/reviews')
         .then(function(r){return r.json();})
         .then(function(reviews){
           var loading = document.getElementById('reviews-loading');
           var grid    = document.getElementById('reviews-grid');
           var lbl     = document.getElementById('rev-count-lbl');
-          if(!reviews.length){ loading.textContent=''; lbl.textContent=''; return; }
-          lbl.textContent = reviews.length + ' reseñas verificadas';
-          loading.style.display='none';
-          grid.innerHTML = reviews.map(function(r, i){
-            var isLast = i === reviews.length - 1;
+          if(!reviews.length){ loading.textContent=''; return; }
+          lbl.textContent = '('+reviews.length+')';
+          loading.style.display = 'none';
+          grid.innerHTML = reviews.map(function(r){
             var avatar = r.foto
-              ? '<img src="'+r.foto+'" alt="'+r.nombre+'" style="width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;">'
-              : '<div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#F08A7C,#D9695B);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;color:white;flex-shrink:0;">'+r.nombre.charAt(0).toUpperCase()+'</div>';
-            var stars = '<span style="color:#FFB400;font-size:.9rem;letter-spacing:.05em;">'+'★'.repeat(r.estrellas)+'</span>'+(r.estrellas<5?'<span style="color:#ddd;font-size:.9rem;letter-spacing:.05em;">'+'★'.repeat(5-r.estrellas)+'</span>':'');
+              ? '<img src="'+r.foto+'" alt="'+r.nombre+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;">'
+              : '<div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#F08A7C,#D9695B);display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:900;color:white;flex-shrink:0;">'+r.nombre.charAt(0).toUpperCase()+'</div>';
+            var stars = '<span style="color:#FFB400;font-size:.95rem;letter-spacing:.04em;">'+'★'.repeat(r.estrellas)+'</span>'+(r.estrellas<5?'<span style="color:#ddd;font-size:.95rem;">'+'★'.repeat(5-r.estrellas)+'</span>':'');
             var fecha = r.fecha ? (function(){var p=r.fecha.slice(0,7).split('-');return MESES[parseInt(p[1])-1]+' '+p[0];})() : '';
-            return '<div style="padding:1.1rem 1.6rem;'+(isLast?'':'border-bottom:1px solid #f5f5f5;')+'">'+
-              '<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.65rem;">'+
+            return '<div style="background:white;border:1px solid #f0f0f0;border-radius:14px;padding:1.1rem;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:.55rem;">'+
+              '<div style="display:flex;align-items:center;gap:.65rem;">'+
                 avatar+
                 '<div style="flex:1;min-width:0;">'+
-                  '<div style="font-weight:700;color:#1a1a1a;font-size:.92rem;">'+r.nombre+'</div>'+
-                  '<div style="display:flex;align-items:center;gap:.4rem;margin-top:.15rem;">'+
-                    stars+
-                    (fecha?'<span style="color:#aaa;font-size:.72rem;">· '+fecha+'</span>':'')+
+                  '<div style="display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;">'+
+                    '<span style="font-weight:700;color:#1a1a1a;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px;">'+r.nombre+'</span>'+
+                    CHECK+
+                    '<span style="color:#aaa;font-size:.7rem;">· Google</span>'+
                   '</div>'+
+                  (fecha?'<div style="font-size:.7rem;color:#bbb;margin-top:.1rem;">'+fecha+'</div>':'')+
                 '</div>'+
                 GLOGO_SM+
               '</div>'+
-              '<p style="font-size:.86rem;color:#555;line-height:1.65;margin:0;">'+r.texto+'</p>'+
-              (r.imagen?'<img src="'+r.imagen+'" alt="" style="width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-top:.75rem;" loading="lazy">':'')+
+              '<div>'+stars+'</div>'+
+              '<p style="font-size:.84rem;color:#555;line-height:1.6;margin:0;flex:1;">'+r.texto+'</p>'+
+              (r.imagen?'<img src="'+r.imagen+'" alt="" style="width:100%;max-height:160px;object-fit:cover;border-radius:9px;margin-top:.2rem;" loading="lazy">':'')+
             '</div>';
           }).join('');
         })
