@@ -935,16 +935,22 @@ function renderReseñas(reviews) {
 
 // Listeners permanentes de lista de reseñas
 document.getElementById('rev-list').addEventListener('click', function(e){
-  var rid = e.target.getAttribute('data-rid');
-  if (rid && confirm('¿Eliminar esta reseña?')) {
-    fetch(API+'/reviews?t='+T, { method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:rid}) })
-      .then(function(){ loadReseñas(); showToast('Reseña eliminada'); });
+  var delBtn  = e.target.closest('[data-rid]');
+  var editBtn = e.target.closest('[data-edit]');
+
+  if (delBtn) {
+    var rid = delBtn.getAttribute('data-rid');
+    if (confirm('¿Eliminar esta reseña?')) {
+      fetch(API+'/reviews?t='+T, { method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:rid}) })
+        .then(function(){ loadReseñas(); showToast('Reseña eliminada'); });
+    }
   }
-  var eid = e.target.getAttribute('data-edit');
-  if (eid) {
+
+  if (editBtn) {
+    var eid = editBtn.getAttribute('data-edit');
     var rev = revCache.find(function(x){ return x.id === eid; });
     if (rev) editarReseña(rev);
-    else showToast('No se encontró la reseña');
+    else showToast('Recarga la página e inténtalo de nuevo');
   }
 });
 

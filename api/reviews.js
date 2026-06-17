@@ -27,10 +27,12 @@ export default async function handler(req) {
   const ok  = (d) => new Response(JSON.stringify(d), { headers: { ...CORS, 'Content-Type': 'application/json' } });
   const err = (m, s=400) => new Response(JSON.stringify({ ok: false, msg: m }), { status: s, headers: { ...CORS, 'Content-Type': 'application/json' } });
 
-  // GET — público, devuelve reseñas visibles
+  // GET — público: solo visibles; con token: todas
   if (req.method === 'GET') {
     const raw = await kvGet('casita_reviews', kvUrl, kvTok);
     const reviews = raw ? JSON.parse(raw) : [];
+    const url = new URL(req.url);
+    if (url.searchParams.get('t') === PANEL_TOK) return ok(reviews);
     return ok(reviews.filter(r => r.visible !== false));
   }
 
