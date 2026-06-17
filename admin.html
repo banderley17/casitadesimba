@@ -305,15 +305,15 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <button class="dash-logout" id="logout-btn">Cerrar sesión</button>
   </header>
   <div class="dash-tabs">
-    <button class="dash-tab active" id="tab-stats-btn">📊 Stats</button>
-    <button class="dash-tab" id="tab-cl-btn">👥 Clientes</button>
+    <button class="dash-tab" id="tab-stats-btn">📊 Stats</button>
+    <button class="dash-tab active" id="tab-cl-btn">👥 Clientes</button>
     <button class="dash-tab" id="tab-rev-btn">⭐ Reseñas</button>
     <button class="dash-tab" id="tab-fotos-btn">📸 Fotos</button>
   </div>
   <div class="dash-content">
 
     <!-- STATS -->
-    <div id="section-stats">
+    <div id="section-stats" style="display:none">
       <div class="stats-refresh-row">
         <button class="btn-refresh" id="btn-refresh">↻ Actualizar</button>
       </div>
@@ -350,7 +350,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     </div>
 
     <!-- CLIENTES -->
-    <div id="section-cl" style="display:none">
+    <div id="section-cl">
       <div class="cl-summary">
         <span class="cl-badge consulta">💬 <span class="cl-cnt" id="cnt-consulta">0</span> consultas</span>
         <span class="cl-badge cliente">✅ <span class="cl-cnt" id="cnt-cliente">0</span> ventas</span>
@@ -541,7 +541,7 @@ function tryLogin() {
 function boot() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display    = 'flex';
-  loadStats();
+  loadClients();
 }
 
 document.getElementById('logout-btn').addEventListener('click', function() {
