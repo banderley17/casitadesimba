@@ -232,8 +232,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .rev-date{font-size:.72rem;color:var(--muted)}
 .rev-stars{color:#FFB400;font-size:.9rem;margin-bottom:.3rem}
 .rev-text{font-size:.85rem;color:rgba(241,245,249,.75);line-height:1.55}
-.rev-del{position:absolute;top:.7rem;right:.7rem;background:none;border:none;color:rgba(255,255,255,.18);cursor:pointer;font-size:.85rem;transition:color .2s}
-.rev-del:hover{color:var(--red)}
+.rev-del{position:absolute;top:.7rem;right:.7rem;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171;cursor:pointer;font-size:.72rem;font-weight:700;border-radius:8px;padding:.2rem .55rem;transition:all .2s}
+.rev-del:hover{background:rgba(239,68,68,.25);border-color:var(--red);color:white}
 .btn-foto-rev{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:.65rem;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
 .btn-foto-rev:hover{background:rgba(255,255,255,.1);color:var(--text)}
 .foto-preview{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--purple);display:none}
@@ -394,6 +394,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <input type="month" id="rv-fecha">
 
         <label>Foto del cliente <span style="font-weight:400;opacity:.5">(opcional)</span></label>
+        <div style="background:rgba(255,193,7,.07);border:1px solid rgba(255,193,7,.2);border-radius:10px;padding:.6rem .8rem;font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.5;margin-bottom:.2rem;">
+          💡 La foto de Google Maps no se puede guardar directamente. Haz <strong style="color:rgba(255,255,255,.8);">captura de pantalla</strong> del avatar del cliente en Maps, recórtala y súbela aquí.
+        </div>
         <div class="foto-row">
           <img id="rv-foto-preview" class="foto-preview" src="" alt="">
           <button class="btn-foto-rev" id="btn-foto-rev" onclick="subirFotoReseña()">📷 Subir foto</button>
@@ -823,18 +826,19 @@ function renderReseñas(reviews) {
       '</div>'+
       '<div class="rev-stars">'+stars+'</div>'+
       '<div class="rev-text">'+esc(r.texto)+'</div>'+
-      '<button class="rev-del" data-rid="'+esc(r.id)+'" title="Eliminar">✕</button>'+
+      '<button class="rev-del" data-rid="'+esc(r.id)+'" title="Eliminar reseña">✕ Borrar</button>'+
     '</div>';
   }).join('');
-
-  list.addEventListener('click', function(e){
-    var rid = e.target.getAttribute('data-rid');
-    if (rid && confirm('¿Eliminar esta reseña?')) {
-      fetch(API+'/reviews?t='+T, { method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:rid}) })
-        .then(function(){ loadReseñas(); showToast('Reseña eliminada'); });
-    }
-  }, { once: true });
 }
+
+// Listener permanente (fuera de render para evitar duplicados)
+document.getElementById('rev-list').addEventListener('click', function(e){
+  var rid = e.target.getAttribute('data-rid');
+  if (rid && confirm('¿Eliminar esta reseña?')) {
+    fetch(API+'/reviews?t='+T, { method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:rid}) })
+      .then(function(){ loadReseñas(); showToast('Reseña eliminada'); });
+  }
+});
 
 // ── Fotos ──
 function subirFoto(tipo) {
