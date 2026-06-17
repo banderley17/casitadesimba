@@ -211,6 +211,15 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .foto-del-btn{position:absolute;top:4px;right:4px;background:rgba(239,68,68,.88);border:none;color:white;border-radius:50%;width:22px;height:22px;font-size:.7rem;font-weight:900;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1;transition:background .15s;}
 .foto-del-btn:hover{background:#ef4444;}
 .foto-thumb-wrap:hover .foto-del-btn{display:flex;}
+.gal-pos{position:absolute;top:4px;left:26px;background:rgba(34,197,94,.92);color:white;font-size:.6rem;font-weight:900;border-radius:5px;padding:1px 5px;min-width:16px;text-align:center;}
+.gal-ord{position:absolute;bottom:0;left:0;right:0;display:none;gap:0;}
+.foto-thumb-wrap:hover .gal-ord{display:flex;}
+.gal-ord button{flex:1;background:rgba(0,0,0,.65);border:none;color:white;font-size:.85rem;padding:.28rem 0;cursor:pointer;transition:background .15s;line-height:1;}
+.gal-ord button:hover:not(:disabled){background:rgba(34,197,94,.75);}
+.gal-ord button:disabled{opacity:.25;cursor:default;}
+.gal-ord button:first-child{border-radius:0 0 0 8px;}
+.gal-ord button:last-child{border-radius:0 0 8px 0;}
+.fotos-size-tip{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:.6rem .85rem;font-size:.76rem;color:var(--muted);margin-bottom:1rem;line-height:1.75;}
 
 /* ── RESEÑAS ── */
 .rev-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.1rem;margin-bottom:1.2rem;display:flex;flex-direction:column;gap:.7rem}
@@ -505,6 +514,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       <label style="display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:.4rem;">🐶 Nombre del perro o descripción <span style="font-weight:400;opacity:.6">(opcional)</span></label>
       <input type="text" class="foto-caption-input" id="foto-caption" placeholder="Ej: Simba y Rocky jugando">
 
+      <div class="fotos-size-tip">
+        📐 <strong style="color:var(--text)">Galería:</strong> mínimo 800×600 px · ratio 4:3 · JPG/WEBP<br>
+        📐 <strong style="color:var(--text)">Portada:</strong> mínimo 1920×1080 px · ratio 16:9 · JPG/WEBP
+      </div>
       <div class="fotos-btns">
         <button class="btn-galeria" onclick="subirFoto('galeria')">🖼 Subir a Galería</button>
         <button class="btn-hero-up" onclick="subirFoto('hero')">🌅 Subir a Portada</button>
@@ -1176,6 +1189,8 @@ function subirFoto(tipo) {
   });
 }
 
+var galFotosOrder = [];
+
 function cargarFotos() {
   var grid    = document.getElementById('fotos-grid');
   var loading = document.getElementById('fotos-loading');
@@ -1185,10 +1200,20 @@ function cargarFotos() {
 
   Promise.all([
     fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/galeria.json').then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
-    fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/hero.json').then(function(r){return r.json();}).catch(function(){return {resources:[]};})
+    fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/hero.json').then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
+    fetch(API+'/galeria').then(function(r){return r.json();}).catch(function(){return [];})
   ]).then(function(res) {
-    var galFotos  = (res[0].resources || []).slice(0, 30);
+    var galRaw    = (res[0].resources || []).slice(0, 30);
     var heroFotos = (res[1].resources || []).slice(0, 10);
+    var order     = Array.isArray(res[2]) ? res[2] : [];
+
+    // Ordenar galería según el orden guardado
+    var byId = {};
+    galRaw.forEach(function(f){ byId[f.public_id] = f; });
+    var galFotos = [];
+    order.forEach(function(id){ if (byId[id]){ galFotos.push(byId[id]); delete byId[id]; } });
+    galRaw.forEach(function(f){ if (byId[f.public_id]) galFotos.push(f); });
+    galFotosOrder = galFotos.map(function(f){ return f.public_id; });
 
     document.getElementById('cnt-galeria').textContent = galFotos.length;
     document.getElementById('cnt-hero').textContent    = heroFotos.length;
@@ -1197,23 +1222,39 @@ function cargarFotos() {
             .concat(galFotos.map(function(r){ return {r:r, tipo:'galeria'}; }));
 
     if (!all.length) {
-      loading.textContent     = 'Sin fotos todavía — sube la primera 👆';
-      loading.style.display   = 'block';
+      loading.textContent   = 'Sin fotos todavía — sube la primera 👆';
+      loading.style.display = 'block';
       document.getElementById('cnt-galeria').textContent = '0';
       document.getElementById('cnt-hero').textContent    = '0';
       return;
     }
 
+    var galIdx = 0;
     all.forEach(function(item) {
-      var wrap    = document.createElement('div');
+      var wrap = document.createElement('div');
       wrap.className = 'foto-thumb-wrap';
       var url     = 'https://res.cloudinary.com/'+CLOUD_NAME+'/image/upload/w_200,h_200,c_fill/'+item.r.public_id+'.jpg';
       var caption = (item.r.context && item.r.context.custom && item.r.context.custom.caption) ? item.r.context.custom.caption : '';
       var emoji   = item.tipo === 'hero' ? '🌅' : '🖼';
       var pid     = item.r.public_id.replace(/'/g,"\\'");
+
+      var posBadge = '', ordBtns = '';
+      if (item.tipo === 'galeria') {
+        var pos   = galIdx;
+        var total = galFotos.length;
+        galIdx++;
+        posBadge = '<span class="gal-pos">'+(pos+1)+'</span>';
+        ordBtns  = '<div class="gal-ord">'
+          + '<button '+(pos===0?'disabled':'')+' onclick="moverFotoGal(\''+pid+'\',\'up\')">↑</button>'
+          + '<button '+(pos===total-1?'disabled':'')+' onclick="moverFotoGal(\''+pid+'\',\'down\')">↓</button>'
+          + '</div>';
+      }
+
       wrap.innerHTML = '<img class="foto-thumb" src="'+url+'" loading="lazy">'
                      + '<span class="foto-thumb-tag">'+emoji+'</span>'
+                     + posBadge
                      + '<button class="foto-del-btn" onclick="eliminarFoto(\''+pid+'\',this.closest(\'.foto-thumb-wrap\'))">✕</button>'
+                     + ordBtns
                      + (caption ? '<div class="foto-caption">'+esc(caption)+'</div>' : '');
       grid.appendChild(wrap);
     });
@@ -1221,6 +1262,22 @@ function cargarFotos() {
     loading.style.display = 'none';
     grid.style.display    = 'grid';
   });
+}
+
+function moverFotoGal(publicId, dir) {
+  var idx = galFotosOrder.indexOf(publicId);
+  if (idx === -1) return;
+  var newIdx = dir === 'up' ? idx - 1 : idx + 1;
+  if (newIdx < 0 || newIdx >= galFotosOrder.length) return;
+  var tmp = galFotosOrder[idx];
+  galFotosOrder[idx]    = galFotosOrder[newIdx];
+  galFotosOrder[newIdx] = tmp;
+  fetch(API+'/galeria?t='+T, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({order: galFotosOrder})
+  }).then(function(){ showToast('✅ Orden guardado'); cargarFotos(); })
+    .catch(function(){ showToast('❌ Error al guardar orden'); });
 }
 </script>
 </body>

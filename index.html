@@ -1768,11 +1768,16 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <h2>Así de bien lo pasan 📸</h2>
       <p class="section-desc">Imágenes reales de nuestros peludos disfrutando en La Casita de Simba.</p>
     </div>
-    <div class="galeria-show reveal">
-      <div id="galeria-slides"></div>
-      <button class="gale-btn gale-prev" onclick="galeSlide(-1)" aria-label="Anterior">‹</button>
-      <button class="gale-btn gale-next" onclick="galeSlide(1)" aria-label="Siguiente">›</button>
-      <div class="gale-counter" id="gale-counter"></div>
+    <div class="galeria-grid reveal" id="galeria-grid">
+      <div class="galeria-item" data-src="images/galeria1.jpeg" data-caption="Jugando juntos 🐾"><img src="images/galeria1.jpeg" alt="Perritos jugando en La Casita de Simba" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Jugando juntos 🐾</div></div>
+      <div class="galeria-item" data-src="images/galeria2.jpeg" data-caption="Hora del recreo 🎾"><img src="images/galeria2.jpeg" alt="Perritos en hora del recreo" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Hora del recreo 🎾</div></div>
+      <div class="galeria-item" data-src="images/galeria3.jpeg" data-caption="Descanso en familia 😴"><img src="images/galeria3.jpeg" alt="Perritos descansando" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Descanso en familia 😴</div></div>
+      <div class="galeria-item" data-src="images/galeria4.jpeg" data-caption="Amigos peludos 🐕"><img src="images/galeria4.jpeg" alt="Perros felices haciendo amigos" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Amigos peludos 🐕</div></div>
+      <div class="galeria-item" data-src="images/galeria5.jpeg" data-caption="Como en casa 🏡"><img src="images/galeria5.jpeg" alt="La Casita de Simba como en casa" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Como en casa 🏡</div></div>
+      <div class="galeria-item" data-src="images/galeria6.jpeg" data-caption="Diversión 🐶"><img src="images/galeria6.jpeg" alt="Perritos en guardería canina Madrid" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Diversión 🐶</div></div>
+      <div class="galeria-item" data-src="images/galeria7.jpeg" data-caption="Nuevos amigos 🐾"><img src="images/galeria7.jpeg" alt="Perros haciendo amigos en La Casita de Simba" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Nuevos amigos 🐾</div></div>
+      <div class="galeria-item" data-src="images/galeria8.jpeg" data-caption="Felices y libres 🌟"><img src="images/galeria8.jpeg" alt="Perros felices en guardería canina Madrid" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Felices y libres 🌟</div></div>
+      <div class="galeria-item" data-src="images/galeria9.jpeg" data-caption="Pura alegría 😊"><img src="images/galeria9.jpeg" alt="Perritos alegres en La Casita de Simba" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Pura alegría 😊</div></div>
     </div>
     <div class="galeria-ig reveal">
       <a href="https://instagram.com/lacasitadesimba" target="_blank" rel="noopener noreferrer" class="btn-ig">
@@ -2578,71 +2583,48 @@ function enviar(e) {
   });
 })();
 
-// Galería slideshow — auto-rota entre fotos de Cloudinary (fallback: imágenes estáticas)
+// Galería dinámica — carga desde Cloudinary ordenada por el orden guardado en admin
 (function(){
   var CLD = 'dqboccvby';
-  var STATIC = [
-    {src:'images/galeria1.jpeg',cap:'Jugando juntos 🐾'},
-    {src:'images/galeria2.jpeg',cap:'Hora del recreo 🎾'},
-    {src:'images/galeria3.jpeg',cap:'Descanso en familia 😴'},
-    {src:'images/galeria4.jpeg',cap:'Amigos peludos 🐕'},
-    {src:'images/galeria5.jpeg',cap:'Como en casa 🏡'},
-    {src:'images/galeria6.jpeg',cap:'Diversión 🐶'},
-    {src:'images/galeria7.jpeg',cap:'Nuevos amigos 🐾'},
-    {src:'images/galeria8.jpeg',cap:'Felices y libres 🌟'},
-    {src:'images/galeria9.jpeg',cap:'Pura alegría 😊'}
-  ];
-  var cur = 0, timer = null, slideEls = [];
+  var GAPI = 'https://casitadesimba.vercel.app/api/galeria';
 
-  function build(items) {
-    var wrap = document.getElementById('galeria-slides');
-    if (!wrap) return;
-    wrap.innerHTML = items.map(function(item, i){
-      return '<div class="gale-slide'+(i===0?' active':'')+'">' +
-        '<img src="'+item.src+'" alt="'+(item.cap||'La Casita de Simba').replace(/"/g,'&quot;')+'" loading="'+(i===0?'eager':'lazy')+'">' +
-        (item.cap?'<div class="gale-caption">'+item.cap+'</div>':'')+
+  function buildGrid(fotos) {
+    var grid = document.getElementById('galeria-grid');
+    if (!grid || !fotos.length) return;
+    grid.innerHTML = fotos.map(function(f){
+      var cap = f.cap || '';
+      return '<div class="galeria-item" data-src="'+f.full+'" data-caption="'+cap.replace(/"/g,'&quot;')+'">' +
+        '<img src="'+f.thumb+'" alt="'+(cap||'La Casita de Simba').replace(/"/g,'&quot;')+'" loading="lazy">' +
+        '<div class="galeria-zoom">🔍</div>' +
+        (cap?'<div class="galeria-caption">'+cap+'</div>':'')+
       '</div>';
     }).join('');
-    slideEls = Array.from(wrap.querySelectorAll('.gale-slide'));
-    cur = 0;
-    var c = document.getElementById('gale-counter');
-    if (c) c.textContent = '1 / '+items.length;
+    if (window.reinitLightbox) window.reinitLightbox();
   }
 
-  function goTo(i) {
-    if (!slideEls.length) return;
-    slideEls[cur].classList.remove('active');
-    cur = (i+slideEls.length) % slideEls.length;
-    slideEls[cur].classList.add('active');
-    var c = document.getElementById('gale-counter');
-    if (c) c.textContent = (cur+1)+' / '+slideEls.length;
-  }
+  Promise.all([
+    fetch(GAPI).then(function(r){return r.json();}).catch(function(){return [];}),
+    fetch('https://res.cloudinary.com/'+CLD+'/image/list/galeria.json').then(function(r){return r.json();}).catch(function(){return {resources:[]};})
+  ]).then(function(results){
+    var order = Array.isArray(results[0]) ? results[0] : [];
+    var raw   = results[1].resources || [];
+    if (!raw.length) return;
 
-  function startTimer() {
-    clearInterval(timer);
-    timer = setInterval(function(){ goTo(cur+1); }, 4000);
-  }
+    var byId = {};
+    raw.forEach(function(r){ byId[r.public_id] = r; });
+    var sorted = [];
+    order.forEach(function(id){ if (byId[id]){ sorted.push(byId[id]); delete byId[id]; } });
+    raw.forEach(function(r){ if (byId[r.public_id]) sorted.push(r); });
 
-  window.galeSlide = function(dir){ goTo(cur+dir); clearInterval(timer); startTimer(); };
-
-  build(STATIC.map(function(s){ return {src:s.src, cap:s.cap}; }));
-  startTimer();
-
-  fetch('https://res.cloudinary.com/'+CLD+'/image/list/galeria.json')
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      var fotos = (data.resources||[]);
-      if (!fotos.length) return;
-      clearInterval(timer);
-      build(fotos.map(function(r){
-        return {
-          src: 'https://res.cloudinary.com/'+CLD+'/image/upload/c_fill,w_1200,h_675,q_auto/'+r.public_id+'.jpg',
-          cap: (r.context&&r.context.custom&&r.context.custom.caption)||''
-        };
-      }));
-      startTimer();
-    })
-    .catch(function(){});
+    buildGrid(sorted.map(function(r){
+      var cap = (r.context&&r.context.custom&&r.context.custom.caption)||'';
+      return {
+        thumb: 'https://res.cloudinary.com/'+CLD+'/image/upload/c_fill,w_800,h_600,q_auto/'+r.public_id+'.jpg',
+        full:  'https://res.cloudinary.com/'+CLD+'/image/upload/q_auto/'+r.public_id+'.jpg',
+        cap:   cap
+      };
+    }));
+  });
 })();
 
 // WhatsApp bubble — aparece a los 10 segundos, se cierra al pulsar X
