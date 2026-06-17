@@ -186,6 +186,29 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
   .cl-form{padding:1.3rem}
 }
 
+/* ── FOTOS ── */
+.fotos-info{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:1rem;font-size:.82rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.6;}
+.fotos-info strong{color:var(--text);}
+.foto-caption-input{width:100%;background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:.65rem .9rem;font-size:.9rem;margin-bottom:.8rem;}
+.foto-caption-input::placeholder{color:var(--muted);}
+.foto-caption-input:focus{outline:none;border-color:var(--purple);}
+.fotos-btns{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:1.2rem;}
+.btn-galeria{background:linear-gradient(135deg,#22c55e,#16a34a);border:none;color:white;border-radius:12px;padding:.9rem;font-size:.88rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.btn-hero-up{background:linear-gradient(135deg,#f59e0b,#d97706);border:none;color:white;border-radius:12px;padding:.9rem;font-size:.88rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.btn-galeria:hover,.btn-hero-up:hover{opacity:.88;}
+.fotos-counter{display:flex;gap:.7rem;margin-bottom:1.2rem;}
+.foto-cnt{flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.8rem;text-align:center;}
+.foto-cnt .num{font-size:1.6rem;font-weight:900;}
+.foto-cnt .lbl{font-size:.68rem;color:var(--muted);text-transform:uppercase;font-weight:700;}
+.foto-cnt.green .num{color:#4ade80;}
+.foto-cnt.amber .num{color:#fbbf24;}
+.fotos-section-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.7rem;}
+.fotos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:.5rem;margin-bottom:1.5rem;}
+.foto-thumb-wrap{position:relative;}
+.foto-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:2px solid var(--border);}
+.foto-thumb-tag{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.7);border-radius:6px;font-size:.62rem;font-weight:800;padding:2px 5px;color:white;}
+.foto-caption{font-size:.65rem;color:var(--muted);padding:.2rem .1rem;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
 /* ── RESEÑAS ── */
 .rev-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.1rem;margin-bottom:1.2rem;display:flex;flex-direction:column;gap:.7rem}
 .rev-form input,.rev-form textarea{background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:.65rem .9rem;font-size:.9rem;width:100%;}
@@ -248,6 +271,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <button class="dash-tab active" id="tab-stats-btn">📊 Stats</button>
     <button class="dash-tab" id="tab-cl-btn">👥 Clientes</button>
     <button class="dash-tab" id="tab-rev-btn">⭐ Reseñas</button>
+    <button class="dash-tab" id="tab-fotos-btn">📸 Fotos</button>
   </div>
   <div class="dash-content">
 
@@ -383,6 +407,39 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       </div>
     </div>
 
+    <!-- FOTOS -->
+    <div id="section-fotos" style="display:none">
+
+      <div class="fotos-counter">
+        <div class="foto-cnt green">
+          <div class="num" id="cnt-galeria">—</div>
+          <div class="lbl">Galería</div>
+        </div>
+        <div class="foto-cnt amber">
+          <div class="num" id="cnt-hero">—</div>
+          <div class="lbl">Portada</div>
+        </div>
+      </div>
+
+      <div class="fotos-info">
+        <strong>🖼 Galería</strong> — fotos del día a día, los perros jugando, actividades.<br>
+        <strong>🌅 Portada</strong> — fotos bonitas para el fondo principal de la web (horizontales preferiblemente).
+      </div>
+
+      <label style="display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:.4rem;">🐶 Nombre del perro o descripción <span style="font-weight:400;opacity:.6">(opcional)</span></label>
+      <input type="text" class="foto-caption-input" id="foto-caption" placeholder="Ej: Simba y Rocky jugando">
+
+      <div class="fotos-btns">
+        <button class="btn-galeria" onclick="subirFoto('galeria')">🖼 Subir a Galería</button>
+        <button class="btn-hero-up" onclick="subirFoto('hero')">🌅 Subir a Portada</button>
+      </div>
+
+      <div class="fotos-section-title">📷 Fotos subidas</div>
+      <div id="fotos-loading" style="color:var(--muted);font-size:.82rem;padding:.5rem 0 1rem;">Cargando fotos…</div>
+      <div class="fotos-grid" id="fotos-grid" style="display:none;"></div>
+
+    </div>
+
   </div><!-- /dash-content -->
 </div><!-- /dashboard -->
 
@@ -426,14 +483,16 @@ document.getElementById('logout-btn').addEventListener('click', function() {
 document.getElementById('tab-stats-btn').addEventListener('click', function(){ showTab('stats'); });
 document.getElementById('tab-cl-btn').addEventListener('click',  function(){ showTab('cl'); loadClients(); });
 document.getElementById('tab-rev-btn').addEventListener('click', function(){ showTab('rev'); loadReseñas(); });
+document.getElementById('tab-fotos-btn').addEventListener('click', function(){ showTab('fotos'); cargarFotos(); });
 
 function showTab(t) {
-  ['stats','cl','rev'].forEach(function(s){
+  ['stats','cl','rev','fotos'].forEach(function(s){
     document.getElementById('section-'+s).style.display = t===s ? '' : 'none';
   });
   document.getElementById('tab-stats-btn').classList.toggle('active', t==='stats');
   document.getElementById('tab-cl-btn').classList.toggle('active',    t==='cl');
   document.getElementById('tab-rev-btn').classList.toggle('active',   t==='rev');
+  document.getElementById('tab-fotos-btn').classList.toggle('active', t==='fotos');
 }
 
 // ── Stats ──
@@ -671,6 +730,8 @@ function showToast(msg){
 // ── Reseñas ──
 var CLOUD_NAME  = 'dqboccvby';
 var PRESET_REV  = 'casita_resenas';
+var PRESET_GAL  = 'casita_galeria';
+var PRESET_HERO = 'casita_hero';
 var revStars    = 5;
 var revFotoUrl  = '';
 
@@ -773,6 +834,90 @@ function renderReseñas(reviews) {
         .then(function(){ loadReseñas(); showToast('Reseña eliminada'); });
     }
   }, { once: true });
+}
+
+// ── Fotos ──
+function subirFoto(tipo) {
+  var preset  = tipo === 'hero' ? PRESET_HERO : PRESET_GAL;
+  var folder  = tipo === 'hero' ? 'casita/hero' : 'casita/galeria';
+  var tags    = tipo === 'hero' ? 'hero' : 'galeria';
+  var caption = document.getElementById('foto-caption').value.trim();
+
+  cloudinary.openUploadWidget({
+    cloudName: CLOUD_NAME,
+    uploadPreset: preset,
+    folder: folder,
+    tags: [tags],
+    context: caption ? { caption: caption, alt: caption } : {},
+    sources: ['local','camera'],
+    multiple: true,
+    maxFiles: 10,
+    clientAllowedFormats: ['jpg','jpeg','png','webp'],
+    maxFileSize: 10000000,
+    language: 'es',
+    text: {
+      es: {
+        or: 'o',
+        back: 'Atrás',
+        close: 'Cerrar',
+        local: { browse:'Explorar', dd_title_single:'Arrastra una foto aquí', dd_title_multi:'Arrastra fotos aquí', drop_title_single:'Suelta para subir', drop_title_multi:'Suelta para subir' },
+        actions: { upload:'Subir', clear_all:'Borrar todo' },
+        upload_progress: { uploading:'Subiendo…', complete:'Completado', failed:'Falló' },
+      }
+    }
+  }, function(error, result) {
+    if (!error && result && result.event === 'success') {
+      showToast('✅ Foto subida — ya aparece en la web');
+      document.getElementById('foto-caption').value = '';
+      cargarFotos();
+    }
+    if (error) showToast('❌ Error: ' + (error.message || error));
+  });
+}
+
+function cargarFotos() {
+  var grid    = document.getElementById('fotos-grid');
+  var loading = document.getElementById('fotos-loading');
+  loading.style.display = 'block';
+  grid.style.display    = 'none';
+  grid.innerHTML        = '';
+
+  Promise.all([
+    fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/galeria.json').then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
+    fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/hero.json').then(function(r){return r.json();}).catch(function(){return {resources:[]};})
+  ]).then(function(res) {
+    var galFotos  = (res[0].resources || []).slice(0, 30);
+    var heroFotos = (res[1].resources || []).slice(0, 10);
+
+    document.getElementById('cnt-galeria').textContent = galFotos.length;
+    document.getElementById('cnt-hero').textContent    = heroFotos.length;
+
+    var all = heroFotos.map(function(r){ return {r:r, tipo:'hero'}; })
+            .concat(galFotos.map(function(r){ return {r:r, tipo:'galeria'}; }));
+
+    if (!all.length) {
+      loading.textContent     = 'Sin fotos todavía — sube la primera 👆';
+      loading.style.display   = 'block';
+      document.getElementById('cnt-galeria').textContent = '0';
+      document.getElementById('cnt-hero').textContent    = '0';
+      return;
+    }
+
+    all.forEach(function(item) {
+      var wrap    = document.createElement('div');
+      wrap.className = 'foto-thumb-wrap';
+      var url     = 'https://res.cloudinary.com/'+CLOUD_NAME+'/image/upload/w_200,h_200,c_fill/'+item.r.public_id+'.jpg';
+      var caption = (item.r.context && item.r.context.custom && item.r.context.custom.caption) ? item.r.context.custom.caption : '';
+      var emoji   = item.tipo === 'hero' ? '🌅' : '🖼';
+      wrap.innerHTML = '<img class="foto-thumb" src="'+url+'" loading="lazy">'
+                     + '<span class="foto-thumb-tag">'+emoji+'</span>'
+                     + (caption ? '<div class="foto-caption">'+esc(caption)+'</div>' : '');
+      grid.appendChild(wrap);
+    });
+
+    loading.style.display = 'none';
+    grid.style.display    = 'grid';
+  });
 }
 </script>
 </body>
