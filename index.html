@@ -1952,9 +1952,36 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <h2>Familias que confían en nosotros ❤️</h2>
       <p class="section-desc">Las opiniones de quienes más importan: los dueños de nuestros peludos.</p>
     </div>
-    <!-- Elfsight Google Reviews | Untitled Google Reviews -->
-    <script src="https://elfsightcdn.com/platform.js" async></script>
-    <div class="elfsight-app-813db7d5-7c88-417f-97f4-93518bfc293d" data-elfsight-app-lazy></div>
+    <div id="reviews-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;margin-top:2rem;"></div>
+    <div id="reviews-loading" style="text-align:center;padding:2rem;color:rgba(255,255,255,.4);font-size:.9rem;">Cargando reseñas…</div>
+    <script>
+    (function(){
+      fetch('https://casitadesimba.vercel.app/api/reviews')
+        .then(function(r){return r.json();})
+        .then(function(reviews){
+          var loading = document.getElementById('reviews-loading');
+          var grid    = document.getElementById('reviews-grid');
+          if(!reviews.length){ loading.textContent=''; return; }
+          loading.style.display='none';
+          grid.innerHTML = reviews.map(function(r){
+            var avatar = r.foto
+              ? '<img src="'+r.foto+'" alt="'+r.nombre+'" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;">'
+              : '<div style="width:48px;height:48px;border-radius:50%;background:#e8a4b8;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:800;color:#7c1d3c;flex-shrink:0;">'+r.nombre.charAt(0).toUpperCase()+'</div>';
+            var stars = '<span style="color:#FFB400;font-size:1rem;">'+'★'.repeat(r.estrellas)+'</span>';
+            var fecha = r.fecha ? r.fecha.slice(0,7).replace('-',' / ') : '';
+            return '<div style="background:white;border-radius:16px;padding:1.3rem;box-shadow:0 4px 20px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:.7rem;">'+
+              '<div style="display:flex;align-items:center;gap:.8rem;">'+avatar+
+                '<div><div style="font-weight:700;color:#1a1a1a;font-size:.95rem;">'+r.nombre+'</div>'+
+                '<div style="font-size:.72rem;color:#999;">'+fecha+'</div></div>'+
+              '</div>'+
+              '<div>'+stars+'</div>'+
+              '<p style="font-size:.87rem;color:#444;line-height:1.6;margin:0;">'+r.texto+'</p>'+
+            '</div>';
+          }).join('');
+        })
+        .catch(function(){ document.getElementById('reviews-loading').textContent=''; });
+    })();
+    </script>
   </div>
 </section>
 
