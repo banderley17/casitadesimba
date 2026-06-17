@@ -48,7 +48,7 @@ export default async function handler(req) {
     const raw = await kvGet('casita_reviews', kvUrl, kvTok);
     const reviews = raw ? JSON.parse(raw) : [];
 
-    const { imagen } = body;
+    const { imagen, respuesta } = body;
     const nueva = {
       id: 'rev_' + Date.now(),
       nombre: nombre.trim(),
@@ -56,6 +56,7 @@ export default async function handler(req) {
       imagen: imagen || '',
       estrellas: parseInt(estrellas),
       texto: texto.trim(),
+      respuesta: respuesta ? respuesta.trim() : '',
       fecha: fecha || new Date().toISOString().slice(0, 7),
       visible: true,
     };
@@ -75,12 +76,13 @@ export default async function handler(req) {
       if (r.id !== id) return r;
       return {
         ...r,
-        nombre:   (nombre   != null) ? nombre.trim()        : r.nombre,
-        foto:     (foto     != null) ? foto                  : r.foto,
-        imagen:   (imagen   != null) ? imagen                : (r.imagen || ''),
-        estrellas:(estrellas!= null) ? parseInt(estrellas)   : r.estrellas,
-        texto:    (texto    != null) ? texto.trim()          : r.texto,
-        fecha:    (fecha    != null) ? fecha                  : r.fecha,
+        nombre:    (nombre    != null) ? nombre.trim()              : r.nombre,
+        foto:      (foto      != null) ? foto                       : r.foto,
+        imagen:    (imagen    != null) ? imagen                     : (r.imagen    || ''),
+        estrellas: (estrellas != null) ? parseInt(estrellas)        : r.estrellas,
+        texto:     (texto     != null) ? texto.trim()               : r.texto,
+        respuesta: (body.respuesta != null) ? body.respuesta.trim() : (r.respuesta || ''),
+        fecha:     (fecha     != null) ? fecha                      : r.fecha,
       };
     });
     await kvSet('casita_reviews', JSON.stringify(reviews), kvUrl, kvTok);

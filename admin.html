@@ -427,6 +427,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 
         </div>
 
+        <label>Respuesta de La Casita de Simba <span style="font-weight:400;opacity:.5">(opcional)</span></label>
+        <textarea id="rv-respuesta" placeholder="Escribe aquí la respuesta de la guardería a esta reseña…" style="height:72px;"></textarea>
+
         <div class="rev-edit-banner" id="rev-edit-banner">
           <span>✏️ Editando reseña existente</span>
           <button class="rev-cancel-edit" onclick="cancelarEdicion()">Cancelar edición</button>
@@ -765,11 +768,12 @@ var CLOUD_NAME  = 'dqboccvby';
 var PRESET_REV  = 'casita_resenas';
 var PRESET_GAL  = 'casita_galeria';
 var PRESET_HERO = 'casita_hero';
-var revStars    = 5;
-var revFotoUrl  = '';
-var revImageUrl = '';
-var revEditId   = null;
-var revCache    = [];
+var revStars      = 5;
+var revFotoUrl    = '';
+var revImageUrl   = '';
+var revRespuesta  = '';
+var revEditId     = null;
+var revCache      = [];
 
 document.getElementById('stars-sel').addEventListener('click', function(e){
   var s = e.target.getAttribute('data-s');
@@ -836,7 +840,8 @@ function guardarReseña() {
   btn.disabled = true; btn.textContent = revEditId ? 'Actualizando…' : 'Guardando…';
 
   var method = revEditId ? 'PATCH' : 'POST';
-  var payload = { nombre: nombre, foto: revFotoUrl, imagen: revImageUrl, estrellas: revStars, texto: texto, fecha: fecha };
+  var respuesta = document.getElementById('rv-respuesta').value.trim();
+  var payload = { nombre: nombre, foto: revFotoUrl, imagen: revImageUrl, estrellas: revStars, texto: texto, respuesta: respuesta, fecha: fecha };
   if (revEditId) payload.id = revEditId;
 
   fetch(API+'/reviews?t='+T, {
@@ -859,7 +864,8 @@ function resetRevForm() {
   document.getElementById('rv-nombre').value = '';
   document.getElementById('rv-texto').value  = '';
   document.getElementById('rv-fecha').value  = '';
-  revFotoUrl  = ''; revImageUrl = ''; revEditId = null;
+  revFotoUrl = ''; revImageUrl = ''; revRespuesta = ''; revEditId = null;
+  document.getElementById('rv-respuesta').value = '';
   document.getElementById('rv-foto-preview').style.display   = 'none';
   document.getElementById('rv-imagen-preview').style.display = 'none';
   document.getElementById('btn-foto-rev').textContent   = '📷 Subir foto';
@@ -876,10 +882,12 @@ function editarReseña(r) {
   document.getElementById('rv-nombre').value = r.nombre || '';
   document.getElementById('rv-texto').value  = r.texto  || '';
   document.getElementById('rv-fecha').value  = r.fecha  || '';
-  revStars   = r.estrellas || 5;
-  revEditId  = r.id;
-  revFotoUrl  = r.foto   || '';
-  revImageUrl = r.imagen || '';
+  revStars      = r.estrellas || 5;
+  revEditId     = r.id;
+  revFotoUrl    = r.foto      || '';
+  revImageUrl   = r.imagen    || '';
+  revRespuesta  = r.respuesta || '';
+  document.getElementById('rv-respuesta').value = revRespuesta;
   document.querySelectorAll('.star-btn').forEach(function(b){
     b.classList.toggle('on', parseInt(b.getAttribute('data-s')) <= revStars);
   });
@@ -917,7 +925,8 @@ function renderReseñas(reviews) {
       : '<div class="rev-avatar">'+esc(initial(r.nombre))+'</div>';
     var stars  = '★'.repeat(r.estrellas)+'☆'.repeat(5-r.estrellas);
     var fecha  = r.fecha ? r.fecha.slice(0,7).replace('-',' / ') : '';
-    var imgHtml = r.imagen ? '<img class="rev-img" src="'+esc(r.imagen)+'" alt="imagen reseña" loading="lazy">' : '';
+    var imgHtml  = r.imagen    ? '<img class="rev-img" src="'+esc(r.imagen)+'" alt="" loading="lazy">' : '';
+    var respHtml = r.respuesta ? '<div style="background:rgba(66,133,244,.08);border-left:3px solid #4285F4;border-radius:0 8px 8px 0;padding:.55rem .75rem;margin-top:.5rem;"><div style="font-size:.68rem;font-weight:800;color:#4285F4;margin-bottom:.2rem;">💬 Respuesta de La Casita de Simba</div><div style="font-size:.78rem;color:rgba(241,245,249,.75);line-height:1.5;">'+esc(r.respuesta)+'</div></div>' : '';
     return '<div class="rev-item">'+
       '<div class="rev-top">'+avatar+
         '<div class="rev-meta"><div class="rev-name">'+esc(r.nombre)+'</div><div class="rev-date">'+esc(fecha)+'</div></div>'+
@@ -925,6 +934,7 @@ function renderReseñas(reviews) {
       '<div class="rev-stars">'+stars+'</div>'+
       '<div class="rev-text">'+esc(r.texto)+'</div>'+
       imgHtml+
+      respHtml+
       '<div class="rev-actions">'+
         '<button class="rev-edit-btn" data-edit="'+esc(r.id)+'">✏️ Editar</button>'+
         '<button class="rev-del" data-rid="'+esc(r.id)+'">✕ Borrar</button>'+
