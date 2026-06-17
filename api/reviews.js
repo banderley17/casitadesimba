@@ -43,28 +43,28 @@ export default async function handler(req) {
   if (req.method === 'POST') {
     const body = await req.json();
     const { id, nombre, foto, imagen, estrellas, texto, fecha, respuesta } = body;
-    if (!nombre || !texto || !estrellas) return err('Faltan campos obligatorios');
 
     const raw = await kvGet('casita_reviews', kvUrl, kvTok);
     let reviews = raw ? JSON.parse(raw) : [];
 
     if (id) {
-      // Actualizar reseña existente
+      // Actualizar reseña existente — solo se sobrescriben los campos presentes
       reviews = reviews.map(r => {
         if (r.id !== id) return r;
         return {
           ...r,
-          nombre:    nombre.trim(),
-          foto:      foto      != null ? foto      : r.foto,
-          imagen:    imagen    != null ? imagen    : (r.imagen    || ''),
-          estrellas: parseInt(estrellas),
-          texto:     texto.trim(),
-          respuesta: respuesta != null ? respuesta.trim() : (r.respuesta || ''),
-          fecha:     fecha     != null ? fecha     : r.fecha,
+          ...(nombre    != null ? { nombre:    nombre.trim()       } : {}),
+          ...(foto      != null ? { foto                           } : {}),
+          ...(imagen    != null ? { imagen                         } : {}),
+          ...(estrellas != null ? { estrellas: parseInt(estrellas) } : {}),
+          ...(texto     != null ? { texto:     texto.trim()        } : {}),
+          ...(respuesta != null ? { respuesta: respuesta.trim()    } : {}),
+          ...(fecha     != null ? { fecha                          } : {}),
         };
       });
     } else {
       // Crear nueva reseña
+      if (!nombre || !texto || !estrellas) return err('Faltan campos obligatorios');
       const nueva = {
         id: 'rev_' + Date.now(),
         nombre: nombre.trim(),

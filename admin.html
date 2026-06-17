@@ -248,6 +248,33 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .rev-edit-btn{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:#a78bfa;cursor:pointer;font-size:.72rem;font-weight:700;border-radius:8px;padding:.25rem .65rem;transition:all .2s;}
 .rev-edit-btn:hover{background:rgba(124,58,237,.25);color:white;}
 .rev-img{width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:.5rem;}
+
+/* ── Sección de respuesta inline en cada reseña ── */
+.rev-resp-section{margin-top:.7rem;padding-top:.65rem;border-top:1px solid rgba(255,255,255,.06);}
+.rev-resp-cur{background:rgba(66,133,244,.08);border-left:3px solid #4285F4;border-radius:0 8px 8px 0;padding:.5rem .75rem;margin-bottom:.5rem;}
+.rev-resp-cur-label{font-size:.65rem;font-weight:800;color:#4285F4;margin-bottom:.15rem;}
+.rev-resp-cur-text{font-size:.78rem;color:rgba(241,245,249,.75);line-height:1.45;}
+.btn-resp-toggle{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.22);color:#a78bfa;border-radius:8px;padding:.28rem .65rem;font-size:.72rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-resp-toggle:hover{background:rgba(124,58,237,.25);color:white;}
+.rev-resp-form{margin-top:.55rem;display:none;}
+.rev-resp-ta{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(124,58,237,.3);color:var(--text);border-radius:8px;padding:.55rem .75rem;font-size:.83rem;resize:none;height:72px;font-family:inherit;display:block;}
+.rev-resp-ta:focus{outline:none;border-color:var(--purple);}
+.resp-emoji-row{display:flex;align-items:flex-start;gap:.35rem;margin-top:.35rem;flex-wrap:wrap;}
+.btn-emoji{background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:.22rem .5rem;font-size:.88rem;cursor:pointer;line-height:1.3;white-space:nowrap;}
+.btn-emoji:hover{background:rgba(255,255,255,.13);}
+.emoji-panel{display:none;flex-wrap:wrap;gap:1px;padding:.35rem;background:var(--card2);border:1px solid var(--border);border-radius:10px;margin-top:.3rem;width:100%;}
+.emoji-opt{background:none;border:none;font-size:1.08rem;cursor:pointer;padding:.15rem .2rem;border-radius:5px;line-height:1;}
+.emoji-opt:hover{background:rgba(255,255,255,.12);}
+.resp-save-row{display:flex;gap:.4rem;margin-top:.4rem;}
+.btn-resp-cancel{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:.35rem .65rem;font-size:.78rem;cursor:pointer;}
+.btn-resp-save{background:var(--purple);border:none;color:white;border-radius:8px;padding:.35rem .8rem;font-size:.78rem;font-weight:700;cursor:pointer;flex:1;}
+.btn-resp-save:hover{background:var(--purple2);}
+.btn-resp-save:disabled{opacity:.5;cursor:not-allowed;}
+/* Emoji para el textarea rv-respuesta del formulario principal */
+.rv-resp-wrap{position:relative;}
+.rv-resp-wrap textarea{padding-right:2.6rem;}
+.btn-main-emoji{position:absolute;top:.4rem;right:.4rem;background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--text);border-radius:7px;padding:.18rem .38rem;font-size:.9rem;cursor:pointer;line-height:1.3;}
+.btn-main-emoji:hover{background:rgba(255,255,255,.13);}
 </style>
 </head>
 <body>
@@ -431,7 +458,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         </div>
 
         <label>Respuesta de La Casita de Simba <span style="font-weight:400;opacity:.5">(opcional)</span></label>
-        <textarea id="rv-respuesta" placeholder="Escribe aquí la respuesta de la guardería a esta reseña…" style="height:72px;"></textarea>
+        <div class="rv-resp-wrap">
+          <textarea id="rv-respuesta" placeholder="Escribe aquí la respuesta de la guardería a esta reseña…" style="height:72px;"></textarea>
+          <button type="button" class="btn-main-emoji" onclick="toggleMainEmoji()">😊</button>
+        </div>
+        <div class="emoji-panel" id="main-emoji-panel" style="max-width:100%;margin-bottom:.2rem;"></div>
 
         <div class="rev-edit-banner" id="rev-edit-banner">
           <span>✏️ Editando reseña existente</span>
@@ -863,7 +894,7 @@ function guardarReseña() {
     } else { showToast('❌ '+(d.msg||'Error desconocido')); }
   })
   .catch(function(e){ showToast('❌ '+(e.message||'Error de conexión')); })
-  .finally(function(){ btn.disabled=false; btn.textContent = isEditing ? '💾 Actualizar reseña' : '⭐ Guardar reseña'; });
+  .finally(function(){ btn.disabled=false; btn.textContent = revEditId ? '💾 Actualizar reseña' : '⭐ Guardar reseña'; });
 }
 
 function resetRevForm() {
@@ -931,8 +962,28 @@ function renderReseñas(reviews) {
       : '<div class="rev-avatar">'+esc(initial(r.nombre))+'</div>';
     var stars  = '★'.repeat(r.estrellas)+'☆'.repeat(5-r.estrellas);
     var fecha  = r.fecha ? r.fecha.slice(0,7).replace('-',' / ') : '';
-    var imgHtml  = r.imagen    ? '<img class="rev-img" src="'+esc(r.imagen)+'" alt="" loading="lazy">' : '';
-    var respHtml = r.respuesta ? '<div style="background:rgba(66,133,244,.08);border-left:3px solid #4285F4;border-radius:0 8px 8px 0;padding:.55rem .75rem;margin-top:.5rem;"><div style="font-size:.68rem;font-weight:800;color:#4285F4;margin-bottom:.2rem;">💬 Respuesta de La Casita de Simba</div><div style="font-size:.78rem;color:rgba(241,245,249,.75);line-height:1.5;">'+esc(r.respuesta)+'</div></div>' : '';
+    var imgHtml = r.imagen ? '<img class="rev-img" src="'+esc(r.imagen)+'" alt="" loading="lazy">' : '';
+    var rid = esc(r.id);
+    var respSection =
+      '<div class="rev-resp-section">'+
+        (r.respuesta
+          ? '<div class="rev-resp-cur"><div class="rev-resp-cur-label">💬 La Casita de Simba</div><div class="rev-resp-cur-text">'+esc(r.respuesta)+'</div></div>'
+          : '')+
+        '<button class="btn-resp-toggle" onclick="toggleRespForm(\''+rid+'\')">'+
+          (r.respuesta ? '✏️ Editar respuesta' : '💬 Responder')+
+        '</button>'+
+        '<div class="rev-resp-form" id="rform-'+rid+'">'+
+          '<textarea class="rev-resp-ta" id="rta-'+rid+'" placeholder="Escribe tu respuesta…"></textarea>'+
+          '<div class="resp-emoji-row">'+
+            '<button type="button" class="btn-emoji" onclick="toggleRespEmoji(\''+rid+'\')">😊 Emoji</button>'+
+            '<div class="emoji-panel" id="epanel-'+rid+'"></div>'+
+          '</div>'+
+          '<div class="resp-save-row">'+
+            '<button type="button" class="btn-resp-cancel" onclick="toggleRespForm(\''+rid+'\')">Cancelar</button>'+
+            '<button type="button" class="btn-resp-save" id="rsave-'+rid+'" onclick="guardarRespuesta(\''+rid+'\')">💾 Guardar</button>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
     return '<div class="rev-item">'+
       '<div class="rev-top">'+avatar+
         '<div class="rev-meta"><div class="rev-name">'+esc(r.nombre)+'</div><div class="rev-date">'+esc(fecha)+'</div></div>'+
@@ -940,13 +991,87 @@ function renderReseñas(reviews) {
       '<div class="rev-stars">'+stars+'</div>'+
       '<div class="rev-text">'+esc(r.texto)+'</div>'+
       imgHtml+
-      respHtml+
+      respSection+
       '<div class="rev-actions">'+
-        '<button class="rev-edit-btn" data-edit="'+esc(r.id)+'">✏️ Editar</button>'+
-        '<button class="rev-del" data-rid="'+esc(r.id)+'">✕ Borrar</button>'+
+        '<button class="rev-edit-btn" data-edit="'+rid+'">✏️ Editar todo</button>'+
+        '<button class="rev-del" data-rid="'+rid+'">✕ Borrar</button>'+
       '</div>'+
     '</div>';
   }).join('');
+}
+
+// ── Emoji picker ──
+var EMOJIS = ['🐾','❤️','😊','🐕','🦮','✅','🙏','⭐','😄','🌟','💚','🤍','👏','🥰','💯','🐶','🐩','😍','🎉','💪','✨','🫶','😘','🙌','🔥'];
+
+function _emojiButtons(taId, panelId) {
+  return EMOJIS.map(function(e){
+    return '<button type="button" class="emoji-opt" onclick="_insertEmoji(\''+taId+'\',\''+panelId+'\',\''+e+'\')">'+e+'</button>';
+  }).join('');
+}
+
+function _insertEmoji(taId, panelId, emoji) {
+  var ta = document.getElementById(taId);
+  if (!ta) return;
+  var pos = (ta.selectionStart != null) ? ta.selectionStart : ta.value.length;
+  ta.value = ta.value.slice(0, pos) + emoji + ta.value.slice(pos);
+  ta.selectionStart = ta.selectionEnd = pos + emoji.length;
+  ta.focus();
+  var panel = document.getElementById(panelId);
+  if (panel) panel.style.display = 'none';
+}
+
+// Emoji del formulario principal (rv-respuesta)
+function toggleMainEmoji() {
+  var panel = document.getElementById('main-emoji-panel');
+  if (!panel.innerHTML) panel.innerHTML = _emojiButtons('rv-respuesta', 'main-emoji-panel');
+  panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+}
+
+// Emoji de la sección inline por reseña
+function toggleRespEmoji(id) {
+  var panel = document.getElementById('epanel-'+id);
+  if (!panel) return;
+  if (!panel.innerHTML) panel.innerHTML = _emojiButtons('rta-'+id, 'epanel-'+id);
+  panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
+}
+
+// Mostrar/ocultar formulario de respuesta inline
+function toggleRespForm(id) {
+  var form = document.getElementById('rform-'+id);
+  if (!form) return;
+  var show = form.style.display === 'none' || form.style.display === '';
+  form.style.display = show ? 'block' : 'none';
+  if (show) {
+    var rev = revCache.find(function(x){ return x.id === id; });
+    var ta = document.getElementById('rta-'+id);
+    if (ta) { ta.value = (rev && rev.respuesta) || ''; ta.focus(); }
+    var ep = document.getElementById('epanel-'+id);
+    if (ep) ep.style.display = 'none';
+  }
+}
+
+// Guardar solo la respuesta de una reseña existente
+function guardarRespuesta(id) {
+  var ta  = document.getElementById('rta-'+id);
+  var btn = document.getElementById('rsave-'+id);
+  if (!ta || !btn) return;
+  var respuesta = ta.value.trim();
+  btn.disabled = true; btn.textContent = 'Guardando…';
+  fetch(API+'/reviews?t='+T, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ id: id, respuesta: respuesta })
+  })
+  .then(function(r){
+    if (!r.ok) return r.text().then(function(t){ throw new Error('HTTP '+r.status+': '+t.slice(0,100)); });
+    return r.json();
+  })
+  .then(function(d){
+    if (d.ok) { showToast('✅ Respuesta guardada'); loadReseñas(); }
+    else { showToast('❌ '+(d.msg||'Error')); }
+  })
+  .catch(function(e){ showToast('❌ '+(e.message||'Error de conexión')); })
+  .finally(function(){ if (btn) { btn.disabled=false; btn.textContent='💾 Guardar'; } });
 }
 
 // Listeners permanentes de lista de reseñas
