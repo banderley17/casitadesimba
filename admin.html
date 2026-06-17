@@ -967,7 +967,7 @@ function renderReseñas(reviews) {
     var respSection =
       '<div class="rev-resp-section">'+
         (r.respuesta
-          ? '<div class="rev-resp-cur"><div class="rev-resp-cur-label">💬 La Casita de Simba</div><div class="rev-resp-cur-text">'+esc(r.respuesta)+'</div></div>'
+          ? '<div class="rev-resp-cur"><div class="rev-resp-cur-label"><img src="images/Letrero2.png" alt="" style="width:18px;height:18px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:.3rem;">La Casita de Simba</div><div class="rev-resp-cur-text">'+esc(r.respuesta)+'</div></div>'
           : '')+
         '<button class="btn-resp-toggle" onclick="toggleRespForm(\''+rid+'\')">'+
           (r.respuesta ? '✏️ Editar respuesta' : '💬 Responder')+
