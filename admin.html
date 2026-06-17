@@ -438,7 +438,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
             <div style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;">👤 Foto de perfil del cliente</div>
             <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:.5rem;">El avatar circular (captura de pantalla del nombre en Google Maps)</div>
             <div class="foto-row">
-              <img id="rv-foto-preview" class="foto-preview" src="" alt="">
+              <div style="position:relative;display:inline-block;">
+                <img id="rv-foto-preview" class="foto-preview" src="" alt="">
+                <button id="btn-del-foto" onclick="eliminarFotoRev('foto')" style="display:none;position:absolute;top:-5px;right:-5px;background:var(--red);border:none;color:white;border-radius:50%;width:18px;height:18px;font-size:.65rem;font-weight:900;cursor:pointer;line-height:1;padding:0;">✕</button>
+              </div>
               <button class="btn-foto-rev" id="btn-foto-rev" onclick="subirFotoReseña()">📷 Subir foto de perfil</button>
             </div>
           </div>
@@ -450,7 +453,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
             <div style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;">🖼 Foto de la reseña</div>
             <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:.5rem;">La foto que el cliente dejó en Google Maps (captura de pantalla)</div>
             <div class="foto-row">
-              <img id="rv-imagen-preview" class="imagen-preview" src="" alt="">
+              <div style="position:relative;display:inline-block;">
+                <img id="rv-imagen-preview" class="imagen-preview" src="" alt="">
+                <button id="btn-del-imagen" onclick="eliminarFotoRev('imagen')" style="display:none;position:absolute;top:-5px;right:-5px;background:var(--red);border:none;color:white;border-radius:50%;width:18px;height:18px;font-size:.65rem;font-weight:900;cursor:pointer;line-height:1;padding:0;">✕</button>
+              </div>
               <button class="btn-foto-rev" id="btn-imagen-rev" onclick="subirImagenReseña()">🖼 Subir foto de la reseña</button>
             </div>
           </div>
@@ -832,8 +838,8 @@ function subirImagenReseña() {
     if (!error && result && result.event === 'success') {
       revImageUrl = result.info.secure_url;
       var prev = document.getElementById('rv-imagen-preview');
-      prev.src = revImageUrl;
-      prev.style.display = 'block';
+      prev.src = revImageUrl; prev.style.display = 'block';
+      document.getElementById('btn-del-imagen').style.display = 'block';
       document.getElementById('btn-imagen-rev').textContent = '✅ Imagen lista';
       showToast('✅ Imagen subida');
     }
@@ -857,8 +863,8 @@ function subirFotoReseña() {
     if (!error && result && result.event === 'success') {
       revFotoUrl = result.info.secure_url;
       var prev = document.getElementById('rv-foto-preview');
-      prev.src = revFotoUrl;
-      prev.style.display = 'block';
+      prev.src = revFotoUrl; prev.style.display = 'block';
+      document.getElementById('btn-del-foto').style.display = 'block';
       document.getElementById('btn-foto-rev').textContent = '✅ Foto lista';
       showToast('✅ Foto subida');
     }
@@ -905,6 +911,8 @@ function resetRevForm() {
   document.getElementById('rv-respuesta').value = '';
   document.getElementById('rv-foto-preview').style.display   = 'none';
   document.getElementById('rv-imagen-preview').style.display = 'none';
+  document.getElementById('btn-del-foto').style.display   = 'none';
+  document.getElementById('btn-del-imagen').style.display = 'none';
   document.getElementById('btn-foto-rev').textContent   = '📷 Subir foto';
   document.getElementById('btn-imagen-rev').textContent = '🖼 Añadir imagen';
   document.getElementById('rev-edit-banner').style.display = 'none';
@@ -914,6 +922,22 @@ function resetRevForm() {
 }
 
 function cancelarEdicion() { resetRevForm(); }
+
+function eliminarFotoRev(tipo) {
+  if (tipo === 'foto') {
+    revFotoUrl = '';
+    document.getElementById('rv-foto-preview').style.display = 'none';
+    document.getElementById('rv-foto-preview').src = '';
+    document.getElementById('btn-del-foto').style.display = 'none';
+    document.getElementById('btn-foto-rev').textContent = '📷 Subir foto de perfil';
+  } else {
+    revImageUrl = '';
+    document.getElementById('rv-imagen-preview').style.display = 'none';
+    document.getElementById('rv-imagen-preview').src = '';
+    document.getElementById('btn-del-imagen').style.display = 'none';
+    document.getElementById('btn-imagen-rev').textContent = '🖼 Subir foto de la reseña';
+  }
+}
 
 function editarReseña(r) {
   document.getElementById('rv-nombre').value = r.nombre || '';
@@ -931,11 +955,13 @@ function editarReseña(r) {
   if (revFotoUrl) {
     var fp = document.getElementById('rv-foto-preview');
     fp.src = revFotoUrl; fp.style.display = 'block';
+    document.getElementById('btn-del-foto').style.display = 'block';
     document.getElementById('btn-foto-rev').textContent = '✅ Foto lista';
   }
   if (revImageUrl) {
     var ip = document.getElementById('rv-imagen-preview');
     ip.src = revImageUrl; ip.style.display = 'block';
+    document.getElementById('btn-del-imagen').style.display = 'block';
     document.getElementById('btn-imagen-rev').textContent = '✅ Imagen lista';
   }
   document.getElementById('rev-edit-banner').style.display = 'flex';
