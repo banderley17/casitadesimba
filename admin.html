@@ -400,19 +400,31 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <label>Fecha <span style="font-weight:400;opacity:.5">(opcional)</span></label>
         <input type="month" id="rv-fecha">
 
-        <label>Foto del cliente <span style="font-weight:400;opacity:.5">(opcional)</span></label>
-        <div style="background:rgba(255,193,7,.07);border:1px solid rgba(255,193,7,.2);border-radius:10px;padding:.6rem .8rem;font-size:.78rem;color:rgba(255,255,255,.55);line-height:1.5;margin-bottom:.2rem;">
-          💡 La foto de Google Maps no se puede guardar directamente. Haz <strong style="color:rgba(255,255,255,.8);">captura de pantalla</strong> del avatar del cliente en Maps, recórtala y súbela aquí.
-        </div>
-        <div class="foto-row">
-          <img id="rv-foto-preview" class="foto-preview" src="" alt="">
-          <button class="btn-foto-rev" id="btn-foto-rev" onclick="subirFotoReseña()">📷 Subir foto</button>
-        </div>
+        <!-- Bloque fotos separado en 2 secciones claras -->
+        <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:.9rem;display:flex;flex-direction:column;gap:.75rem;">
 
-        <label>Imagen de la reseña <span style="font-weight:400;opacity:.5">(opcional)</span></label>
-        <div class="foto-row">
-          <img id="rv-imagen-preview" class="imagen-preview" src="" alt="">
-          <button class="btn-foto-rev" id="btn-imagen-rev" onclick="subirImagenReseña()">🖼 Añadir imagen</button>
+          <!-- Foto perfil -->
+          <div>
+            <div style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;">👤 Foto de perfil del cliente</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:.5rem;">El avatar circular (captura de pantalla del nombre en Google Maps)</div>
+            <div class="foto-row">
+              <img id="rv-foto-preview" class="foto-preview" src="" alt="">
+              <button class="btn-foto-rev" id="btn-foto-rev" onclick="subirFotoReseña()">📷 Subir foto de perfil</button>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid var(--border);"></div>
+
+          <!-- Foto de la reseña -->
+          <div>
+            <div style="font-size:.75rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem;">🖼 Foto de la reseña</div>
+            <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:.5rem;">La foto que el cliente dejó en Google Maps (captura de pantalla)</div>
+            <div class="foto-row">
+              <img id="rv-imagen-preview" class="imagen-preview" src="" alt="">
+              <button class="btn-foto-rev" id="btn-imagen-rev" onclick="subirImagenReseña()">🖼 Subir foto de la reseña</button>
+            </div>
+          </div>
+
         </div>
 
         <div class="rev-edit-banner" id="rev-edit-banner">
@@ -757,6 +769,7 @@ var revStars    = 5;
 var revFotoUrl  = '';
 var revImageUrl = '';
 var revEditId   = null;
+var revCache    = [];
 
 document.getElementById('stars-sel').addEventListener('click', function(e){
   var s = e.target.getAttribute('data-s');
@@ -892,6 +905,7 @@ function loadReseñas() {
 }
 
 function renderReseñas(reviews) {
+  revCache = reviews;
   var list = document.getElementById('rev-list');
   if (!reviews.length) {
     list.innerHTML = '<div class="cl-empty"><div class="cl-empty-icon">⭐</div>Sin reseñas aún</div>';
@@ -912,8 +926,8 @@ function renderReseñas(reviews) {
       '<div class="rev-text">'+esc(r.texto)+'</div>'+
       imgHtml+
       '<div class="rev-actions">'+
-        '<button class="rev-edit-btn" data-edit="'+esc(r.id)+'" data-rev="'+esc(JSON.stringify(r))+'">✏️ Editar</button>'+
-        '<button class="rev-del" data-rid="'+esc(r.id)+'" title="Eliminar reseña">✕ Borrar</button>'+
+        '<button class="rev-edit-btn" data-edit="'+esc(r.id)+'">✏️ Editar</button>'+
+        '<button class="rev-del" data-rid="'+esc(r.id)+'">✕ Borrar</button>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -928,8 +942,9 @@ document.getElementById('rev-list').addEventListener('click', function(e){
   }
   var eid = e.target.getAttribute('data-edit');
   if (eid) {
-    try { editarReseña(JSON.parse(e.target.getAttribute('data-rev'))); }
-    catch(ex) { showToast('Error al cargar reseña'); }
+    var rev = revCache.find(function(x){ return x.id === eid; });
+    if (rev) editarReseña(rev);
+    else showToast('No se encontró la reseña');
   }
 });
 
