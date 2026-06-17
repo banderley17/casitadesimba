@@ -842,25 +842,28 @@ function guardarReseña() {
   var btn = document.getElementById('btn-add-rev');
   btn.disabled = true; btn.textContent = revEditId ? 'Actualizando…' : 'Guardando…';
 
-  var method = revEditId ? 'PATCH' : 'POST';
+  var isEditing = !!revEditId;
   var respuesta = document.getElementById('rv-respuesta').value.trim();
   var payload = { nombre: nombre, foto: revFotoUrl, imagen: revImageUrl, estrellas: revStars, texto: texto, respuesta: respuesta, fecha: fecha };
-  if (revEditId) payload.id = revEditId;
+  if (isEditing) payload.id = revEditId;
 
   fetch(API+'/reviews?t='+T, {
-    method: method,
+    method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify(payload)
-  }).then(function(r){ return r.json(); })
+  }).then(function(r){
+    if (!r.ok) return r.text().then(function(t){ throw new Error('HTTP '+r.status+': '+t.slice(0,120)); });
+    return r.json();
+  })
   .then(function(d){
     if (d.ok) {
-      showToast(revEditId ? '✅ Reseña actualizada' : '✅ Reseña guardada');
+      showToast(isEditing ? '✅ Reseña actualizada' : '✅ Reseña guardada');
       resetRevForm();
       loadReseñas();
-    } else { showToast('❌ '+d.msg); }
+    } else { showToast('❌ '+(d.msg||'Error desconocido')); }
   })
-  .catch(function(){ showToast('❌ Error de conexión'); })
-  .finally(function(){ btn.disabled=false; btn.textContent = revEditId ? '💾 Actualizar reseña' : '⭐ Guardar reseña'; });
+  .catch(function(e){ showToast('❌ '+(e.message||'Error de conexión')); })
+  .finally(function(){ btn.disabled=false; btn.textContent = isEditing ? '💾 Actualizar reseña' : '⭐ Guardar reseña'; });
 }
 
 function resetRevForm() {
