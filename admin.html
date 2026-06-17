@@ -208,6 +208,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .foto-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:2px solid var(--border);}
 .foto-thumb-tag{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.7);border-radius:6px;font-size:.62rem;font-weight:800;padding:2px 5px;color:white;}
 .foto-caption{font-size:.65rem;color:var(--muted);padding:.2rem .1rem;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.foto-del-btn{position:absolute;top:4px;right:4px;background:rgba(239,68,68,.88);border:none;color:white;border-radius:50%;width:22px;height:22px;font-size:.7rem;font-weight:900;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1;transition:background .15s;}
+.foto-del-btn:hover{background:#ef4444;}
+.foto-thumb-wrap:hover .foto-del-btn{display:flex;}
 
 /* ── RESEÑAS ── */
 .rev-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.1rem;margin-bottom:1.2rem;display:flex;flex-direction:column;gap:.7rem}
@@ -965,6 +968,22 @@ document.getElementById('rev-list').addEventListener('click', function(e){
 });
 
 // ── Fotos ──
+function eliminarFoto(publicId, wrap) {
+  if (!confirm('¿Eliminar esta foto? No se puede deshacer.')) return;
+  wrap.style.opacity = '.4';
+  fetch(API+'/delete-foto?t='+T, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ public_id: publicId })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if (d.ok) { wrap.remove(); showToast('✅ Foto eliminada'); cargarFotos(); }
+    else { wrap.style.opacity='1'; showToast('❌ '+d.msg); }
+  })
+  .catch(function(){ wrap.style.opacity='1'; showToast('❌ Error de conexión'); });
+}
+
 function subirFoto(tipo) {
   var preset  = tipo === 'hero' ? PRESET_HERO : PRESET_GAL;
   var folder  = tipo === 'hero' ? 'casita/hero' : 'casita/galeria';
@@ -1037,8 +1056,10 @@ function cargarFotos() {
       var url     = 'https://res.cloudinary.com/'+CLOUD_NAME+'/image/upload/w_200,h_200,c_fill/'+item.r.public_id+'.jpg';
       var caption = (item.r.context && item.r.context.custom && item.r.context.custom.caption) ? item.r.context.custom.caption : '';
       var emoji   = item.tipo === 'hero' ? '🌅' : '🖼';
+      var pid     = item.r.public_id.replace(/'/g,"\\'");
       wrap.innerHTML = '<img class="foto-thumb" src="'+url+'" loading="lazy">'
                      + '<span class="foto-thumb-tag">'+emoji+'</span>'
+                     + '<button class="foto-del-btn" onclick="eliminarFoto(\''+pid+'\',this.closest(\'.foto-thumb-wrap\'))">✕</button>'
                      + (caption ? '<div class="foto-caption">'+esc(caption)+'</div>' : '');
       grid.appendChild(wrap);
     });
