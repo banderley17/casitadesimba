@@ -1954,14 +1954,10 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         </a>
       </div>
 
-      <!-- Slider de tarjetas -->
-      <div style="position:relative;">
-        <button id="rev-prev" onclick="scrollRevs(-1)" aria-label="Anterior" style="position:absolute;left:-14px;top:50%;transform:translateY(-50%);z-index:2;background:white;border:1px solid rgba(240,138,124,.3);color:#D9695B;border-radius:50%;width:36px;height:36px;font-size:1.2rem;font-weight:900;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;opacity:.35;transition:opacity .2s;">‹</button>
-        <div id="reviews-scroll-wrap" style="overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth;"><div id="reviews-grid" style="display:flex;align-items:stretch;gap:.9rem;padding-bottom:.4rem;"></div></div>
-        <button id="rev-next" onclick="scrollRevs(1)" aria-label="Siguiente" style="position:absolute;right:-14px;top:50%;transform:translateY(-50%);z-index:2;background:white;border:1px solid rgba(240,138,124,.3);color:#D9695B;border-radius:50%;width:36px;height:36px;font-size:1.2rem;font-weight:900;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .2s;">›</button>
-      </div>
+      <!-- Grid de tarjetas -->
+      <div id="reviews-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.9rem;align-items:stretch;"></div>
       <div id="reviews-loading" style="text-align:center;padding:1.5rem;color:#bbb;font-size:.88rem;">Cargando reseñas…</div>
-      <style>#reviews-scroll-wrap::-webkit-scrollbar{display:none;}@media(max-width:640px){#rev-pink-box{padding-left:.75rem!important;padding-right:.75rem!important;}}</style>
+      <style>@media(max-width:640px){#rev-pink-box{padding-left:.75rem!important;padding-right:.75rem!important;}}</style>
 
     </div>
 
@@ -1994,7 +1990,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
                   '<p style="font-size:.8rem;color:#444;line-height:1.55;margin:0;">'+r.respuesta+'</p>'+
                 '</div>'
               : '';
-            return '<div style="background:white;border:1px solid rgba(240,138,124,.15);border-radius:14px;padding:1.1rem;box-shadow:0 2px 10px rgba(240,138,124,.1);display:flex;flex-direction:column;gap:.5rem;flex-shrink:0;width:min(300px,calc(100vw - 6rem));scroll-snap-align:start;">'+
+            return '<div style="background:white;border:1px solid rgba(240,138,124,.15);border-radius:14px;padding:1.1rem;box-shadow:0 2px 10px rgba(240,138,124,.1);display:flex;flex-direction:column;gap:.5rem;">'+
               '<div style="display:flex;align-items:center;gap:.65rem;">'+
                 avatar+
                 '<div style="flex:1;min-width:0;">'+
@@ -2021,20 +2017,6 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         })
         .catch(function(){ document.getElementById('reviews-loading').textContent=''; });
 
-      window.scrollRevs = function(dir) {
-        var wrap = document.getElementById('reviews-scroll-wrap');
-        var card = document.getElementById('reviews-grid').querySelector('div');
-        var w = card ? card.offsetWidth + 14 : 310;
-        wrap.scrollBy({ left: dir * w, behavior: 'smooth' });
-      };
-      function updateRevArrows() {
-        var g = document.getElementById('reviews-scroll-wrap');
-        var prev = document.getElementById('rev-prev');
-        var next = document.getElementById('rev-next');
-        if (!prev || !next || !g) return;
-        prev.style.opacity = g.scrollLeft > 8 ? '1' : '0.25';
-        next.style.opacity = (g.scrollLeft + g.clientWidth < g.scrollWidth - 8) ? '1' : '0.25';
-      }
     })();
     </script>
   </div>
