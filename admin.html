@@ -429,8 +429,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 
       <!-- Filtros -->
       <div class="cl-filters">
-        <button class="cl-filter-btn active" data-f="todos">Todos</button>
-        <button class="cl-filter-btn" data-f="consulta">Consultas</button>
+        <button class="cl-filter-btn" data-f="todos">Todos</button>
+        <button class="cl-filter-btn active" data-f="consulta">Consultas</button>
         <button class="cl-filter-btn" data-f="cliente">Ventas</button>
         <button class="cl-filter-btn" data-f="excluido">🚫 Excluidos</button>
       </div>
@@ -647,7 +647,7 @@ setInterval(loadStats, 60000);
 
 // ── Clients ──
 var clients = [];
-var filterVal = 'todos';
+var filterVal = 'consulta';
 var estadoSel = 'consulta';
 
 function loadClients() {
