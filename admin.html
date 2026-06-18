@@ -79,8 +79,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 /* ── CLIENTES ── */
 .cl-summary{display:flex;gap:.6rem;margin-bottom:1rem}
 .cl-badge{display:flex;align-items:center;gap:.35rem;font-size:.8rem;font-weight:800;padding:.4rem .9rem;border-radius:20px}
-.cl-badge.consulta{background:rgba(245,158,11,.12);color:var(--yellow);border:1px solid rgba(245,158,11,.3)}
-.cl-badge.cliente {background:rgba(16,185,129,.12);color:var(--green); border:1px solid rgba(16,185,129,.3)}
+.cl-badge.consulta {background:rgba(245,158,11,.12);color:var(--yellow);border:1px solid rgba(245,158,11,.3)}
+.cl-badge.cliente  {background:rgba(16,185,129,.12);color:var(--green); border:1px solid rgba(16,185,129,.3)}
+.cl-badge.excluido {background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
 .cl-badge .cl-cnt{font-size:1rem}
 .btn-new{
   width:100%;background:var(--purple);border:none;color:white;border-radius:12px;
@@ -388,6 +389,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       <div class="cl-summary">
         <span class="cl-badge consulta">💬 <span class="cl-cnt" id="cnt-consulta">0</span> consultas</span>
         <span class="cl-badge cliente">✅ <span class="cl-cnt" id="cnt-cliente">0</span> ventas</span>
+        <span class="cl-badge excluido">🚫 <span class="cl-cnt" id="cnt-excluido">0</span> excluidos</span>
       </div>
 
       <button class="btn-new" id="btn-new" style="display:none">＋ Añadir contacto</button>
@@ -441,7 +443,6 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       <div class="action-row">
         <button class="btn-sync" id="btn-sync">🔄 Sincronizar con Meta</button>
         <button class="btn-excel" id="btn-excel">📊 Excel</button>
-        <button class="btn-export" id="btn-export" title="CSV para Meta Ads">⬇ CSV</button>
       </div>
       <div class="sync-status" id="sync-status"></div>
     </div>
@@ -659,10 +660,12 @@ function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 function initial(n){ return (n||'?').trim().charAt(0).toUpperCase(); }
 
 function renderClients() {
-  var nc = clients.filter(function(c){return c.estado==='consulta';}).length;
-  var nk = clients.filter(function(c){return c.estado==='cliente'; }).length;
+  var nc = clients.filter(function(c){return c.estado==='consulta'; }).length;
+  var nk = clients.filter(function(c){return c.estado==='cliente';  }).length;
+  var nx = clients.filter(function(c){return c.estado==='excluido'; }).length;
   document.getElementById('cnt-consulta').textContent = nc;
   document.getElementById('cnt-cliente').textContent  = nk;
+  document.getElementById('cnt-excluido').textContent = nx;
 
   var shown = filterVal==='todos' ? clients : clients.filter(function(c){return c.estado===filterVal;});
   var list  = document.getElementById('cl-list');
@@ -841,23 +844,6 @@ document.getElementById('btn-sync').addEventListener('click', function(){
     .finally(function(){ btn.disabled=false; btn.textContent='🔄 Sincronizar con Meta'; });
 });
 
-// Exportar CSV (respaldo)
-document.getElementById('btn-export').addEventListener('click', function(){
-  var to = filterVal==='todos' ? clients : clients.filter(function(c){return c.estado===filterVal;});
-  if (!to.length){ showToast('Sin contactos para exportar'); return; }
-  var rows = [['phone','first_name','last_name','country']].concat(to.map(function(c){
-    var p = (c.nombre||'').trim().split(' ');
-    var tel = (c.tel||'').replace(/\s/g,'');
-    if (tel && !/^\+/.test(tel)) tel = '+34'+tel.replace(/^0034/,'').replace(/^34/,'');
-    return [tel, p[0]||'', p.slice(1).join(' ')||'', 'ES'];
-  }));
-  var csv = rows.map(function(r){return r.map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
-  a.download = 'casita_audiencia_'+new Date().toISOString().slice(0,10)+'.csv';
-  a.click();
-  showToast('⬇ CSV descargado — '+to.length+' contactos');
-});
 
 // Exportar Excel (.xlsx)
 document.getElementById('btn-excel').addEventListener('click', function(){
