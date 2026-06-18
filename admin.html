@@ -799,6 +799,7 @@ function setEstado(v){
   document.getElementById('e-cliente').className ='estado-btn'+(v==='cliente' ?' sel-cliente' :'');
   document.getElementById('e-excluido').className ='estado-btn'+(v==='excluido'?' sel-excluido':'');
   document.getElementById('f-extra').style.display = v==='excluido' ? 'none' : '';
+  document.getElementById('f-notas').placeholder = v==='excluido' ? 'Porque jode el hdp...' : 'Raza, edad, horario, observaciones…';
 }
 
 document.getElementById('f-save').addEventListener('click', function(){
