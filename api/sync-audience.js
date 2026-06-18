@@ -53,9 +53,10 @@ export default async function handler(req) {
   if (url.searchParams.get('t') !== PANEL_TOK)
     return new Response('Unauthorized', { status:401, headers:CORS });
 
-  const fbToken = process.env.FB_CAPI_TOKEN;
+  const fbToken = process.env.FB_ADS_TOKEN;
   const kvUrl   = process.env.UPSTASH_REDIS_REST_URL;
   const kvTok   = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const AD_ACCOUNT = 'act_1513350607502989';
 
   const ok  = (d) => new Response(JSON.stringify(d), { headers:{...CORS,'Content-Type':'application/json'} });
   const err = (m) => new Response(JSON.stringify({ ok:false, msg:m }), { status:400, headers:{...CORS,'Content-Type':'application/json'} });
@@ -77,28 +78,16 @@ export default async function handler(req) {
     let audienceId = await kvGet(kvKey, kvUrl, kvTok);
 
     if (!audienceId) {
-      // 2a. Encontrar la cuenta publicitaria a través del Pixel
-      const pixelData = await (await fetch(`${GRAPH}/${PIXEL_ID}?fields=owner&access_token=${fbToken}`)).json();
-      if (pixelData.error) return err('Permiso Pixel: ' + pixelData.error.message);
-
-      const bizId = pixelData.owner?.id;
-      if (!bizId) return err('No se encontró el Business Manager del Pixel');
-
-      // 2b. Obtener cuenta publicitaria del negocio
-      const accData = await (await fetch(`${GRAPH}/${bizId}/owned_ad_accounts?fields=id,name&limit=1&access_token=${fbToken}`)).json();
-      if (accData.error) return err('Permiso cuenta: ' + accData.error.message);
-
-      const adAccountId = accData.data?.[0]?.id;
-      if (!adAccountId) return err('No se encontró cuenta publicitaria en este Business Manager');
-
-      // 2c. Crear el público personalizado
+      // 2a. Crear el público personalizado
       const audienceName = filter === 'cliente'
         ? 'Casita · Clientes CRM'
         : filter === 'consulta'
           ? 'Casita · Consultas CRM'
-          : 'Casita · Todos los contactos CRM';
+          : filter === 'excluido'
+            ? 'Casita · CVs Excluidos'
+            : 'Casita · Todos los contactos CRM';
 
-      const newAud = await fbPost(`/${adAccountId}/customaudiences`, {
+      const newAud = await fbPost(`/${AD_ACCOUNT}/customaudiences`, {
         name: audienceName,
         subtype: 'CUSTOM',
         description: 'Sincronizado automáticamente desde el panel de La Casita de Simba',
