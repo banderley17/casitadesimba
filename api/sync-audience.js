@@ -84,7 +84,7 @@ export default async function handler(req) {
         : filter === 'consulta'
           ? 'Casita · Consultas CRM'
           : filter === 'excluido'
-            ? 'Casita · CVs Excluidos'
+            ? 'Casita · Excluidos'
             : 'Casita · Todos los contactos CRM';
 
       const newAud = await fbPost(`/${AD_ACCOUNT}/customaudiences`, {
