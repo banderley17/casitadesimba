@@ -147,6 +147,25 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .cl-date{font-size:.65rem;color:rgba(255,255,255,.2)}
 .cl-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.9rem}
 .cl-empty-icon{font-size:2rem;margin-bottom:.5rem}
+.cl-wa-btn{
+  background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.35);
+  color:#25d366;border-radius:10px;padding:.22rem .55rem;font-size:.78rem;
+  font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.cl-wa-btn:hover{background:rgba(37,211,102,.25)}
+/* Dropdown plantillas WA */
+#wa-dropdown{
+  position:fixed;background:#1e293b;border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;padding:.4rem;z-index:9998;min-width:230px;
+  box-shadow:0 12px 32px rgba(0,0,0,.5);display:none;
+}
+#wa-dropdown.open{display:block}
+.wa-tpl{
+  display:block;width:100%;text-align:left;background:none;border:none;
+  color:var(--text);padding:.55rem .8rem;border-radius:10px;font-size:.83rem;
+  cursor:pointer;transition:background .15s;
+}
+.wa-tpl:hover{background:rgba(255,255,255,.08)}
 
 /* Botones de acción */
 .action-row{display:flex;gap:.6rem;margin-top:.7rem}
@@ -538,6 +557,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 
 <div class="toast" id="toast"></div>
 
+<div id="wa-dropdown">
+  <button class="wa-tpl" data-tpl="plazas">🐾 Plazas disponibles</button>
+  <button class="wa-tpl" data-tpl="foto">📸 Ver el local</button>
+  <button class="wa-tpl" data-tpl="bono">🎁 Oferta bono</button>
+  <button class="wa-tpl" data-tpl="seguimiento">💬 Seguimiento consulta</button>
+  <button class="wa-tpl" data-tpl="notas">📝 Desde notas</button>
+</div>
+
 <script>
 var API  = 'https://casitadesimba.vercel.app/api';
 var T    = 'simba2026';
@@ -652,6 +679,7 @@ function renderClients() {
         '<button class="cl-status-btn '+c.estado+'" data-toggle="'+c.id+'">'+
           (c.estado==='cliente'?'✅ Venta':'💬 Consulta')+
         '</button>'+
+        (c.tel?'<button class="cl-wa-btn" data-wa="'+c.id+'" title="Enviar WhatsApp">💬 WA</button>':'')+
         '<span class="cl-date">'+esc(c.fecha||'')+'</span>'+
         '<button class="cl-del" data-del="'+c.id+'" title="Eliminar">✕</button>'+
       '</div>'+
@@ -672,6 +700,58 @@ document.getElementById('cl-list').addEventListener('click', function(e) {
   if (did && confirm('¿Eliminar este contacto?')) {
     fetch(API+'/clients?t='+T+'&id='+did,{method:'DELETE'}).then(function(){loadClients(); showToast('Contacto eliminado');});
   }
+  var wid = e.target.getAttribute('data-wa');
+  if (wid) { openWaDropdown(wid, e.target); }
+});
+
+// ── WhatsApp plantillas ──
+var waClientId = null;
+var waDropdown = document.getElementById('wa-dropdown');
+
+function openWaDropdown(cid, btn) {
+  waClientId = cid;
+  var rect = btn.getBoundingClientRect();
+  waDropdown.style.top  = (rect.bottom + window.scrollY + 6) + 'px';
+  waDropdown.style.left = Math.max(8, rect.right - 230 + window.scrollX) + 'px';
+  waDropdown.classList.add('open');
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#wa-dropdown') && !e.target.getAttribute('data-wa')) {
+    waDropdown.classList.remove('open');
+  }
+});
+
+function formatPhone(tel) {
+  var t = tel.replace(/[\s\-().]/g,'');
+  if (t.startsWith('+')) return t.replace('+','');
+  if (t.startsWith('0034')) return '34' + t.slice(4);
+  if (t.match(/^[67]/)) return '34' + t;
+  return t;
+}
+
+waDropdown.addEventListener('click', function(e) {
+  var tpl = e.target.getAttribute('data-tpl');
+  if (!tpl || !waClientId) return;
+  var c = clients.find(function(x){return x.id===waClientId;});
+  if (!c) return;
+  var nom = c.nombre || 'hola';
+  var mas = c.mascota || 'tu perro';
+  var msg = '';
+  if (tpl === 'plazas')
+    msg = 'Hola ' + nom + '! 🐾 Todavía tenemos plaza para ' + mas + ' esta semana en La Casita de Simba, ¡no te quedes sin sitio! 😊';
+  else if (tpl === 'foto')
+    msg = 'Hola ' + nom + '! 📸 Te mandamos una foto de nuestro espacio para que veas cómo lo pasan los peques aquí 🐾❤️';
+  else if (tpl === 'bono')
+    msg = 'Hola ' + nom + '! 🎁 Esta semana tenemos oferta especial en el bono semanal para ' + mas + '. ¿Te apuntas? Estamos en Santa Eugenia – Vallecas, Madrid 📍';
+  else if (tpl === 'seguimiento')
+    msg = 'Hola ' + nom + '! 😊 Queríamos saber si sigues pensando en traer a ' + mas + ' a La Casita de Simba. Cualquier duda aquí estamos 🐾';
+  else if (tpl === 'notas')
+    msg = (c.notas || '').trim() ? 'Hola ' + nom + '! ' + c.notas.trim() : '';
+  if (!msg) { showToast('Este contacto no tiene notas'); return; }
+  var phone = formatPhone(c.tel);
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+  waDropdown.classList.remove('open');
 });
 
 document.querySelectorAll('.cl-filter-btn').forEach(function(b){
