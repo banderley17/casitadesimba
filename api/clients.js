@@ -55,7 +55,7 @@ export default async function handler(req) {
       tel: (body.tel || '').trim(),
       servicio: body.servicio || '',
       estado: body.estado || 'consulta',
-      fecha: new Date().toISOString().slice(0, 10),
+      fecha: body.fecha || new Date().toISOString().slice(0, 10),
       notas: (body.notas || '').trim(),
     };
     clients.unshift(client);

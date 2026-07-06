@@ -441,6 +441,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         </div>
         <label>Notas</label>
         <textarea id="f-notas" placeholder="Raza, edad, horario, observaciones…"></textarea>
+        <label>Fecha en que escribió</label>
+        <input type="date" id="f-fecha" />
         <div class="form-actions">
           <button class="btn-cancel" id="f-cancel">Cancelar</button>
           <button class="btn-save" id="f-save">Guardar</button>
@@ -938,6 +940,7 @@ function closeForm(){
   ['f-nombre','f-mascota','f-notas'].forEach(function(id){document.getElementById(id).value='';});
   document.getElementById('f-tel').value = '+34 6';
   document.getElementById('f-servicio').value = '';
+  document.getElementById('f-fecha').value = new Date().toISOString().slice(0,10);
   setEstado('consulta');
 }
 
@@ -963,7 +966,8 @@ document.getElementById('f-save').addEventListener('click', function(){
     body:JSON.stringify({nombre:nombre, tel:tel,
       mascota:document.getElementById('f-mascota').value.trim(),
       servicio:document.getElementById('f-servicio').value, estado:estadoSel,
-      notas:document.getElementById('f-notas').value.trim()})
+      notas:document.getElementById('f-notas').value.trim(),
+      fecha:document.getElementById('f-fecha').value||new Date().toISOString().slice(0,10)})
   }).then(function(){
     closeForm(); loadClients();
     btn.textContent='Guardar contacto'; btn.disabled=false;
