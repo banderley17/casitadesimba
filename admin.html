@@ -644,7 +644,7 @@ document.getElementById('tab-stats-btn').addEventListener('click', function(){ s
 document.getElementById('tab-cl-btn').addEventListener('click',  function(){ showTab('cl'); loadClients(); });
 document.getElementById('tab-rev-btn').addEventListener('click', function(){ showTab('rev'); loadReseñas(); });
 document.getElementById('tab-fotos-btn').addEventListener('click', function(){ showTab('fotos'); cargarFotos(); });
-document.getElementById('tab-ads-btn').addEventListener('click',  function(){ showTab('ads'); loadAds('last_7d'); });
+document.getElementById('tab-ads-btn').addEventListener('click',  function(){ showTab('ads'); loadAds('today'); });
 
 function showTab(t) {
   ['stats','cl','rev','fotos','ads'].forEach(function(s){
@@ -658,7 +658,7 @@ function showTab(t) {
 }
 
 // ── Ads ──
-var adsCurrentPeriod = 'last_7d';
+var adsCurrentPeriod = 'today';
 document.querySelectorAll('.ads-per-btn').forEach(function(btn){
   btn.addEventListener('click', function(){
     document.querySelectorAll('.ads-per-btn').forEach(function(b){ b.classList.remove('active'); });
