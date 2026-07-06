@@ -676,7 +676,7 @@ function loadAds(period) {
         document.getElementById('ads-body').innerHTML = '<div class="ads-empty">⏸ No hay campañas activas ahora mismo.</div>';
         return;
       }
-      var html = d.campaigns.map(function(c){ return renderCamp(c); }).join('');
+      var html = d.campaigns.map(function(c){ return renderCamp(c, d.period); }).join('');
       document.getElementById('ads-body').innerHTML = html;
     })
     .catch(function(){ document.getElementById('ads-body').innerHTML = '<div class="ads-empty">Error de conexión</div>'; });
@@ -723,10 +723,18 @@ function adsAnalysis(c) {
   return tips.join('\n\n') || 'Sin datos suficientes para analizar.';
 }
 
-function renderCamp(c) {
+function renderCamp(c, period) {
   var ctrClass  = colorCtr(c.ctr);
   var freqClass = colorFreq(c.frequency);
   var cpcClass  = colorCpc(c.cpc ? parseFloat(c.cpc) : NaN);
+  var isToday   = period === 'today';
+  var row2 = isToday
+    ? '<div class="ads-metric"><div class="m-lbl">Clics al link</div><div class="m-val">'+fmt(c.clicks)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Precio/clic</div><div class="m-val '+cpcClass+'">'+(c.cpc||'—')+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Gastado hoy</div><div class="m-val">'+(c.spend||'—')+'</div></div>'
+    : '<div class="ads-metric"><div class="m-lbl">Clics al link</div><div class="m-val">'+fmt(c.clicks)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">% que clica</div><div class="m-val '+ctrClass+'">'+(c.ctr||'—')+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Precio/clic</div><div class="m-val '+cpcClass+'">'+(c.cpc||'—')+'</div></div>';
   return '<div class="ads-camp">' +
     '<div class="ads-camp-head">' +
       '<span class="ads-camp-name">'+esc(c.name)+'</span>' +
@@ -735,10 +743,9 @@ function renderCamp(c) {
     '<div class="ads-metrics">' +
       '<div class="ads-metric"><div class="m-lbl">Veces visto</div><div class="m-val">'+fmt(c.impressions)+'</div></div>' +
       '<div class="ads-metric"><div class="m-lbl">Personas</div><div class="m-val">'+fmt(c.reach)+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">Veces c/u</div><div class="m-val '+freqClass+'">'+(c.frequency||'—')+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">Clics al link</div><div class="m-val">'+fmt(c.clicks)+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">% que clica</div><div class="m-val '+ctrClass+'">'+(c.ctr||'—')+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">Precio/clic</div><div class="m-val '+cpcClass+'">'+(c.cpc||'—')+'</div></div>' +
+      (isToday ? '' : '<div class="ads-metric"><div class="m-lbl">Veces/persona</div><div class="m-val '+freqClass+'">'+(c.frequency||'—')+'</div></div>') +
+      row2 +
+      (isToday ? '' : '<div class="ads-metric"><div class="m-lbl">Total gastado</div><div class="m-val">'+(c.spend||'—')+'</div></div>') +
     '</div>' +
     '<div class="ads-analysis">'+adsAnalysis(c)+'</div>' +
   '</div>';
