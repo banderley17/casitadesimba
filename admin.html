@@ -243,6 +243,25 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .gal-ord button:last-child{border-radius:0 0 8px 0;}
 .fotos-size-tip{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:.6rem .85rem;font-size:.76rem;color:var(--muted);margin-bottom:1rem;line-height:1.75;}
 
+/* ── ADS ── */
+.ads-periods{display:flex;gap:.5rem;margin-bottom:1rem}
+.ads-per-btn{flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:.5rem;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+.ads-per-btn.active{background:rgba(124,58,237,.25);border-color:var(--purple);color:var(--text)}
+.ads-camp{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1rem;margin-bottom:.8rem}
+.ads-camp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem}
+.ads-camp-name{font-size:.9rem;font-weight:800}
+.ads-camp-budget{font-size:.75rem;color:var(--muted)}
+.ads-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:.7rem}
+.ads-metric{background:rgba(255,255,255,.04);border-radius:10px;padding:.5rem;text-align:center}
+.ads-metric .m-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:.2rem}
+.ads-metric .m-val{font-size:.95rem;font-weight:800}
+.ads-metric .m-val.green{color:#4ade80}
+.ads-metric .m-val.yellow{color:#fbbf24}
+.ads-metric .m-val.red{color:#f87171}
+.ads-analysis{font-size:.8rem;color:var(--muted);line-height:1.6;background:rgba(255,255,255,.03);border-radius:10px;padding:.75rem;white-space:pre-line}
+.ads-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.9rem}
+.ads-loading{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem}
+
 /* ── RESEÑAS ── */
 .rev-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.1rem;margin-bottom:1.2rem;display:flex;flex-direction:column;gap:.7rem}
 .rev-form input,.rev-form textarea{background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:.65rem .9rem;font-size:.9rem;width:100%;}
@@ -344,6 +363,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <button class="dash-tab active" id="tab-cl-btn">👥 Clientes</button>
     <button class="dash-tab" id="tab-rev-btn">⭐ Reseñas</button>
     <button class="dash-tab" id="tab-fotos-btn">📸 Fotos</button>
+    <button class="dash-tab" id="tab-ads-btn">📣 Ads</button>
   </div>
   <div class="dash-content">
 
@@ -559,6 +579,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 
     </div>
 
+    <!-- ADS -->
+    <div id="section-ads" style="display:none">
+      <div class="ads-periods">
+        <button class="ads-per-btn active" data-p="today">Hoy</button>
+        <button class="ads-per-btn" data-p="last_7d">7 días</button>
+        <button class="ads-per-btn" data-p="last_14d">14 días</button>
+        <button class="ads-per-btn" data-p="last_30d">30 días</button>
+      </div>
+      <div id="ads-body"><div class="ads-loading">Cargando campañas…</div></div>
+    </div>
+
   </div><!-- /dash-content -->
 </div><!-- /dashboard -->
 
@@ -611,15 +642,106 @@ document.getElementById('tab-stats-btn').addEventListener('click', function(){ s
 document.getElementById('tab-cl-btn').addEventListener('click',  function(){ showTab('cl'); loadClients(); });
 document.getElementById('tab-rev-btn').addEventListener('click', function(){ showTab('rev'); loadReseñas(); });
 document.getElementById('tab-fotos-btn').addEventListener('click', function(){ showTab('fotos'); cargarFotos(); });
+document.getElementById('tab-ads-btn').addEventListener('click',  function(){ showTab('ads'); loadAds('last_7d'); });
 
 function showTab(t) {
-  ['stats','cl','rev','fotos'].forEach(function(s){
+  ['stats','cl','rev','fotos','ads'].forEach(function(s){
     document.getElementById('section-'+s).style.display = t===s ? '' : 'none';
   });
   document.getElementById('tab-stats-btn').classList.toggle('active', t==='stats');
   document.getElementById('tab-cl-btn').classList.toggle('active',    t==='cl');
   document.getElementById('tab-rev-btn').classList.toggle('active',   t==='rev');
   document.getElementById('tab-fotos-btn').classList.toggle('active', t==='fotos');
+  document.getElementById('tab-ads-btn').classList.toggle('active',   t==='ads');
+}
+
+// ── Ads ──
+var adsCurrentPeriod = 'last_7d';
+document.querySelectorAll('.ads-per-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.ads-per-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    adsCurrentPeriod = btn.dataset.p;
+    loadAds(adsCurrentPeriod);
+  });
+});
+
+function loadAds(period) {
+  document.getElementById('ads-body').innerHTML = '<div class="ads-loading">Cargando campañas…</div>';
+  fetch(API+'/ads-stats?t='+T+'&period='+period)
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (!d.ok) { document.getElementById('ads-body').innerHTML = '<div class="ads-empty">Error: '+d.error+'</div>'; return; }
+      if (!d.campaigns || !d.campaigns.length) {
+        document.getElementById('ads-body').innerHTML = '<div class="ads-empty">⏸ No hay campañas activas ahora mismo.</div>';
+        return;
+      }
+      var html = d.campaigns.map(function(c){ return renderCamp(c); }).join('');
+      document.getElementById('ads-body').innerHTML = html;
+    })
+    .catch(function(){ document.getElementById('ads-body').innerHTML = '<div class="ads-empty">Error de conexión</div>'; });
+}
+
+function colorCtr(v) {
+  var n = parseFloat(v);
+  if (isNaN(n)) return '';
+  return n >= 2.5 ? 'green' : n >= 1.5 ? 'yellow' : 'red';
+}
+function colorFreq(v) {
+  var n = parseFloat(v);
+  if (isNaN(n)) return '';
+  return n < 1.8 ? 'green' : n < 2.5 ? 'yellow' : 'red';
+}
+function colorCpc(v) {
+  var n = parseFloat(v);
+  if (isNaN(n)) return '';
+  return n <= 0.20 ? 'green' : n <= 0.35 ? 'yellow' : 'red';
+}
+
+function adsAnalysis(c) {
+  var tips = [];
+  var ctr  = parseFloat(c.ctr);
+  var freq = parseFloat(c.frequency);
+  var cpc  = parseFloat(c.cpc);
+
+  if (!isNaN(ctr)) {
+    if (ctr >= 2.5) tips.push('✅ CTR excelente — el anuncio engancha bien.');
+    else if (ctr >= 1.5) tips.push('🟡 CTR aceptable — prueba nuevas imágenes para subirlo.');
+    else tips.push('🔴 CTR bajo — cambia imagen o copy urgente.');
+  }
+  if (!isNaN(freq)) {
+    if (freq >= 2.5) tips.push('🔴 Frecuencia alta — la gente ya ha visto el anuncio demasiado. Rota creatividades.');
+    else if (freq >= 1.8) tips.push('🟡 Frecuencia media — ve pensando en imágenes nuevas.');
+    else tips.push('✅ Frecuencia baja — el anuncio sigue siendo fresco.');
+  }
+  if (!isNaN(cpc)) {
+    if (cpc <= 0.20) tips.push('✅ Coste por clic muy bueno.');
+    else if (cpc <= 0.35) tips.push('🟡 Coste por clic aceptable.');
+    else tips.push('🔴 Coste por clic alto — optimiza la segmentación.');
+  }
+  if (c.whatsapp_msgs) tips.push('💬 '+c.whatsapp_msgs+' conversaciones de WhatsApp en este período.');
+  return tips.join('\n\n') || 'Sin datos suficientes para analizar.';
+}
+
+function renderCamp(c) {
+  var ctrClass  = colorCtr(c.ctr);
+  var freqClass = colorFreq(c.frequency);
+  var cpcClass  = colorCpc(c.cpc ? parseFloat(c.cpc) : NaN);
+  return '<div class="ads-camp">' +
+    '<div class="ads-camp-head">' +
+      '<span class="ads-camp-name">'+esc(c.name)+'</span>' +
+      '<span class="ads-camp-budget">'+(c.budget_day||'')+'</span>' +
+    '</div>' +
+    '<div class="ads-metrics">' +
+      '<div class="ads-metric"><div class="m-lbl">Impresiones</div><div class="m-val">'+fmt(c.impressions)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Alcance</div><div class="m-val">'+fmt(c.reach)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Frecuencia</div><div class="m-val '+freqClass+'">'+(c.frequency||'—')+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Clics</div><div class="m-val">'+fmt(c.clicks)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">CTR</div><div class="m-val '+ctrClass+'">'+(c.ctr||'—')+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Coste/clic</div><div class="m-val '+cpcClass+'">'+(c.cpc||'—')+'</div></div>' +
+    '</div>' +
+    '<div class="ads-analysis">'+adsAnalysis(c)+'</div>' +
+  '</div>';
 }
 
 // ── Stats ──
