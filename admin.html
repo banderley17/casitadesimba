@@ -668,15 +668,22 @@ document.querySelectorAll('.ads-per-btn').forEach(function(btn){
 
 function loadAds(period) {
   document.getElementById('ads-body').innerHTML = '<div class="ads-loading">Cargando campañas…</div>';
-  fetch(API+'/ads-stats?t='+T+'&period='+period)
-    .then(function(r){ return r.json(); })
-    .then(function(d){
+  var adsPromise = fetch(API+'/ads-stats?t='+T+'&period='+period).then(function(r){ return r.json(); });
+  var clPromise  = period === 'today'
+    ? fetch(API+'/clients?t='+T).then(function(r){ return r.json(); })
+    : Promise.resolve([]);
+  Promise.all([adsPromise, clPromise])
+    .then(function(res){
+      var d  = res[0];
+      var cl = res[1];
       if (!d.ok) { document.getElementById('ads-body').innerHTML = '<div class="ads-empty">Error: '+d.error+'</div>'; return; }
       if (!d.campaigns || !d.campaigns.length) {
         document.getElementById('ads-body').innerHTML = '<div class="ads-empty">⏸ No hay campañas activas ahora mismo.</div>';
         return;
       }
-      var html = d.campaigns.map(function(c){ return renderCamp(c, d.period); }).join('');
+      var today = new Date().toISOString().slice(0,10);
+      var todayCount = Array.isArray(cl) ? cl.filter(function(c){ return c.fecha === today; }).length : 0;
+      var html = d.campaigns.map(function(c){ return renderCamp(c, d.period, todayCount); }).join('');
       document.getElementById('ads-body').innerHTML = html;
     })
     .catch(function(){ document.getElementById('ads-body').innerHTML = '<div class="ads-empty">Error de conexión</div>'; });
@@ -724,30 +731,36 @@ function adsAnalysis(c, isToday) {
   return tips.join('\n\n') || 'Sin datos suficientes para analizar.';
 }
 
-function renderCamp(c, period) {
+function renderCamp(c, period, todayCount) {
   var ctrClass  = colorCtr(c.ctr);
   var freqClass = colorFreq(c.frequency);
   var cpcClass  = colorCpc(c.cpc ? parseFloat(c.cpc) : NaN);
   var isToday   = period === 'today';
   var row2 = isToday
-    ? '<div class="ads-metric"><div class="m-lbl">Clics al link</div><div class="m-val">'+fmt(c.clicks)+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">Precio/clic</div><div class="m-val '+cpcClass+'">'+(c.cpc||'—')+'</div></div>' +
+    ? '<div class="ads-metric"><div class="m-lbl">Clics al anuncio</div><div class="m-val">'+fmt(c.clicks)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Coste por clic</div><div class="m-val '+cpcClass+'">'+(c.cpc||'—')+'</div></div>' +
       '<div class="ads-metric"><div class="m-lbl">Gastado hoy</div><div class="m-val">'+(c.spend||'—')+'</div></div>'
-    : '<div class="ads-metric"><div class="m-lbl">Clics al link</div><div class="m-val">'+fmt(c.clicks)+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">% que clica</div><div class="m-val '+ctrClass+'">'+(c.ctr||'—')+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">Precio/clic</div><div class="m-val '+cpcClass+'">'+(c.cpc||'—')+'</div></div>';
+    : '<div class="ads-metric"><div class="m-lbl">Clics al anuncio</div><div class="m-val">'+fmt(c.clicks)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">De cada 100, clican</div><div class="m-val '+ctrClass+'">'+(c.ctr||'—')+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Coste por clic</div><div class="m-val '+cpcClass+'">'+(c.cpc||'—')+'</div></div>';
+  var todayBar = isToday
+    ? '<div style="background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.35);border-radius:10px;padding:.65rem .9rem;font-size:.85rem;margin-bottom:.7rem">' +
+        'De los cuales te han escrito hoy: <strong style="color:#a78bfa;font-size:1.1rem"> '+todayCount+'</strong> personas' +
+      '</div>'
+    : '';
   return '<div class="ads-camp">' +
     '<div class="ads-camp-head">' +
       '<span class="ads-camp-name">'+esc(c.name)+'</span>' +
       '<span class="ads-camp-budget">'+(c.budget_day||'')+'</span>' +
     '</div>' +
     '<div class="ads-metrics">' +
-      '<div class="ads-metric"><div class="m-lbl">Veces visto</div><div class="m-val">'+fmt(c.impressions)+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">Personas</div><div class="m-val">'+fmt(c.reach)+'</div></div>' +
-      (isToday ? '' : '<div class="ads-metric"><div class="m-lbl">Veces/persona</div><div class="m-val '+freqClass+'">'+(c.frequency||'—')+'</div></div>') +
+      '<div class="ads-metric"><div class="m-lbl">Veces que se vio</div><div class="m-val">'+fmt(c.impressions)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Personas distintas</div><div class="m-val">'+fmt(c.reach)+'</div></div>' +
+      (isToday ? '' : '<div class="ads-metric"><div class="m-lbl">Veces por persona</div><div class="m-val '+freqClass+'">'+(c.frequency||'—')+'</div></div>') +
       row2 +
       (isToday ? '' : '<div class="ads-metric"><div class="m-lbl">Total gastado</div><div class="m-val">'+(c.spend||'—')+'</div></div>') +
     '</div>' +
+    todayBar +
     '<div class="ads-analysis">'+adsAnalysis(c, isToday)+'</div>' +
   '</div>';
 }
