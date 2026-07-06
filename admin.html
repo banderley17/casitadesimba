@@ -698,28 +698,29 @@ function colorCpc(v) {
   return n <= 0.20 ? 'green' : n <= 0.35 ? 'yellow' : 'red';
 }
 
-function adsAnalysis(c) {
+function adsAnalysis(c, isToday) {
   var tips = [];
   var ctr  = parseFloat(c.ctr);
   var freq = parseFloat(c.frequency);
   var cpc  = parseFloat(c.cpc);
 
-  if (!isNaN(ctr)) {
-    if (ctr >= 2.5) tips.push('✅ CTR excelente — el anuncio engancha bien.');
-    else if (ctr >= 1.5) tips.push('🟡 CTR aceptable — prueba nuevas imágenes para subirlo.');
-    else tips.push('🔴 CTR bajo — cambia imagen o copy urgente.');
+  if (!isToday && !isNaN(ctr)) {
+    if (ctr >= 2.5) tips.push('✅ El anuncio engancha bien, mucha gente hace clic.');
+    else if (ctr >= 1.5) tips.push('🟡 Porcentaje de clics aceptable — prueba imágenes nuevas para mejorarlo.');
+    else tips.push('🔴 Poca gente hace clic — considera cambiar la imagen o el texto del anuncio.');
   }
-  if (!isNaN(freq)) {
-    if (freq >= 2.5) tips.push('🔴 Frecuencia alta — la gente ya ha visto el anuncio demasiado. Rota creatividades.');
-    else if (freq >= 1.8) tips.push('🟡 Frecuencia media — ve pensando en imágenes nuevas.');
-    else tips.push('✅ Frecuencia baja — el anuncio sigue siendo fresco.');
+  if (!isToday && !isNaN(freq)) {
+    if (freq >= 2.5) tips.push('🔴 El anuncio se está repitiendo demasiado — rota las imágenes.');
+    else if (freq >= 1.8) tips.push('🟡 La audiencia empieza a ver el anuncio varias veces — ve pensando en imágenes nuevas.');
+    else tips.push('✅ El anuncio todavía se ve fresco para la audiencia.');
   }
   if (!isNaN(cpc)) {
-    if (cpc <= 0.20) tips.push('✅ Coste por clic muy bueno.');
-    else if (cpc <= 0.35) tips.push('🟡 Coste por clic aceptable.');
-    else tips.push('🔴 Coste por clic alto — optimiza la segmentación.');
+    if (cpc <= 0.20) tips.push('✅ Precio por clic muy bueno.');
+    else if (cpc <= 0.35) tips.push('🟡 Precio por clic aceptable.');
+    else tips.push('🔴 Precio por clic alto — revisa la segmentación del público.');
   }
   if (c.whatsapp_msgs) tips.push('💬 '+c.whatsapp_msgs+' conversaciones de WhatsApp en este período.');
+  if (isToday && !tips.length) tips.push('📊 Los datos de hoy se acumulan durante el día — revisa por la noche para ver el rendimiento completo.');
   return tips.join('\n\n') || 'Sin datos suficientes para analizar.';
 }
 
@@ -747,7 +748,7 @@ function renderCamp(c, period) {
       row2 +
       (isToday ? '' : '<div class="ads-metric"><div class="m-lbl">Total gastado</div><div class="m-val">'+(c.spend||'—')+'</div></div>') +
     '</div>' +
-    '<div class="ads-analysis">'+adsAnalysis(c)+'</div>' +
+    '<div class="ads-analysis">'+adsAnalysis(c, isToday)+'</div>' +
   '</div>';
 }
 
