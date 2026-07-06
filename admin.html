@@ -147,7 +147,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .cl-status-btn:hover{filter:brightness(1.2)}
 .cl-del{background:none;border:none;color:rgba(255,255,255,.18);cursor:pointer;font-size:.85rem;transition:color .2s;padding:.1rem}
 .cl-del:hover{color:var(--red)}
-.cl-date{font-size:.65rem;color:rgba(255,255,255,.2)}
+.cl-date{font-size:.72rem;color:var(--muted);font-weight:600;background:rgba(255,255,255,.06);border-radius:6px;padding:2px 6px;white-space:nowrap}
 .cl-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.9rem}
 .cl-empty-icon{font-size:2rem;margin-bottom:.5rem}
 .cl-wa-btn{
@@ -767,6 +767,14 @@ function renderCamp(c, period, todayCount) {
 
 // ── Stats ──
 function fmt(n) { return n==null?'0': n>=1000?(n/1000).toFixed(1)+'k':String(n); }
+function fmtFecha(f) {
+  if (!f) return '';
+  var hoy = new Date().toISOString().slice(0,10);
+  if (f === hoy) return '🟢 Hoy';
+  var meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var p = f.split('-');
+  return p[2].replace(/^0/,'')+' '+meses[parseInt(p[1])-1]+' '+p[0];
+}
 
 function loadStats() {
   document.getElementById('stats-updated').textContent = 'Actualizando…';
@@ -832,7 +840,7 @@ function renderClients() {
           (c.estado==='cliente'?'✅ Venta':c.estado==='excluido'?'🚫':'💬 Consulta')+
         '</button>'+
         (c.tel&&c.estado!=='excluido'?'<button class="cl-wa-btn" data-wa="'+c.id+'" title="Enviar WhatsApp"><svg data-wa="'+c.id+'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path data-wa="'+c.id+'" d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.37 5.07L2 22l5.09-1.34A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.93 13.75c-.2.57-1.17 1.1-1.6 1.16-.41.06-.93.09-1.5-.09-.35-.1-.8-.25-1.37-.5-2.4-1.04-3.97-3.46-4.09-3.62-.12-.16-.97-1.29-.97-2.46 0-1.17.61-1.74.83-1.98.22-.24.47-.3.63-.3l.45.01c.14 0 .34-.05.53.41l.76 1.85c.06.14.1.3.01.48-.08.18-.13.3-.26.46l-.38.44c-.13.14-.27.3-.12.58.16.29.7 1.15 1.5 1.86.99.88 1.83 1.15 2.09 1.28.26.13.41.11.56-.07.16-.18.67-.79.85-1.06.18-.27.36-.22.61-.13l1.74.82c.25.12.42.18.48.28.06.1.06.58-.14 1.15z"/></svg></button>':'')+
-        '<span class="cl-date">'+esc(c.fecha||'')+'</span>'+
+        '<span class="cl-date">'+fmtFecha(c.fecha)+'</span>'+
         '<button class="cl-del" data-del="'+c.id+'" title="Eliminar">✕</button>'+
       '</div>'+
     '</div>';
