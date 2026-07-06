@@ -363,7 +363,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <button class="dash-tab active" id="tab-cl-btn">👥 Clientes</button>
     <button class="dash-tab" id="tab-rev-btn">⭐ Reseñas</button>
     <button class="dash-tab" id="tab-fotos-btn">📸 Fotos</button>
-    <button class="dash-tab" id="tab-ads-btn">📣 Ads</button>
+    <button class="dash-tab" id="tab-ads-btn">📣 Publicidad</button>
   </div>
   <div class="dash-content">
 
@@ -733,12 +733,12 @@ function renderCamp(c) {
       '<span class="ads-camp-budget">'+(c.budget_day||'')+'</span>' +
     '</div>' +
     '<div class="ads-metrics">' +
-      '<div class="ads-metric"><div class="m-lbl">Impresiones</div><div class="m-val">'+fmt(c.impressions)+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">Alcance</div><div class="m-val">'+fmt(c.reach)+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">Frecuencia</div><div class="m-val '+freqClass+'">'+(c.frequency||'—')+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">Clics</div><div class="m-val">'+fmt(c.clicks)+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">CTR</div><div class="m-val '+ctrClass+'">'+(c.ctr||'—')+'</div></div>' +
-      '<div class="ads-metric"><div class="m-lbl">Coste/clic</div><div class="m-val '+cpcClass+'">'+(c.cpc||'—')+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Veces visto</div><div class="m-val">'+fmt(c.impressions)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Personas</div><div class="m-val">'+fmt(c.reach)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Veces c/u</div><div class="m-val '+freqClass+'">'+(c.frequency||'—')+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Clics al link</div><div class="m-val">'+fmt(c.clicks)+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">% que clica</div><div class="m-val '+ctrClass+'">'+(c.ctr||'—')+'</div></div>' +
+      '<div class="ads-metric"><div class="m-lbl">Precio/clic</div><div class="m-val '+cpcClass+'">'+(c.cpc||'—')+'</div></div>' +
     '</div>' +
     '<div class="ads-analysis">'+adsAnalysis(c)+'</div>' +
   '</div>';
