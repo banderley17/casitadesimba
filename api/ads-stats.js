@@ -85,7 +85,34 @@ export default async function handler(req) {
       })
     );
 
-    return ok({ ok: true, period: preset, campaigns: insights });
+    // Anuncios por campaña
+    const adsData = await Promise.all(
+      active.map(async (c) => {
+        const timeParam = preset === 'today' ? todayRange() : `date_preset=${preset}`;
+        const adsList = await graph(`/${c.id}/ads?fields=id,name,status`, token);
+        const ads = adsList.data || [];
+        const adInsights = await Promise.all(
+          ads.filter(a => a.status !== 'DELETED').map(async (a) => {
+            const ins = await graph(`/${a.id}/insights?fields=impressions,spend,actions&${timeParam}`, token);
+            const d = ins.data?.[0] || {};
+            const actions = d.actions || [];
+            const lc = parseInt(actions.find(x => x.action_type === 'link_click')?.value || 0);
+            return {
+              name: a.name,
+              status: a.status,
+              impressions: parseInt(d.impressions || 0),
+              clicks: lc,
+              ctr: d.impressions && lc ? ((lc / parseInt(d.impressions)) * 100).toFixed(2) + '%' : null,
+              cpc: d.spend && lc ? (parseFloat(d.spend) / lc).toFixed(2) + ' €' : null,
+              spend: d.spend ? parseFloat(d.spend).toFixed(2) + ' €' : null,
+            };
+          })
+        );
+        return { campaign: c.name, ads: adInsights };
+      })
+    );
+
+    return ok({ ok: true, period: preset, campaigns: insights, ads: adsData });
 
   } catch (e) {
     return err('Error interno: ' + e.message);
