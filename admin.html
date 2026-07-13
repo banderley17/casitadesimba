@@ -572,6 +572,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <label>¿Hasta cuándo dura la oferta? (para la cuenta atrás)</label>
         <input type="datetime-local" id="pr-inagu-end">
 
+        <label>Texto del botón de WhatsApp del banner</label>
+        <input type="text" id="pr-inagu-btn" placeholder="💬 Reservar con precio de inauguración">
+
         <div style="border-top:1px solid var(--border);margin:.3rem 0;"></div>
         <div style="font-size:.78rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Los 5 precios del banner</div>
         <div id="pr-inagu-items" style="display:flex;flex-direction:column;gap:.5rem;"></div>
@@ -1512,6 +1515,7 @@ function renderPrecios(p) {
   document.getElementById('pr-inagu-title').value = inagu.title || '';
   document.getElementById('pr-inagu-sub').value = inagu.sub || '';
   document.getElementById('pr-inagu-end').value = toDatetimeLocal(inagu.endDate);
+  document.getElementById('pr-inagu-btn').value = inagu.btnText || '';
 
   var itemsWrap = document.getElementById('pr-inagu-items');
   itemsWrap.innerHTML = (inagu.items || []).map(function(it, i){
@@ -1589,6 +1593,7 @@ function guardarPrecios() {
       title: document.getElementById('pr-inagu-title').value.trim(),
       sub: document.getElementById('pr-inagu-sub').value.trim(),
       endDate: endVal ? (endVal.length === 16 ? endVal + ':00' : endVal) : (precCache && precCache.inaugu ? precCache.inaugu.endDate : ''),
+      btnText: document.getElementById('pr-inagu-btn').value.trim(),
       items: items
     },
     dosPerrosDesc: document.getElementById('pr-dosperros').value.trim(),

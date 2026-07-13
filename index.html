@@ -1824,7 +1824,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         <div class="jc-sep">:</div>
         <div class="jc-block"><span id="jcSecs">00</span><small id="jcSegsLbl">seg</small></div>
       </div>
-      <a href="https://wa.me/34613753680?text=Hola!%20Me%20gustar%C3%ADa%20reservar%20con%20el%20precio%20de%20inauguraci%C3%B3n%20de%20junio%20en%20La%20Casita%20de%20Simba%20%F0%9F%90%BE" target="_blank" rel="noopener noreferrer" class="junio-cta-btn">💬 Reservar con precio de junio</a>
+      <a href="https://wa.me/34613753680?text=Hola!%20Me%20gustar%C3%ADa%20reservar%20con%20el%20precio%20de%20inauguraci%C3%B3n%20en%20La%20Casita%20de%20Simba%20%F0%9F%90%BE" target="_blank" rel="noopener noreferrer" class="junio-cta-btn" id="pInauguBtn">💬 Reservar con precio de junio</a>
     </div>
 
     <div style="text-align:center">
@@ -2693,6 +2693,7 @@ function enviar(e) {
       setTxt('pInauguTag', inagu.tag);
       setTxt('pInauguTitle', inagu.title);
       setTxt('pInauguSub', inagu.sub);
+      setTxt('pInauguBtn', inagu.btnText);
       (inagu.items || []).forEach(function(it, i){
         setTxt('jpLbl' + (i + 1), it.label);
         setTxt('jpPrice' + (i + 1), it.price);

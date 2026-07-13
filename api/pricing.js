@@ -16,6 +16,7 @@ const DEFAULT_PRICING = {
     title: '🔥 ¡Precios de Inauguración!',
     sub: 'La Casita de Simba abre sus puertas con precios increíbles — ¡aprovéchalos antes de que acabe el mes!',
     endDate: '2026-07-01T00:00:00',
+    btnText: '💬 Reservar con precio de junio',
     items: [
       { label: '🐶 Estancia (12h)', price: '€40' },
       { label: '⏱️ 8 horas', price: '€35' },
