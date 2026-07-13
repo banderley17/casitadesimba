@@ -1886,7 +1886,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         <div class="perro2-bono" style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro solo <strong>€139</strong> (−30%)</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
-          <li>🗓️ 7 días a tu elección</li>
+          <li id="pc3Bullet1">🗓️ 7 días a tu elección</li>
           <li>⏰ Horario totalmente flexible</li>
           <li>🦴 Chuches y snacks incluidos</li>
           <li>📸 Fotos y vídeos cada día</li>
@@ -2692,6 +2692,12 @@ function enviar(e) {
       if (n === 3 && c.title) {
         setTxt('servBonoH3', c.title);
         setTxt('optBono7', c.title);
+      }
+      // La viñeta "X días a tu elección" saca el número directamente de "Debajo del precio"
+      // (el campo que dice "7 días", "10 días"...) para no tener que escribirlo dos veces.
+      if (n === 3 && c.per) {
+        var daysMatch = String(c.per).match(/\d+/);
+        if (daysMatch) setTxt('pc3Bullet1', '🗓️ ' + daysMatch[0] + ' días a tu elección');
       }
       if (c.price) {
         var priceEl = document.getElementById('pc' + n + 'Price');
