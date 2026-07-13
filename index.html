@@ -1883,7 +1883,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         <div class="precio-num prec3-num" id="pc3Price"><span>€</span>199</div>
         <div class="precio-por prec3-por" id="pc3Per">7 días</div>
         <div class="bono-dia-solo" id="pc3Extra" style="font-size:.8rem;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:2px;">= solo <strong style="font-size:1rem;">€28.43/día</strong> 🤯</div>
-        <div class="perro2-bono" style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro solo <strong>€139</strong> (−30%)</div>
+        <div class="perro2-bono" id="pc3Perro2" style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro con 30% de descuento</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
           <li id="pc3Bullet1">🗓️ 7 días a tu elección</li>
@@ -2679,6 +2679,10 @@ function enviar(e) {
     if (p.dosPerrosDesc) {
       var dp = document.getElementById('pDosPerrosDesc');
       if (dp) dp.innerHTML = esc(p.dosPerrosDesc).replace(/\n/g, '<br>');
+      // El "2º perro" de dentro de la tarjeta del Bono usa el mismo % que se escriba aquí arriba,
+      // para no tener que cambiarlo dos veces en dos sitios distintos.
+      var pctMatch = String(p.dosPerrosDesc).match(/(\d+)\s*%/);
+      if (pctMatch) setTxt('pc3Perro2', '🐕🐕 2º perro con ' + pctMatch[1] + '% de descuento');
     }
 
     (p.cards || []).forEach(function(c, i){
