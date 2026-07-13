@@ -1741,7 +1741,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       </div>
       <div class="servicio-card rosa">
         <div class="servicio-icon">🗓️</div>
-        <h3>Bono de 7 días</h3>
+        <h3 id="servBonoH3">Bono de 7 días</h3>
         <p>Elige los días que necesitas de cada semana y paga solo por lo que usas. Perfecto para rutinas variables y agendas cambiantes.</p>
       </div>
       <div class="servicio-card verde">
@@ -2079,7 +2079,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
                 <option>Estancia (12h)</option>
                 <option>8 Horas</option>
                 <option>Horas Sueltas</option>
-                <option>Bono de 7 días</option>
+                <option id="optBono7">Bono de 7 días</option>
                 <option>Bono Mensual</option>
                 <option>Cumpleaños / Evento</option>
 
@@ -2687,6 +2687,12 @@ function enviar(e) {
       setTxt('pc' + n + 'Title', c.title);
       setTxt('pc' + n + 'Per', c.per);
       setTxt('pc' + n + 'Extra', c.extra);
+      // La tarjeta 3 es "Bono de 7 días" — el mismo nombre se repite en la tarjeta de
+      // "Servicios" y en el desplegable del formulario de reserva; se mantienen sincronizados.
+      if (n === 3 && c.title) {
+        setTxt('servBonoH3', c.title);
+        setTxt('optBono7', c.title);
+      }
       if (c.price) {
         var priceEl = document.getElementById('pc' + n + 'Price');
         if (priceEl) priceEl.textContent = c.price;

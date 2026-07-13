@@ -1492,7 +1492,7 @@ document.getElementById('rev-list').addEventListener('click', function(e){
 
 // ── Precios (bilingüe ES/EN) ──
 var precCache = null;
-var PREC_CARD_LABELS = ['Tarjeta 1 (Estancia)', 'Tarjeta 2 (Eventos y Cumpleaños)', 'Tarjeta 3 (Bono de 7 días)', 'Tarjeta 4 (Bono Mensual)'];
+var PREC_CARD_LABELS = ['Tarjeta 1 (Estancia)', 'Tarjeta 2 (Eventos y Cumpleaños)', 'Tarjeta 3 (Bono de 7 días) — el "Título" también cambia el nombre en Servicios y en el formulario de reserva', 'Tarjeta 4 (Bono Mensual)'];
 
 function loadPrecios() {
   fetch(API + '/pricing').then(function(r){ return r.json(); }).then(function(p){
