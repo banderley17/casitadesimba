@@ -2682,7 +2682,7 @@ function enviar(e) {
     tick(); setInterval(tick, 1000);
   }
 
-  fetch('/api/pricing').then(function(r){ return r.json(); }).then(function(p){
+  fetch('https://casitadesimba.vercel.app/api/pricing').then(function(r){ return r.json(); }).then(function(p){
     if (!p || typeof p !== 'object') { startCountdown(); return; }
 
     var inagu = p.inaugu || {};
