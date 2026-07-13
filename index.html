@@ -1803,16 +1803,16 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
   <div class="container">
 
     <!-- BANNER JUNIO -->
-    <div class="junio-banner reveal">
-      <div class="junio-tag">🎉 Oferta especial · Solo junio 2026</div>
-      <div class="junio-title">🔥 ¡Precios de Inauguración!</div>
-      <div class="junio-sub">La Casita de Simba abre sus puertas con precios increíbles — ¡aprovéchalos antes de que acabe el mes!</div>
+    <div class="junio-banner reveal" id="junioBanner">
+      <div class="junio-tag" id="pInauguTag">🎉 Oferta especial · Solo junio 2026</div>
+      <div class="junio-title" id="pInauguTitle">🔥 ¡Precios de Inauguración!</div>
+      <div class="junio-sub" id="pInauguSub">La Casita de Simba abre sus puertas con precios increíbles — ¡aprovéchalos antes de que acabe el mes!</div>
       <div class="junio-precios">
-        <div class="jp-item"><div class="jp-label" id="jpLbl1">🐶 Estancia (12h)</div><div class="jp-price">€40</div></div>
-        <div class="jp-item"><div class="jp-label" id="jpLbl2">⏱️ 8 horas</div><div class="jp-price">€35</div></div>
-        <div class="jp-item"><div class="jp-label" id="jpLbl3">⏱️ 1 hora</div><div class="jp-price">€5</div></div>
-        <div class="jp-item"><div class="jp-label" id="jpLbl4">🗓️ Bono de 7 días</div><div class="jp-price">€199</div></div>
-        <div class="jp-item" style="background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.5);"><div class="jp-label" id="jpLbl5">🐕🐕 2º perro</div><div class="jp-price" style="font-size:1.15rem;">−30%</div></div>
+        <div class="jp-item"><div class="jp-label" id="jpLbl1">🐶 Estancia (12h)</div><div class="jp-price" id="jpPrice1">€40</div></div>
+        <div class="jp-item"><div class="jp-label" id="jpLbl2">⏱️ 8 horas</div><div class="jp-price" id="jpPrice2">€35</div></div>
+        <div class="jp-item"><div class="jp-label" id="jpLbl3">⏱️ 1 hora</div><div class="jp-price" id="jpPrice3">€5</div></div>
+        <div class="jp-item"><div class="jp-label" id="jpLbl4">🗓️ Bono de 7 días</div><div class="jp-price" id="jpPrice4">€199</div></div>
+        <div class="jp-item" style="background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.5);"><div class="jp-label" id="jpLbl5">🐕🐕 2º perro</div><div class="jp-price" id="jpPrice5" style="font-size:1.15rem;">−30%</div></div>
       </div>
       <div id="junioTerminaLbl" style="font-size:.8rem;opacity:.8;margin-bottom:14px;">⏰ La oferta termina en:</div>
       <div class="junio-countdown">
@@ -1836,7 +1836,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
     <!-- 2º PERRO -->
     <div style="background:linear-gradient(135deg,#f3e8ff,#fce7f3);border:2px solid #d8b4fe;border-radius:14px;padding:16px 20px;margin-bottom:28px;text-align:center;">
       <div class="dos-perros-title" style="font-size:1.1rem;font-weight:900;color:#7c3aed;margin-bottom:4px;">🐕🐕 ¿Tienes dos perros? ¡Mejor precio!</div>
-      <div class="dos-perros-desc" style="font-size:.9rem;color:#6b21a8;font-weight:600;">El 2º perro tiene un <strong>30% de descuento</strong> en todos nuestros servicios.<br>1h: €3.50 · 8h: €24.50 · Estancia 12h: €28 · Bono de 7 días: €139</div>
+      <div class="dos-perros-desc" id="pDosPerrosDesc" style="font-size:.9rem;color:#6b21a8;font-weight:600;">El 2º perro tiene un <strong>30% de descuento</strong> en todos nuestros servicios.<br>1h: €3.50 · 8h: €24.50 · Estancia 12h: €28 · Bono de 7 días: €139</div>
       <a href="https://wa.me/34613753680?text=Hola!%20Tengo%20dos%20perros%20y%20me%20gustar%C3%ADa%20saber%20el%20precio%20con%20el%20descuento%20del%202%C2%BA%20perro%20%F0%9F%90%BE%F0%9F%90%BE" target="_blank" rel="noopener noreferrer" class="dos-perros-cta" style="display:inline-block;margin-top:10px;background:#7c3aed;color:#fff;font-weight:800;font-size:.88rem;padding:9px 22px;border-radius:30px;text-decoration:none;">💬 Calcular mi precio para 2 perros</a>
     </div>
 
@@ -1844,11 +1844,11 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
 
       <!-- CARD 1: ESTANCIA -->
       <div class="precio-card">
-        <div class="precio-icon">🐶</div>
-        <h3 class="prec1-h3">Estancia</h3>
-        <div class="precio-num prec1-num"><span>€</span>40</div>
-        <div class="precio-por prec1-por">día completo · 12 horas</div>
-        <div class="perro2-est" style="font-size:.78rem;color:#7c3aed;font-weight:700;margin:4px 0 2px;">🐕🐕 2º perro solo <strong>€28</strong> (−30%)</div>
+        <div class="precio-icon" id="pc1Icon">🐶</div>
+        <h3 class="prec1-h3" id="pc1Title">Estancia</h3>
+        <div class="precio-num prec1-num" id="pc1Price"><span>€</span>40</div>
+        <div class="precio-por prec1-por" id="pc1Per">día completo · 12 horas</div>
+        <div class="perro2-est" id="pc1Extra" style="font-size:.78rem;color:#7c3aed;font-weight:700;margin:4px 0 2px;">🐕🐕 2º perro solo <strong>€28</strong> (−30%)</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
           <li>☀️ 12h de cariño y juego</li>
@@ -1861,10 +1861,10 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
 
       <!-- CARD 2: EVENTOS -->
       <div class="precio-card">
-        <div class="precio-icon">🎂</div>
-        <h3 class="prec3-h3">Eventos y Cumpleaños</h3>
-        <div class="precio-num prec3-num" style="font-size:2rem;">A consultar</div>
-        <div class="precio-por prec3-por">pack personalizado</div>
+        <div class="precio-icon" id="pc2Icon">🎂</div>
+        <h3 class="prec3-h3" id="pc2Title">Eventos y Cumpleaños</h3>
+        <div class="precio-num prec3-num" id="pc2Price" style="font-size:2rem;">A consultar</div>
+        <div class="precio-por prec3-por" id="pc2Per">pack personalizado</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
           <li>🎀 Decoración temática incluida</li>
@@ -1877,12 +1877,12 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
 
       <!-- CARD 3: BONO SEMANAL -->
       <div class="precio-card selected" style="position:relative;overflow:visible;">
-        <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:#ef4444;color:#fff;font-size:.7rem;font-weight:800;padding:4px 14px;border-radius:20px;white-space:nowrap;box-shadow:0 2px 8px rgba(239,68,68,.4);">🔥 MÁS POPULAR · SOLO JUNIO</div>
-        <div class="precio-icon">🗓️</div>
-        <h3 class="prec1-h3" style="color:white;">Bono de 7 días</h3>
-        <div class="precio-num prec3-num"><span>€</span>199</div>
-        <div class="precio-por prec3-por">7 días</div>
-        <div class="bono-dia-solo" style="font-size:.8rem;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:2px;">= solo <strong style="font-size:1rem;">€28.43/día</strong> 🤯</div>
+        <div id="pc3Badge" style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:#ef4444;color:#fff;font-size:.7rem;font-weight:800;padding:4px 14px;border-radius:20px;white-space:nowrap;box-shadow:0 2px 8px rgba(239,68,68,.4);">🔥 MÁS POPULAR · SOLO JUNIO</div>
+        <div class="precio-icon" id="pc3Icon">🗓️</div>
+        <h3 class="prec1-h3" id="pc3Title" style="color:white;">Bono de 7 días</h3>
+        <div class="precio-num prec3-num" id="pc3Price"><span>€</span>199</div>
+        <div class="precio-por prec3-por" id="pc3Per">7 días</div>
+        <div class="bono-dia-solo" id="pc3Extra" style="font-size:.8rem;color:rgba(255,255,255,.85);font-weight:700;margin-bottom:2px;">= solo <strong style="font-size:1rem;">€28.43/día</strong> 🤯</div>
         <div class="perro2-bono" style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro solo <strong>€139</strong> (−30%)</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
@@ -1897,12 +1897,12 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
 
       <!-- CARD 4: BONO MENSUAL -->
       <div class="precio-card destacado" style="position:relative;overflow:visible;">
-        <div class="precio-icon">🎟️</div>
-        <h3 class="prec4-h3">Bono Mensual</h3>
-        <div class="precio-num prec4-num" style="font-size:2rem;">A consultar</div>
-        <div class="precio-por prec4-por">diseñado para tu rutina</div>
+        <div class="precio-icon" id="pc4Icon">🎟️</div>
+        <h3 class="prec4-h3" id="pc4Title">Bono Mensual</h3>
+        <div class="precio-num prec4-num" id="pc4Price" style="font-size:2rem;">A consultar</div>
+        <div class="precio-por prec4-por" id="pc4Per">diseñado para tu rutina</div>
         <div style="font-size:.78rem;color:rgba(255,255,255,.85);font-weight:600;margin-bottom:2px;">📞 Te hacemos una oferta personalizada</div>
-        <div class="perro2-mens" style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro incluye −30% también</div>
+        <div class="perro2-mens" id="pc4Extra" style="font-size:.78rem;color:rgba(255,255,255,.8);font-weight:700;margin-bottom:4px;">🐕🐕 2º perro incluye −30% también</div>
         <div class="precio-divider"></div>
         <ul class="precio-lista">
           <li>🎯 Días adaptados a tu agenda</li>
@@ -2654,28 +2654,74 @@ function enviar(e) {
   });
 })();
 
-// ── COUNTDOWN JUNIO ──
+// ── PRECIOS (inauguración + tarifas claras) — editables desde el admin ──
 (function() {
-  var end = new Date('2026-07-01T00:00:00');
-  function pad(n) { return String(n).padStart(2,'0'); }
-  function tick() {
-    var now = new Date(), diff = end - now;
-    if (diff <= 0) {
-      var cd = document.getElementById('jcDays');
-      if (cd) { var endMsg = document.documentElement.lang === 'en' ? 'Offer ended — thank you for your trust! 🐾' : '¡Oferta finalizada — gracias por confiar en nosotros! 🐾'; cd.closest('.junio-countdown').innerHTML = '<div style="font-size:1rem;font-weight:700;opacity:.9;">'+endMsg+'</div>'; }
-      return;
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function setTxt(id, val){ var el = document.getElementById(id); if (el && val != null && val !== '') el.textContent = val; }
+
+  function startCountdown(endStr) {
+    var end = new Date(endStr || '2026-07-01T00:00:00');
+    function pad(n) { return String(n).padStart(2,'0'); }
+    function tick() {
+      var now = new Date(), diff = end - now;
+      if (diff <= 0) {
+        var cd = document.getElementById('jcDays');
+        if (cd) { var endMsg = document.documentElement.lang === 'en' ? 'Offer ended — thank you for your trust! 🐾' : '¡Oferta finalizada — gracias por confiar en nosotros! 🐾'; cd.closest('.junio-countdown').innerHTML = '<div style="font-size:1rem;font-weight:700;opacity:.9;">'+endMsg+'</div>'; }
+        return;
+      }
+      var d = Math.floor(diff/86400000);
+      var h = Math.floor((diff%86400000)/3600000);
+      var m = Math.floor((diff%3600000)/60000);
+      var s = Math.floor((diff%60000)/1000);
+      var eD=document.getElementById('jcDays'), eH=document.getElementById('jcHours'), eM=document.getElementById('jcMins'), eS=document.getElementById('jcSecs');
+      if(eD) eD.textContent=pad(d);
+      if(eH) eH.textContent=pad(h);
+      if(eM) eM.textContent=pad(m);
+      if(eS) eS.textContent=pad(s);
     }
-    var d = Math.floor(diff/86400000);
-    var h = Math.floor((diff%86400000)/3600000);
-    var m = Math.floor((diff%3600000)/60000);
-    var s = Math.floor((diff%60000)/1000);
-    var eD=document.getElementById('jcDays'), eH=document.getElementById('jcHours'), eM=document.getElementById('jcMins'), eS=document.getElementById('jcSecs');
-    if(eD) eD.textContent=pad(d);
-    if(eH) eH.textContent=pad(h);
-    if(eM) eM.textContent=pad(m);
-    if(eS) eS.textContent=pad(s);
+    tick(); setInterval(tick, 1000);
   }
-  tick(); setInterval(tick,1000);
+
+  fetch('/api/pricing').then(function(r){ return r.json(); }).then(function(p){
+    if (!p || typeof p !== 'object') { startCountdown(); return; }
+
+    var inagu = p.inaugu || {};
+    if (inagu.active === false) {
+      var banner = document.getElementById('junioBanner');
+      if (banner) banner.style.display = 'none';
+    } else {
+      setTxt('pInauguTag', inagu.tag);
+      setTxt('pInauguTitle', inagu.title);
+      setTxt('pInauguSub', inagu.sub);
+      (inagu.items || []).forEach(function(it, i){
+        setTxt('jpLbl' + (i + 1), it.label);
+        setTxt('jpPrice' + (i + 1), it.price);
+      });
+    }
+    startCountdown(inagu.endDate);
+
+    if (p.dosPerrosDesc) {
+      var dp = document.getElementById('pDosPerrosDesc');
+      if (dp) dp.innerHTML = esc(p.dosPerrosDesc).replace(/\n/g, '<br>');
+    }
+
+    (p.cards || []).forEach(function(c, i){
+      var n = i + 1;
+      setTxt('pc' + n + 'Icon', c.icon);
+      setTxt('pc' + n + 'Title', c.title);
+      setTxt('pc' + n + 'Per', c.per);
+      setTxt('pc' + n + 'Extra', c.extra);
+      if (c.price) {
+        var priceEl = document.getElementById('pc' + n + 'Price');
+        if (priceEl) priceEl.textContent = c.price;
+      }
+      var badgeEl = document.getElementById('pc' + n + 'Badge');
+      if (badgeEl) {
+        if (c.badge) { badgeEl.textContent = c.badge; badgeEl.style.display = ''; }
+        else badgeEl.style.display = 'none';
+      }
+    });
+  }).catch(function(){ startCountdown(); });
 })();
 
 // ── LANGUAGE SWITCHER ──
