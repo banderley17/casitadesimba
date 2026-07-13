@@ -2654,60 +2654,50 @@ function enviar(e) {
   });
 })();
 
-// ── PRECIOS (inauguración + tarifas claras) — editables desde el admin, bilingüe ──
+// ── PRECIOS (inauguración + tarifas claras) — editables desde el admin (un solo idioma) ──
 (function() {
   function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function pick(field, lang){ if (field == null) return ''; if (typeof field === 'string') return field; return field[lang] || field.es || field.en || ''; }
   function setTxt(id, val){ var el = document.getElementById(id); if (el && val != null && val !== '') el.textContent = val; }
 
-  var pricingData = null;
-
-  function applyPricing(lang) {
-    if (!pricingData) return;
-    var p = pricingData;
+  function applyPricing(p) {
     var inagu = p.inaugu || {};
     var banner = document.getElementById('junioBanner');
     if (inagu.active === false) {
       if (banner) banner.style.display = 'none';
     } else {
       if (banner) banner.style.display = '';
-      setTxt('pInauguTag', pick(inagu.tag, lang));
-      setTxt('pInauguTitle', pick(inagu.title, lang));
-      setTxt('pInauguSub', pick(inagu.sub, lang));
-      setTxt('pInauguBtn', pick(inagu.btnText, lang));
+      setTxt('pInauguTag', inagu.tag);
+      setTxt('pInauguTitle', inagu.title);
+      setTxt('pInauguSub', inagu.sub);
+      setTxt('pInauguBtn', inagu.btnText);
       (inagu.items || []).forEach(function(it, i){
-        setTxt('jpLbl' + (i + 1), pick(it.label, lang));
+        setTxt('jpLbl' + (i + 1), it.label);
         setTxt('jpPrice' + (i + 1), it.price);
       });
     }
 
     if (p.dosPerrosDesc) {
       var dp = document.getElementById('pDosPerrosDesc');
-      var descTxt = pick(p.dosPerrosDesc, lang);
-      if (dp && descTxt) dp.innerHTML = esc(descTxt).replace(/\n/g, '<br>');
+      if (dp) dp.innerHTML = esc(p.dosPerrosDesc).replace(/\n/g, '<br>');
     }
 
     (p.cards || []).forEach(function(c, i){
       var n = i + 1;
       setTxt('pc' + n + 'Icon', c.icon);
-      setTxt('pc' + n + 'Title', pick(c.title, lang));
-      setTxt('pc' + n + 'Per', pick(c.per, lang));
-      setTxt('pc' + n + 'Extra', pick(c.extra, lang));
-      var priceVal = pick(c.price, lang);
-      if (priceVal) {
+      setTxt('pc' + n + 'Title', c.title);
+      setTxt('pc' + n + 'Per', c.per);
+      setTxt('pc' + n + 'Extra', c.extra);
+      if (c.price) {
         var priceEl = document.getElementById('pc' + n + 'Price');
-        if (priceEl) priceEl.textContent = priceVal;
+        if (priceEl) priceEl.textContent = c.price;
       }
       var badgeEl = document.getElementById('pc' + n + 'Badge');
       if (badgeEl) {
-        var badgeVal = pick(c.badge, lang);
-        if (badgeVal) { badgeEl.textContent = badgeVal; badgeEl.style.display = ''; }
+        if (c.badge) { badgeEl.textContent = c.badge; badgeEl.style.display = ''; }
         else badgeEl.style.display = 'none';
       }
     });
   }
-  // Para que el interruptor de idioma pueda volver a aplicar los precios sin recargar
-  window._applyPricingLang = applyPricing;
 
   function startCountdown(endStr) {
     var end = new Date(endStr || '2026-07-01T00:00:00');
@@ -2733,9 +2723,9 @@ function enviar(e) {
   }
 
   fetch('https://casitadesimba.vercel.app/api/pricing').then(function(r){ return r.json(); }).then(function(p){
-    pricingData = (p && typeof p === 'object') ? p : null;
-    applyPricing(document.documentElement.lang === 'en' ? 'en' : 'es');
-    startCountdown(pricingData && pricingData.inaugu ? pricingData.inaugu.endDate : null);
+    if (!p || typeof p !== 'object') { startCountdown(); return; }
+    applyPricing(p);
+    startCountdown(p.inaugu ? p.inaugu.endDate : null);
   }).catch(function(){ startCountdown(); });
 })();
 
@@ -2961,6 +2951,7 @@ function enviar(e) {
   }
 
   function applyLang(lang) {
+    document.documentElement.lang = lang; // primero — toggleFechas() y otros helpers leen este atributo
     s('nav a[href="#simba"]','nav-simba',lang);
     s('nav a[href="#servicios"]','nav-serv',lang);
     s('nav a[href="#galeria"]','nav-gal',lang);
@@ -3156,12 +3147,10 @@ function enviar(e) {
     var bub = document.querySelector('.wa-bubble-text');
     if (bub) bub.innerHTML = '<strong>Helena</strong> — ' + (tr[lang]['bubble-hi']||'') + '<br>' + tr[lang]['bubble'];
     if (typeof window._toggleFechas === 'function') window._toggleFechas();
-    if (typeof window._applyPricingLang === 'function') window._applyPricingLang(lang);
     var flag = document.getElementById('langFlag');
     var langText = document.getElementById('langText');
     if (flag) { flag.src = lang==='es' ? 'https://flagcdn.com/20x15/gb.png' : 'https://flagcdn.com/20x15/es.png'; flag.alt = lang==='es' ? 'EN' : 'ES'; }
     if (langText) langText.textContent = lang==='es' ? 'EN' : 'ES';
-    document.documentElement.lang = lang;
     localStorage.setItem('casita-lang', lang);
   }
 

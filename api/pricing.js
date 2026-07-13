@@ -9,63 +9,28 @@ const CORS = {
 
 // Lo que ya había fijo en index.html — se usa mientras no se guarde nada nuevo,
 // para que la web no cambie de aspecto hasta que Álvaro/Helena editen algo.
-// Los campos de texto llevan {es,en} para que se traduzcan de verdad al cambiar de idioma.
 const DEFAULT_PRICING = {
   inaugu: {
     active: true,
-    tag: { es: '🎉 Oferta especial · Solo julio 2026', en: '🎉 Special offer · July 2026 only' },
-    title: { es: '🔥 ¡Precios de Inauguración!', en: '🔥 Opening Prices!' },
-    sub: {
-      es: 'La Casita de Simba abre sus puertas con precios increíbles — ¡aprovéchalos antes de que acabe el mes!',
-      en: 'La Casita de Simba is opening its doors with amazing prices — grab them before the month ends!',
-    },
+    tag: '🎉 Oferta especial · Solo julio 2026',
+    title: '🔥 ¡Precios de Inauguración!',
+    sub: 'La Casita de Simba abre sus puertas con precios increíbles — ¡aprovéchalos antes de que acabe el mes!',
     endDate: '2026-07-01T00:00:00',
-    btnText: { es: '💬 Reservar con precio de junio', en: '💬 Book with the launch price' },
+    btnText: '💬 Reservar con precio de junio',
     items: [
-      { label: { es: '🐶 Estancia (12h)', en: '🐶 Full day (12h)' }, price: '€40' },
-      { label: { es: '⏱️ 8 horas', en: '⏱️ 8 hours' }, price: '€35' },
-      { label: { es: '⏱️ 1 hora', en: '⏱️ 1 hour' }, price: '€5' },
-      { label: { es: '🗓️ Bono de 7 días', en: '🗓️ 7-day pack' }, price: '€199' },
-      { label: { es: '🐕🐕 2º perro', en: '🐕🐕 2nd dog' }, price: '−30%' },
+      { label: '🐶 Estancia (12h)', price: '€40' },
+      { label: '⏱️ 8 horas', price: '€35' },
+      { label: '⏱️ 1 hora', price: '€5' },
+      { label: '🗓️ Bono de 7 días', price: '€199' },
+      { label: '🐕🐕 2º perro', price: '−30%' },
     ],
   },
-  dosPerrosDesc: {
-    es: 'El 2º perro tiene un 30% de descuento en todos nuestros servicios.\n1h: €3.50 · 8h: €24.50 · Estancia 12h: €28 · Bono de 7 días: €139',
-    en: 'The 2nd dog gets a 30% discount on all our services.\n1h: €3.50 · 8h: €24.50 · Full day 12h: €28 · 7-day pack: €139',
-  },
+  dosPerrosDesc: 'El 2º perro tiene un 30% de descuento en todos nuestros servicios.\n1h: €3.50 · 8h: €24.50 · Estancia 12h: €28 · Bono de 7 días: €139',
   cards: [
-    {
-      icon: '🐶',
-      title: { es: 'Estancia', en: 'Full Day' },
-      price: { es: '€40', en: '€40' },
-      per: { es: 'día completo · 12 horas', en: 'full day · 12 hours' },
-      extra: { es: '🐕🐕 2º perro solo €28 (−30%)', en: '🐕🐕 2nd dog only €28 (−30%)' },
-      badge: { es: '', en: '' },
-    },
-    {
-      icon: '🎂',
-      title: { es: 'Eventos y Cumpleaños', en: 'Events & Birthdays' },
-      price: { es: 'A consultar', en: 'Ask for price' },
-      per: { es: 'pack personalizado', en: 'personalised pack' },
-      extra: { es: '', en: '' },
-      badge: { es: '', en: '' },
-    },
-    {
-      icon: '🗓️',
-      title: { es: 'Bono de 7 días', en: '7-Day Pack' },
-      price: { es: '€199', en: '€199' },
-      per: { es: '7 días', en: '7 days' },
-      extra: { es: '= solo €28.43/día 🤯', en: '= only €28.43/day 🤯' },
-      badge: { es: '🔥 MÁS POPULAR · SOLO JULIO', en: '🔥 MOST POPULAR · JULY ONLY' },
-    },
-    {
-      icon: '🎟️',
-      title: { es: 'Bono Mensual', en: 'Monthly Pack' },
-      price: { es: 'A consultar', en: 'Ask for price' },
-      per: { es: 'diseñado para tu rutina', en: 'designed for your routine' },
-      extra: { es: '🐕🐕 2º perro incluye −30% también', en: '🐕🐕 2nd dog also gets −30%' },
-      badge: { es: '', en: '' },
-    },
+    { icon: '🐶', title: 'Estancia', price: '€40', per: 'día completo · 12 horas', extra: '🐕🐕 2º perro solo €28 (−30%)', badge: '' },
+    { icon: '🎂', title: 'Eventos y Cumpleaños', price: 'A consultar', per: 'pack personalizado', extra: '', badge: '' },
+    { icon: '🗓️', title: 'Bono de 7 días', price: '€199', per: '7 días', extra: '= solo €28.43/día 🤯', badge: '🔥 MÁS POPULAR · SOLO JULIO' },
+    { icon: '🎟️', title: 'Bono Mensual', price: 'A consultar', per: 'diseñado para tu rutina', extra: '🐕🐕 2º perro incluye −30% también', badge: '' },
   ],
 };
 
