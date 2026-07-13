@@ -555,25 +555,39 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <div id="section-prec" style="display:none">
 
       <div class="rev-form">
+        <div style="font-size:.72rem;color:rgba(255,255,255,.4);">Cada texto tiene dos cajas: 🇪🇸 español y 🇬🇧 inglés — se muestra el que toque según el idioma que elija el visitante.</div>
+
         <label style="display:flex;align-items:center;gap:.5rem;font-size:.85rem;">
           <input type="checkbox" id="pr-inagu-active" style="width:auto;" checked>
           Mostrar el banner de "Precios de Inauguración"
         </label>
 
         <label>Texto pequeño de arriba (tag)</label>
-        <input type="text" id="pr-inagu-tag" placeholder="🎉 Oferta especial · Solo junio 2026">
+        <div style="display:flex;gap:.4rem;">
+          <input type="text" id="pr-inagu-tag-es" placeholder="🇪🇸 Oferta especial · Solo julio 2026">
+          <input type="text" id="pr-inagu-tag-en" placeholder="🇬🇧 Special offer · July only">
+        </div>
 
         <label>Título grande del banner</label>
-        <input type="text" id="pr-inagu-title" placeholder="🔥 ¡Precios de Inauguración!">
+        <div style="display:flex;gap:.4rem;">
+          <input type="text" id="pr-inagu-title-es" placeholder="🇪🇸 ¡Precios de Inauguración!">
+          <input type="text" id="pr-inagu-title-en" placeholder="🇬🇧 Opening Prices!">
+        </div>
 
         <label>Subtítulo</label>
-        <textarea id="pr-inagu-sub" placeholder="La Casita de Simba abre sus puertas..."></textarea>
+        <div style="display:flex;gap:.4rem;">
+          <textarea id="pr-inagu-sub-es" placeholder="🇪🇸 La Casita de Simba abre sus puertas..."></textarea>
+          <textarea id="pr-inagu-sub-en" placeholder="🇬🇧 La Casita de Simba is opening..."></textarea>
+        </div>
 
         <label>¿Hasta cuándo dura la oferta? (para la cuenta atrás)</label>
         <input type="datetime-local" id="pr-inagu-end">
 
         <label>Texto del botón de WhatsApp del banner</label>
-        <input type="text" id="pr-inagu-btn" placeholder="💬 Reservar con precio de inauguración">
+        <div style="display:flex;gap:.4rem;">
+          <input type="text" id="pr-inagu-btn-es" placeholder="🇪🇸 Reservar con precio de inauguración">
+          <input type="text" id="pr-inagu-btn-en" placeholder="🇬🇧 Book with the launch price">
+        </div>
 
         <div style="border-top:1px solid var(--border);margin:.3rem 0;"></div>
         <div style="font-size:.78rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Los 5 precios del banner</div>
@@ -582,7 +596,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 
       <div class="rev-form">
         <div style="font-size:.78rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Descuento 2º perro (texto libre, arriba de las tarjetas)</div>
-        <textarea id="pr-dosperros" placeholder="El 2º perro tiene un 30% de descuento..."></textarea>
+        <div style="display:flex;gap:.4rem;">
+          <textarea id="pr-dosperros-es" placeholder="🇪🇸 El 2º perro tiene un 30% de descuento..."></textarea>
+          <textarea id="pr-dosperros-en" placeholder="🇬🇧 The 2nd dog gets a 30% discount..."></textarea>
+        </div>
       </div>
 
       <div id="pr-cards" style="display:flex;flex-direction:column;gap:1rem;"></div>
@@ -1490,7 +1507,7 @@ document.getElementById('rev-list').addEventListener('click', function(e){
   }
 });
 
-// ── Precios ──
+// ── Precios (bilingüe ES/EN) ──
 var precCache = null;
 var PREC_CARD_LABELS = ['Tarjeta 1 (Estancia)', 'Tarjeta 2 (Eventos y Cumpleaños)', 'Tarjeta 3 (Bono de 7 días)', 'Tarjeta 4 (Bono Mensual)'];
 
@@ -1507,25 +1524,32 @@ function toDatetimeLocal(iso) {
 }
 
 function escAttr(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function biVal(field, lang) { if (!field) return ''; if (typeof field === 'string') return lang === 'es' ? field : ''; return field[lang] || ''; }
 
 function renderPrecios(p) {
   var inagu = p.inaugu || {};
   document.getElementById('pr-inagu-active').checked = inagu.active !== false;
-  document.getElementById('pr-inagu-tag').value = inagu.tag || '';
-  document.getElementById('pr-inagu-title').value = inagu.title || '';
-  document.getElementById('pr-inagu-sub').value = inagu.sub || '';
+  document.getElementById('pr-inagu-tag-es').value = biVal(inagu.tag, 'es');
+  document.getElementById('pr-inagu-tag-en').value = biVal(inagu.tag, 'en');
+  document.getElementById('pr-inagu-title-es').value = biVal(inagu.title, 'es');
+  document.getElementById('pr-inagu-title-en').value = biVal(inagu.title, 'en');
+  document.getElementById('pr-inagu-sub-es').value = biVal(inagu.sub, 'es');
+  document.getElementById('pr-inagu-sub-en').value = biVal(inagu.sub, 'en');
   document.getElementById('pr-inagu-end').value = toDatetimeLocal(inagu.endDate);
-  document.getElementById('pr-inagu-btn').value = inagu.btnText || '';
+  document.getElementById('pr-inagu-btn-es').value = biVal(inagu.btnText, 'es');
+  document.getElementById('pr-inagu-btn-en').value = biVal(inagu.btnText, 'en');
 
   var itemsWrap = document.getElementById('pr-inagu-items');
   itemsWrap.innerHTML = (inagu.items || []).map(function(it, i){
     return '<div style="display:flex;gap:.4rem;">' +
-      '<input type="text" data-item-label="' + i + '" value="' + escAttr(it.label || '') + '" placeholder="Etiqueta" style="flex:1.4;">' +
-      '<input type="text" data-item-price="' + i + '" value="' + escAttr(it.price || '') + '" placeholder="Precio" style="flex:1;">' +
+      '<input type="text" data-item-label-es="' + i + '" value="' + escAttr(biVal(it.label,'es')) + '" placeholder="🇪🇸 Etiqueta" style="flex:1.1;">' +
+      '<input type="text" data-item-label-en="' + i + '" value="' + escAttr(biVal(it.label,'en')) + '" placeholder="🇬🇧 Label" style="flex:1.1;">' +
+      '<input type="text" data-item-price="' + i + '" value="' + escAttr(it.price || '') + '" placeholder="Precio" style="flex:.7;">' +
     '</div>';
   }).join('');
 
-  document.getElementById('pr-dosperros').value = p.dosPerrosDesc || '';
+  document.getElementById('pr-dosperros-es').value = biVal(p.dosPerrosDesc, 'es');
+  document.getElementById('pr-dosperros-en').value = biVal(p.dosPerrosDesc, 'en');
 
   var cards = p.cards || [];
   document.getElementById('pr-cards').innerHTML = cards.map(function(c, i){
@@ -1533,70 +1557,84 @@ function renderPrecios(p) {
       '<div style="font-size:.78rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">' + esc(PREC_CARD_LABELS[i] || ('Tarjeta ' + (i+1))) + '</div>' +
       '<div style="display:flex;gap:.4rem;">' +
         '<input type="text" data-c-icon="' + i + '" value="' + escAttr(c.icon || '') + '" placeholder="Icono" style="flex:.5;">' +
-        '<input type="text" data-c-title="' + i + '" value="' + escAttr(c.title || '') + '" placeholder="Título" style="flex:2;">' +
+        '<input type="text" data-c-title-es="' + i + '" value="' + escAttr(biVal(c.title,'es')) + '" placeholder="🇪🇸 Título" style="flex:2;">' +
+        '<input type="text" data-c-title-en="' + i + '" value="' + escAttr(biVal(c.title,'en')) + '" placeholder="🇬🇧 Title" style="flex:2;">' +
       '</div>' +
       '<div style="display:flex;gap:.4rem;">' +
-        '<input type="text" data-c-price="' + i + '" value="' + escAttr(c.price || '') + '" placeholder="Precio (ej. €40 o A consultar)" style="flex:1;">' +
-        '<input type="text" data-c-per="' + i + '" value="' + escAttr(c.per || '') + '" placeholder="Debajo del precio" style="flex:1.5;">' +
+        '<input type="text" data-c-price-es="' + i + '" value="' + escAttr(biVal(c.price,'es')) + '" placeholder="🇪🇸 Precio (€40 / A consultar)" style="flex:1;">' +
+        '<input type="text" data-c-price-en="' + i + '" value="' + escAttr(biVal(c.price,'en')) + '" placeholder="🇬🇧 Price (€40 / Ask for price)" style="flex:1;">' +
       '</div>' +
-      '<input type="text" data-c-extra="' + i + '" value="' + escAttr(c.extra || '') + '" placeholder="Línea extra destacada (opcional, ej. 2º perro con descuento)">' +
-      (i === 2 ? '<input type="text" data-c-badge="' + i + '" value="' + escAttr(c.badge || '') + '" placeholder="Texto de la cinta roja (deja vacío para ocultarla)">' : '') +
+      '<div style="display:flex;gap:.4rem;">' +
+        '<input type="text" data-c-per-es="' + i + '" value="' + escAttr(biVal(c.per,'es')) + '" placeholder="🇪🇸 Debajo del precio" style="flex:1;">' +
+        '<input type="text" data-c-per-en="' + i + '" value="' + escAttr(biVal(c.per,'en')) + '" placeholder="🇬🇧 Under the price" style="flex:1;">' +
+      '</div>' +
+      '<div style="display:flex;gap:.4rem;">' +
+        '<input type="text" data-c-extra-es="' + i + '" value="' + escAttr(biVal(c.extra,'es')) + '" placeholder="🇪🇸 Línea extra (opcional)" style="flex:1;">' +
+        '<input type="text" data-c-extra-en="' + i + '" value="' + escAttr(biVal(c.extra,'en')) + '" placeholder="🇬🇧 Extra line (optional)" style="flex:1;">' +
+      '</div>' +
+      (i === 2 ? (
+        '<div style="display:flex;gap:.4rem;">' +
+          '<input type="text" data-c-badge-es="' + i + '" value="' + escAttr(biVal(c.badge,'es')) + '" placeholder="🇪🇸 Cinta roja (vacío = ocultarla)" style="flex:1;">' +
+          '<input type="text" data-c-badge-en="' + i + '" value="' + escAttr(biVal(c.badge,'en')) + '" placeholder="🇬🇧 Red ribbon (empty = hide it)" style="flex:1;">' +
+        '</div>'
+      ) : '') +
     '</div>';
   }).join('');
 }
 
-function guardarPrecios() {
-  var items = [];
-  document.querySelectorAll('[data-item-label]').forEach(function(el){
-    var i = parseInt(el.getAttribute('data-item-label'), 10);
-    items[i] = items[i] || {};
-    items[i].label = el.value.trim();
+function readBi(prefix) {
+  var out = [];
+  document.querySelectorAll('[' + prefix + '-es]').forEach(function(el){
+    var i = parseInt(el.getAttribute(prefix + '-es'), 10);
+    out[i] = out[i] || {};
+    out[i].es = el.value.trim();
   });
+  document.querySelectorAll('[' + prefix + '-en]').forEach(function(el){
+    var i = parseInt(el.getAttribute(prefix + '-en'), 10);
+    out[i] = out[i] || {};
+    out[i].en = el.value.trim();
+  });
+  return out;
+}
+
+function guardarPrecios() {
+  var itemLabels = readBi('data-item-label');
+  var items = [];
   document.querySelectorAll('[data-item-price]').forEach(function(el){
     var i = parseInt(el.getAttribute('data-item-price'), 10);
-    items[i] = items[i] || {};
-    items[i].price = el.value.trim();
+    items[i] = { label: itemLabels[i] || { es: '', en: '' }, price: el.value.trim() };
   });
 
+  var cTitle = readBi('data-c-title');
+  var cPrice = readBi('data-c-price');
+  var cPer = readBi('data-c-per');
+  var cExtra = readBi('data-c-extra');
+  var cBadge = readBi('data-c-badge');
   var cards = [];
   document.querySelectorAll('[data-c-icon]').forEach(function(el){
     var i = parseInt(el.getAttribute('data-c-icon'), 10);
-    cards[i] = cards[i] || {};
-    cards[i].icon = el.value.trim();
-  });
-  document.querySelectorAll('[data-c-title]').forEach(function(el){
-    var i = parseInt(el.getAttribute('data-c-title'), 10);
-    cards[i].title = el.value.trim();
-  });
-  document.querySelectorAll('[data-c-price]').forEach(function(el){
-    var i = parseInt(el.getAttribute('data-c-price'), 10);
-    cards[i].price = el.value.trim();
-  });
-  document.querySelectorAll('[data-c-per]').forEach(function(el){
-    var i = parseInt(el.getAttribute('data-c-per'), 10);
-    cards[i].per = el.value.trim();
-  });
-  document.querySelectorAll('[data-c-extra]').forEach(function(el){
-    var i = parseInt(el.getAttribute('data-c-extra'), 10);
-    cards[i].extra = el.value.trim();
-  });
-  document.querySelectorAll('[data-c-badge]').forEach(function(el){
-    var i = parseInt(el.getAttribute('data-c-badge'), 10);
-    cards[i].badge = el.value.trim();
+    cards[i] = {
+      icon: el.value.trim(),
+      title: cTitle[i] || { es: '', en: '' },
+      price: cPrice[i] || { es: '', en: '' },
+      per: cPer[i] || { es: '', en: '' },
+      extra: cExtra[i] || { es: '', en: '' },
+      badge: cBadge[i] || { es: '', en: '' },
+    };
   });
 
   var endVal = document.getElementById('pr-inagu-end').value;
   var payload = {
     inaugu: {
       active: document.getElementById('pr-inagu-active').checked,
-      tag: document.getElementById('pr-inagu-tag').value.trim(),
-      title: document.getElementById('pr-inagu-title').value.trim(),
-      sub: document.getElementById('pr-inagu-sub').value.trim(),
+      tag: { es: document.getElementById('pr-inagu-tag-es').value.trim(), en: document.getElementById('pr-inagu-tag-en').value.trim() },
+      title: { es: document.getElementById('pr-inagu-title-es').value.trim(), en: document.getElementById('pr-inagu-title-en').value.trim() },
+      sub: { es: document.getElementById('pr-inagu-sub-es').value.trim(), en: document.getElementById('pr-inagu-sub-en').value.trim() },
       endDate: endVal ? (endVal.length === 16 ? endVal + ':00' : endVal) : (precCache && precCache.inaugu ? precCache.inaugu.endDate : ''),
-      btnText: document.getElementById('pr-inagu-btn').value.trim(),
+      btnText: { es: document.getElementById('pr-inagu-btn-es').value.trim(), en: document.getElementById('pr-inagu-btn-en').value.trim() },
       items: items
     },
-    dosPerrosDesc: document.getElementById('pr-dosperros').value.trim(),
+    dosPerrosDesc: { es: document.getElementById('pr-dosperros-es').value.trim(), en: document.getElementById('pr-dosperros-en').value.trim() },
     cards: cards
   };
 
