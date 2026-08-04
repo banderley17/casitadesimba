@@ -2153,7 +2153,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
           </div>
           <div class="info-card">
             <div class="info-ico">🕐</div>
-            <div><strong>Horario</strong><span>Lun–Vie: 08:00–20:00 · Fines de semana: consultar</span></div>
+            <div><strong>Horario</strong><span id="info-hours">Lun-Vie: 08:00 a 20:00. Fines de semana: consultar</span></div>
           </div>
         </div>
         <a href="https://wa.me/34613753680?text=Hola!%20Me%20gustar%C3%ADa%20reservar%20una%20plaza%20en%20La%20Casita%20de%20Simba%20%F0%9F%90%BE" target="_blank" rel="noopener noreferrer" class="wa-btn-grande">
@@ -2743,6 +2743,14 @@ function enviar(e) {
     applyPricing(p);
     startCountdown(p.inaugu ? p.inaugu.endDate : null);
   }).catch(function(){ startCountdown(); });
+})();
+
+// Horario editable desde el panel de administracion
+(function() {
+  fetch('https://casitadesimba.vercel.app/api/hours').then(function(r){ return r.json(); }).then(function(data){
+    var el = document.getElementById('info-hours');
+    if (el && data && data.display) el.textContent = data.display;
+  }).catch(function(){});
 })();
 
 // ── LANGUAGE SWITCHER ──
