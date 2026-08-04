@@ -14,6 +14,22 @@ async function sha1(str) {
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
+async function removeFromGalleryOrder(publicId, url, tok) {
+  if (!url || !tok) return;
+  const get = await fetch(`${url}/get/casita_galeria_order`, { headers: { Authorization: `Bearer ${tok}` } });
+  const raw = (await get.json()).result;
+  if (!raw) return;
+  const order = JSON.parse(raw);
+  if (!Array.isArray(order)) return;
+  const next = order.filter(id => id !== publicId);
+  if (next.length === order.length) return;
+  await fetch(`${url}/pipeline`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${tok}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify([['SET', 'casita_galeria_order', JSON.stringify(next)]]),
+  });
+}
+
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
 
@@ -32,15 +48,24 @@ export default async function handler(req) {
   if (!apiKey || !apiSecret) return err('Cloudinary no configurado', 500);
 
   const timestamp = Math.floor(Date.now() / 1000);
-  const signature = await sha1(`public_id=${public_id}&timestamp=${timestamp}${apiSecret}`);
-
-  const body = new URLSearchParams({ public_id, timestamp, api_key: apiKey, signature });
+  // invalidate evita que la imagen siga visible por cache despues de borrarla.
+  const signature = await sha1(`invalidate=true&public_id=${public_id}&timestamp=${timestamp}${apiSecret}`);
+  const body = new URLSearchParams({ public_id, timestamp, invalidate: 'true', api_key: apiKey, signature });
   const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`, {
     method: 'POST',
     body,
   });
-  const data = await res.json();
+  let data = {};
+  try { data = await res.json(); } catch (_) { return err('Cloudinary no devolvio una respuesta valida', 502); }
 
-  if (data.result === 'ok') return ok({ ok: true });
-  return err(data.result || 'Error al eliminar', 400);
+  // 'not found' tambien se considera resuelto: la foto ya no existe en Cloudinary.
+  if (data.result === 'ok' || data.result === 'not found') {
+    try {
+      await removeFromGalleryOrder(public_id, process.env.UPSTASH_REDIS_REST_URL, process.env.UPSTASH_REDIS_REST_TOKEN);
+    } catch (_) {
+      // No impedimos el borrado si no se puede limpiar el orden guardado.
+    }
+    return ok({ ok: true, alreadyMissing: data.result === 'not found' });
+  }
+  return err(data.result || data.error?.message || 'Error al eliminar', 400);
 }

@@ -1660,10 +1660,16 @@ function eliminarFoto(publicId, wrap) {
   })
   .then(function(r){ return r.json(); })
   .then(function(d){
-    if (d.ok) { wrap.remove(); showToast('✅ Foto eliminada'); cargarFotos(); }
-    else { wrap.style.opacity='1'; showToast('❌ '+d.msg); }
+    if (d && d.ok) {
+      wrap.remove();
+      showToast(d.alreadyMissing ? 'Foto retirada del panel' : 'Foto eliminada');
+      cargarFotos();
+    } else {
+      wrap.style.opacity = '1';
+      showToast((d && d.msg) || 'No se pudo eliminar la foto');
+    }
   })
-  .catch(function(){ wrap.style.opacity='1'; showToast('❌ Error de conexión'); });
+  .catch(function(){ wrap.style.opacity = '1'; showToast('Error de conexion'); });
 }
 
 function subirFoto(tipo) {
