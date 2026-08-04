@@ -44,7 +44,7 @@ export default async function handler(req) {
   if (!public_id) return err('Falta public_id');
 
   const apiKey    = process.env.CLOUDINARY_API_KEY;
-  const apiSecret = process.env.CLOUDINARY_API_SECRET;
+  const apiSecret = process.env.CLOUDINARY_API_SECRET || process.env.LOUDINARY_API_SECRET;
   if (!apiKey || !apiSecret) return err('Cloudinary no configurado', 500);
 
   const timestamp = Math.floor(Date.now() / 1000);
