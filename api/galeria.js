@@ -29,7 +29,9 @@ export default async function handler(req) {
 
   // GET público — devuelve el array de public_ids en el orden guardado
   if (req.method === 'GET') {
-    const raw = await kvGet('casita_galeria_order', kvUrl, kvTok);
+    const collection = new URL(req.url).searchParams.get('collection') === 'hero' ? 'hero' : 'gallery';
+    const key = collection === 'hero' ? 'casita_hero_order' : 'casita_galeria_order';
+    const raw = await kvGet(key, kvUrl, kvTok);
     return ok(raw ? JSON.parse(raw) : []);
   }
 
@@ -38,9 +40,10 @@ export default async function handler(req) {
 
   // POST con token — guarda nuevo orden
   if (req.method === 'POST') {
-    const { order } = await req.json();
+    const { order, collection } = await req.json();
     if (!Array.isArray(order)) return err('order debe ser un array');
-    await kvSet('casita_galeria_order', JSON.stringify(order), kvUrl, kvTok);
+    const key = collection === 'hero' ? 'casita_hero_order' : 'casita_galeria_order';
+    await kvSet(key, JSON.stringify(order), kvUrl, kvTok);
     return ok({ ok: true });
   }
 

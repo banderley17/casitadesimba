@@ -14,20 +14,22 @@ async function sha1(str) {
   return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-async function removeFromGalleryOrder(publicId, url, tok) {
+async function removeFromSavedOrders(publicId, url, tok) {
   if (!url || !tok) return;
-  const get = await fetch(`${url}/get/casita_galeria_order`, { headers: { Authorization: `Bearer ${tok}` } });
-  const raw = (await get.json()).result;
-  if (!raw) return;
-  const order = JSON.parse(raw);
-  if (!Array.isArray(order)) return;
-  const next = order.filter(id => id !== publicId);
-  if (next.length === order.length) return;
-  await fetch(`${url}/pipeline`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${tok}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify([['SET', 'casita_galeria_order', JSON.stringify(next)]]),
-  });
+  for (const key of ['casita_galeria_order', 'casita_hero_order']) {
+    const get = await fetch(`${url}/get/${key}`, { headers: { Authorization: `Bearer ${tok}` } });
+    const raw = (await get.json()).result;
+    if (!raw) continue;
+    const order = JSON.parse(raw);
+    if (!Array.isArray(order)) continue;
+    const next = order.filter(id => id !== publicId);
+    if (next.length === order.length) continue;
+    await fetch(`${url}/pipeline`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${tok}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify([['SET', key, JSON.stringify(next)]]),
+    });
+  }
 }
 
 export default async function handler(req) {
@@ -61,7 +63,7 @@ export default async function handler(req) {
   // 'not found' tambien se considera resuelto: la foto ya no existe en Cloudinary.
   if (data.result === 'ok' || data.result === 'not found') {
     try {
-      await removeFromGalleryOrder(public_id, process.env.UPSTASH_REDIS_REST_URL, process.env.UPSTASH_REDIS_REST_TOKEN);
+      await removeFromSavedOrders(public_id, process.env.UPSTASH_REDIS_REST_URL, process.env.UPSTASH_REDIS_REST_TOKEN);
     } catch (_) {
       // No impedimos el borrado si no se puede limpiar el orden guardado.
     }

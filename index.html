@@ -2328,10 +2328,19 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
     }, 4500);
   }
 
-  fetch('https://res.cloudinary.com/' + CLOUD + '/image/list/hero.json')
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      var resources = (data.resources || []).slice(0, 10);
+  Promise.all([
+    fetch('https://casitadesimba.vercel.app/api/galeria?collection=hero').then(function(r){ return r.json(); }).catch(function(){ return []; }),
+    fetch('https://res.cloudinary.com/' + CLOUD + '/image/list/hero.json').then(function(r) { return r.json(); })
+  ])
+    .then(function(results) {
+      var order = Array.isArray(results[0]) ? results[0] : [];
+      var raw = (results[1].resources || []).slice(0, 100);
+      var byId = {};
+      raw.forEach(function(r){ byId[r.public_id] = r; });
+      var resources = [];
+      order.forEach(function(id){ if (byId[id]) { resources.push(byId[id]); delete byId[id]; } });
+      raw.forEach(function(r){ if (byId[r.public_id]) resources.push(r); });
+      resources = resources.slice(0, 10);
       if (resources.length) {
         // Quitar active del primer slide estático
         var firstStatic = heroSlides.querySelector('.hero-slide');

@@ -1736,6 +1736,7 @@ function subirFoto(tipo) {
 }
 
 var galFotosOrder = [];
+var heroFotosOrder = [];
 
 function cargarFotos() {
   var galleryGrid = document.getElementById('fotos-grid');
@@ -1753,11 +1754,13 @@ function cargarFotos() {
   Promise.all([
     fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/galeria.json'+cacheBust).then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
     fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/hero.json'+cacheBust).then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
-    fetch(API+'/galeria').then(function(r){return r.json();}).catch(function(){return [];})
+    fetch(API+'/galeria').then(function(r){return r.json();}).catch(function(){return [];}),
+    fetch(API+'/galeria?collection=hero').then(function(r){return r.json();}).catch(function(){return [];})
   ]).then(function(res) {
-    var galRaw    = (res[0].resources || []).slice(0, 100);
-    var heroFotos = (res[1].resources || []).slice(0, 100);
-    var order     = Array.isArray(res[2]) ? res[2] : [];
+    var galRaw = (res[0].resources || []).slice(0, 100);
+    var heroRaw = (res[1].resources || []).slice(0, 100);
+    var order = Array.isArray(res[2]) ? res[2] : [];
+    var heroOrder = Array.isArray(res[3]) ? res[3] : [];
 
     // Ordenar galería según el orden guardado
     var byId = {};
@@ -1766,6 +1769,13 @@ function cargarFotos() {
     order.forEach(function(id){ if (byId[id]){ galFotos.push(byId[id]); delete byId[id]; } });
     galRaw.forEach(function(f){ if (byId[f.public_id]) galFotos.push(f); });
     galFotosOrder = galFotos.map(function(f){ return f.public_id; });
+
+    var heroById = {};
+    heroRaw.forEach(function(f){ heroById[f.public_id] = f; });
+    var heroFotos = [];
+    heroOrder.forEach(function(id){ if (heroById[id]) { heroFotos.push(heroById[id]); delete heroById[id]; } });
+    heroRaw.forEach(function(f){ if (heroById[f.public_id]) heroFotos.push(f); });
+    heroFotosOrder = heroFotos.map(function(f){ return f.public_id; });
 
     document.getElementById('cnt-galeria').textContent = galFotos.length;
     document.getElementById('cnt-hero').textContent = heroFotos.length;
@@ -1786,6 +1796,7 @@ function cargarFotos() {
     }
 
     var galIdx = 0;
+    var heroIdx = 0;
     all.forEach(function(item) {
       var wrap = document.createElement('div');
       wrap.className = 'foto-thumb-wrap';
@@ -1795,16 +1806,14 @@ function cargarFotos() {
       var pid     = item.r.public_id.replace(/'/g,"\\'");
 
       var posBadge = '', ordBtns = '';
-      if (item.tipo === 'galeria') {
-        var pos   = galIdx;
-        var total = galFotos.length;
-        galIdx++;
-        posBadge = '<span class="gal-pos">'+(pos+1)+'</span>';
-        ordBtns  = '<div class="gal-ord">'
-          + '<button '+(pos===0?'disabled':'')+' onclick="moverFotoGal(\''+pid+'\',\'up\')">↑</button>'
-          + '<button '+(pos===total-1?'disabled':'')+' onclick="moverFotoGal(\''+pid+'\',\'down\')">↓</button>'
-          + '</div>';
-      }
+      var pos = item.tipo === 'galeria' ? galIdx++ : heroIdx++;
+      var total = item.tipo === 'galeria' ? galFotos.length : heroFotos.length;
+      var moveFn = item.tipo === 'galeria' ? 'moverFotoGal' : 'moverFotoHero';
+      posBadge = '<span class="gal-pos">'+(pos+1)+'</span>';
+      ordBtns = '<div class="gal-ord">'
+        + '<button '+(pos===0?'disabled':'')+' onclick="'+moveFn+'(\''+pid+'\',\'up\')">&#8593;</button>'
+        + '<button '+(pos===total-1?'disabled':'')+' onclick="'+moveFn+'(\''+pid+'\',\'down\')">&#8595;</button>'
+        + '</div>';
 
       wrap.innerHTML = '<img class="foto-thumb" src="'+url+'" loading="lazy">'
                      + '<span class="foto-thumb-tag">'+emoji+'</span>'
@@ -1819,6 +1828,21 @@ function cargarFotos() {
     if (heroFotos.length) heroGrid.style.display = 'grid';
     if (galFotos.length) galleryGrid.style.display = 'grid';
   });
+}
+
+function moverFotoHero(publicId, dir) {
+  var idx = heroFotosOrder.indexOf(publicId);
+  if (idx === -1) return;
+  var newIdx = dir === 'up' ? idx - 1 : idx + 1;
+  if (newIdx < 0 || newIdx >= heroFotosOrder.length) return;
+  var tmp = heroFotosOrder[idx];
+  heroFotosOrder[idx] = heroFotosOrder[newIdx];
+  heroFotosOrder[newIdx] = tmp;
+  fetch(API+'/galeria?t='+T, {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({order: heroFotosOrder, collection: 'hero'})
+  }).then(function(){ showToast('Orden de portada guardado'); cargarFotos(); })
+    .catch(function(){ showToast('Error al guardar el orden'); });
 }
 
 function moverFotoGal(publicId, dir) {
