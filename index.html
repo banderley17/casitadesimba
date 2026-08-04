@@ -2747,11 +2747,19 @@ function enviar(e) {
 
 // Horario editable desde el panel de administracion
 (function() {
-  fetch('https://casitadesimba.vercel.app/api/hours').then(function(r){ return r.json(); }).then(function(data){
+  window.casitaHours = null;
+  window.applyCasitaHours = function() {
+    var data = window.casitaHours;
+    if (!data) return;
     var el = document.getElementById('info-hours');
     var title = document.getElementById('info-hours-title');
-    if (el && data && data.display) el.textContent = data.display;
-    if (title && data && data.month) title.textContent = 'Horario - ' + data.month;
+    var isEnglish = document.documentElement.lang === 'en';
+    if (el && data.display) el.textContent = data.display;
+    if (title && data.month) title.textContent = (isEnglish ? 'Hours' : 'Horario') + ' - ' + data.month;
+  };
+  fetch('https://casitadesimba.vercel.app/api/hours').then(function(r){ return r.json(); }).then(function(data){
+    window.casitaHours = data;
+    window.applyCasitaHours();
   }).catch(function(){});
 })();
 
@@ -3152,6 +3160,8 @@ function enviar(e) {
     });
     var horaSpan = document.querySelector('.info-card:nth-child(4) > div > span');
     if (horaSpan && tr[lang]['info-hora-val']) horaSpan.textContent = tr[lang]['info-hora-val'];
+    // Restaura el horario personalizado despues de aplicar las traducciones fijas.
+    if (typeof window.applyCasitaHours === 'function') window.applyCasitaHours();
     s('.wa-btn-grande','cont-wa',lang);
     s('.footer-brand p','foot-desc',lang);
     s('.footer-col:nth-child(2) h4','foot-serv',lang);

@@ -1720,12 +1720,12 @@ function cargarFotos() {
   grid.innerHTML        = '';
 
   Promise.all([
-    fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/galeria.json').then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
-    fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/hero.json').then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
+    fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/galeria.json?max_results=100').then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
+    fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/hero.json?max_results=100').then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
     fetch(API+'/galeria').then(function(r){return r.json();}).catch(function(){return [];})
   ]).then(function(res) {
-    var galRaw    = (res[0].resources || []).slice(0, 30);
-    var heroFotos = (res[1].resources || []).slice(0, 10);
+    var galRaw    = (res[0].resources || []).slice(0, 100);
+    var heroFotos = (res[1].resources || []).slice(0, 100);
     var order     = Array.isArray(res[2]) ? res[2] : [];
 
     // Ordenar galería según el orden guardado
