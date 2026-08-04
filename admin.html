@@ -368,8 +368,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <button class="dash-tab" id="tab-stats-btn">📊 Stats</button>
     <button class="dash-tab active" id="tab-cl-btn">👥 Clientes</button>
     <button class="dash-tab" id="tab-rev-btn">⭐ Reseñas</button>
-    <button class="dash-tab" id="tab-prec-btn">💰 Precios</button>
-    <button class="dash-tab" id="tab-hours-btn">Horario</button>
+    <button class="dash-tab" id="tab-prec-btn">Web</button>
     <button class="dash-tab" id="tab-fotos-btn">📸 Fotos</button>
     <button class="dash-tab" id="tab-ads-btn">📣 Publicidad</button>
   </div>
@@ -590,10 +589,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       <div id="pr-cards" style="display:flex;flex-direction:column;gap:1rem;"></div>
 
       <button class="btn-add-rev" id="btn-save-prec" onclick="guardarPrecios()">💰 Guardar precios</button>
-    </div>
 
-    <!-- HORARIO -->
-    <div id="section-hours" style="display:none">
+      <div style="border-top:1px solid var(--border);margin:1.25rem 0;"></div>
       <div class="rev-form">
         <div style="font-size:.9rem;font-weight:800;margin-bottom:.35rem;">Horario de atencion</div>
         <div class="muted" style="font-size:.8rem;margin-bottom:.7rem;">Este texto se muestra al momento en la seccion de contacto de la web.</div>
@@ -604,6 +601,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <button class="btn-add-rev" id="btn-save-hours" onclick="guardarHorario()">Guardar horario</button>
       </div>
     </div>
+
 
     <!-- FOTOS -->
     <div id="section-fotos" style="display:none">
@@ -751,8 +749,7 @@ document.getElementById('backup-btn').addEventListener('click', async function()
 document.getElementById('tab-stats-btn').addEventListener('click', function(){ showTab('stats'); loadStats(); });
 document.getElementById('tab-cl-btn').addEventListener('click',  function(){ showTab('cl'); loadClients(); });
 document.getElementById('tab-rev-btn').addEventListener('click', function(){ showTab('rev'); loadReseñas(); });
-document.getElementById('tab-prec-btn').addEventListener('click', function(){ showTab('prec'); loadPrecios(); });
-document.getElementById('tab-hours-btn').addEventListener('click', function(){ showTab('hours'); loadHorario(); });
+document.getElementById('tab-prec-btn').addEventListener('click', function(){ showTab('prec'); loadPrecios(); loadHorario(); });
 document.getElementById('tab-fotos-btn').addEventListener('click', function(){ showTab('fotos'); cargarFotos(); });
 document.getElementById('tab-ads-btn').addEventListener('click',  function(){
   showTab('ads');
@@ -762,14 +759,13 @@ document.getElementById('tab-ads-btn').addEventListener('click',  function(){
 });
 
 function showTab(t) {
-  ['stats','cl','rev','prec','hours','fotos','ads'].forEach(function(s){
+  ['stats','cl','rev','prec','fotos','ads'].forEach(function(s){
     document.getElementById('section-'+s).style.display = t===s ? '' : 'none';
   });
   document.getElementById('tab-stats-btn').classList.toggle('active', t==='stats');
   document.getElementById('tab-cl-btn').classList.toggle('active',    t==='cl');
   document.getElementById('tab-rev-btn').classList.toggle('active',   t==='rev');
   document.getElementById('tab-prec-btn').classList.toggle('active',  t==='prec');
-  document.getElementById('tab-hours-btn').classList.toggle('active', t==='hours');
   document.getElementById('tab-fotos-btn').classList.toggle('active', t==='fotos');
   document.getElementById('tab-ads-btn').classList.toggle('active',   t==='ads');
 }
