@@ -228,9 +228,19 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .foto-cnt.green .num{color:#4ade80;}
 .foto-cnt.amber .num{color:#fbbf24;}
 .fotos-section-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.7rem;}
-.fotos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:.5rem;margin-bottom:1.5rem;}
-.foto-thumb-wrap{position:relative;}
-.foto-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:2px solid var(--border);}
+.dash-content.photos-mode{max-width:1240px;}
+.fotos-workspace{display:grid;grid-template-columns:1fr;gap:1rem;}
+.photo-group{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:16px;padding:1rem;}
+.photo-group-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.85rem;}
+.photo-group-title{font-size:.95rem;font-weight:800;color:var(--text);}
+.photo-group-help{font-size:.75rem;color:var(--muted);text-align:right;}
+.fotos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.75rem;}
+.foto-thumb-wrap{position:relative;min-width:0;}
+.foto-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:11px;border:2px solid var(--border);display:block;}
+.hero-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));}
+.hero-grid .foto-thumb{aspect-ratio:16/9;}
+@media(min-width:900px){.fotos-workspace{grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start;}.photo-group.hero-group{position:sticky;top:132px;}.hero-grid{grid-template-columns:1fr;}}
+@media(max-width:639px){.fotos-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.hero-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .foto-thumb-tag{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.7);border-radius:6px;font-size:.62rem;font-weight:800;padding:2px 5px;color:white;}
 .foto-caption{font-size:.65rem;color:var(--muted);padding:.2rem .1rem;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .foto-del-btn{position:absolute;top:4px;right:4px;background:rgba(239,68,68,.88);border:none;color:white;border-radius:50%;width:22px;height:22px;font-size:.7rem;font-weight:900;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1;transition:background .15s;}
@@ -634,9 +644,23 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <button class="btn-hero-up" onclick="subirFoto('hero')">🌅 Subir a Portada</button>
       </div>
 
-      <div class="fotos-section-title">📷 Fotos subidas</div>
-      <div id="fotos-loading" style="color:var(--muted);font-size:.82rem;padding:.5rem 0 1rem;">Cargando fotos…</div>
-      <div class="fotos-grid" id="fotos-grid" style="display:none;"></div>
+      <div id="fotos-loading" style="color:var(--muted);font-size:.82rem;padding:.5rem 0 1rem;">Cargando fotos...</div>
+      <div class="fotos-workspace">
+        <section class="photo-group hero-group">
+          <div class="photo-group-head">
+            <div><div class="photo-group-title">Portada</div><div class="photo-group-help" style="text-align:left">Fotos que se usan como fondo principal.</div></div>
+            <div class="foto-cnt amber" style="min-width:68px;padding:.45rem"><div class="num" id="cnt-hero-work">-</div><div class="lbl">Fotos</div></div>
+          </div>
+          <div class="fotos-grid hero-grid" id="fotos-hero-grid" style="display:none;"></div>
+        </section>
+        <section class="photo-group">
+          <div class="photo-group-head">
+            <div><div class="photo-group-title">Galeria</div><div class="photo-group-help" style="text-align:left">Usa las flechas para cambiar el orden en la web.</div></div>
+            <div class="foto-cnt green" style="min-width:68px;padding:.45rem"><div class="num" id="cnt-galeria-work">-</div><div class="lbl">Fotos</div></div>
+          </div>
+          <div class="fotos-grid" id="fotos-grid" style="display:none;"></div>
+        </section>
+      </div>
 
     </div>
 
@@ -759,6 +783,7 @@ document.getElementById('tab-ads-btn').addEventListener('click',  function(){
 });
 
 function showTab(t) {
+  document.querySelector('.dash-content').classList.toggle('photos-mode', t === 'fotos');
   ['stats','cl','rev','prec','fotos','ads'].forEach(function(s){
     document.getElementById('section-'+s).style.display = t===s ? '' : 'none';
   });
@@ -1713,11 +1738,14 @@ function subirFoto(tipo) {
 var galFotosOrder = [];
 
 function cargarFotos() {
-  var grid    = document.getElementById('fotos-grid');
+  var galleryGrid = document.getElementById('fotos-grid');
+  var heroGrid = document.getElementById('fotos-hero-grid');
   var loading = document.getElementById('fotos-loading');
   loading.style.display = 'block';
-  grid.style.display    = 'none';
-  grid.innerHTML        = '';
+  galleryGrid.style.display = 'none';
+  heroGrid.style.display = 'none';
+  galleryGrid.innerHTML = '';
+  heroGrid.innerHTML = '';
 
   // La lista p?blica de Cloudinary puede quedarse en cach?; esta marca temporal
   // obliga a traer el estado real despu?s de subir o eliminar una foto.
@@ -1740,7 +1768,9 @@ function cargarFotos() {
     galFotosOrder = galFotos.map(function(f){ return f.public_id; });
 
     document.getElementById('cnt-galeria').textContent = galFotos.length;
-    document.getElementById('cnt-hero').textContent    = heroFotos.length;
+    document.getElementById('cnt-hero').textContent = heroFotos.length;
+    document.getElementById('cnt-galeria-work').textContent = galFotos.length;
+    document.getElementById('cnt-hero-work').textContent = heroFotos.length;
 
     var all = heroFotos.map(function(r){ return {r:r, tipo:'hero'}; })
             .concat(galFotos.map(function(r){ return {r:r, tipo:'galeria'}; }));
@@ -1749,7 +1779,9 @@ function cargarFotos() {
       loading.textContent   = 'Sin fotos todavía — sube la primera 👆';
       loading.style.display = 'block';
       document.getElementById('cnt-galeria').textContent = '0';
-      document.getElementById('cnt-hero').textContent    = '0';
+      document.getElementById('cnt-hero').textContent = '0';
+      document.getElementById('cnt-galeria-work').textContent = '0';
+      document.getElementById('cnt-hero-work').textContent = '0';
       return;
     }
 
@@ -1780,11 +1812,12 @@ function cargarFotos() {
                      + '<button class="foto-del-btn" onclick="eliminarFoto(\''+pid+'\',this.closest(\'.foto-thumb-wrap\'))">✕</button>'
                      + ordBtns
                      + (caption ? '<div class="foto-caption">'+esc(caption)+'</div>' : '');
-      grid.appendChild(wrap);
+      (item.tipo === 'hero' ? heroGrid : galleryGrid).appendChild(wrap);
     });
 
     loading.style.display = 'none';
-    grid.style.display    = 'grid';
+    if (heroFotos.length) heroGrid.style.display = 'grid';
+    if (galFotos.length) galleryGrid.style.display = 'grid';
   });
 }
 
