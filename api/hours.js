@@ -6,7 +6,7 @@ const CORS = {
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
-const DEFAULT_HOURS = { display: 'Lun-Vie: 08:00 a 20:00. Fines de semana: consultar' };
+const DEFAULT_HOURS = { month: 'Agosto 2026', display: 'Lun-Vie: 08:00 a 20:00. Fines de semana: consultar' };
 
 async function kvGet(key, url, tok) {
   const r = await fetch(`${url}/get/${encodeURIComponent(key)}`, { headers: { Authorization: `Bearer ${tok}` } });
@@ -29,8 +29,9 @@ export default async function handler(req) {
     if (url.searchParams.get('t') !== PANEL_TOK) return json({ ok: false, msg: 'Unauthorized' }, 401);
     const body = await req.json();
     const display = typeof body?.display === 'string' ? body.display.trim() : '';
+    const month = typeof body?.month === 'string' ? body.month.trim() : '';
     if (!display) return json({ ok: false, msg: 'El horario es obligatorio' }, 400);
-    await kvSet('casita_hours', JSON.stringify({ display }), kvUrl, kvTok);
+    await kvSet('casita_hours', JSON.stringify({ month, display }), kvUrl, kvTok);
     return json({ ok: true });
   }
   return json({ ok: false, msg: 'Metodo no permitido' }, 405);

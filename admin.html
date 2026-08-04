@@ -597,6 +597,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
       <div class="rev-form">
         <div style="font-size:.9rem;font-weight:800;margin-bottom:.35rem;">Horario de atencion</div>
         <div class="muted" style="font-size:.8rem;margin-bottom:.7rem;">Este texto se muestra al momento en la seccion de contacto de la web.</div>
+        <label>Mes que aparece en la web</label>
+        <input type="text" id="hours-month" placeholder="Ej. Agosto 2026">
         <label>Horario visible</label>
         <input type="text" id="hours-display" placeholder="Ej. Lun-Vie: 08:00 a 20:00. Sab: 10:00 a 14:00">
         <button class="btn-add-rev" id="btn-save-hours" onclick="guardarHorario()">Guardar horario</button>
@@ -1634,15 +1636,17 @@ function guardarPrecios() {
 // Horario
 function loadHorario() {
   fetch(API + '/hours').then(function(r){ return r.json(); }).then(function(data){
+    document.getElementById('hours-month').value = data && data.month ? data.month : '';
     document.getElementById('hours-display').value = data && data.display ? data.display : '';
   }).catch(function(){ showToast('Error cargando horario'); });
 }
 function guardarHorario() {
+  var month = document.getElementById('hours-month').value.trim();
   var display = document.getElementById('hours-display').value.trim();
   if (!display) { showToast('Escribe el horario'); return; }
   var btn = document.getElementById('btn-save-hours');
   btn.disabled = true; btn.textContent = 'Guardando...';
-  fetch(API + '/hours?t=' + T, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ display: display }) })
+  fetch(API + '/hours?t=' + T, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ month: month, display: display }) })
     .then(function(r){ return r.json(); }).then(function(r){
       btn.disabled = false; btn.textContent = 'Guardar horario';
       showToast(r && r.ok ? 'Horario guardado, ya esta en tu web' : 'No se pudo guardar, prueba de nuevo');
