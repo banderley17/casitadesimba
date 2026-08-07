@@ -2339,12 +2339,12 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       var resources = [];
       order.forEach(function(id){ if (byId[id]) { resources.push(byId[id]); delete byId[id]; } });
       raw.forEach(function(r){ if (byId[r.public_id]) resources.push(r); });
-      resources = resources.slice(0, 10);
+      // All active admin cover photos can rotate; do not limit to ten.
       if (resources.length) {
-        // Quitar active del primer slide estático
-        var firstStatic = heroSlides.querySelector('.hero-slide');
-        if (firstStatic) firstStatic.classList.remove('active');
-        // Insertar slides de Cloudinary al principio
+        // Admin cover photos replace the example slides.
+        // Removed photos can never return through the old static carousel.
+        heroSlides.querySelectorAll('.hero-slide').forEach(function(slide) { slide.remove(); });
+        // Insertar las portadas activas de Cloudinary
         resources.slice().reverse().forEach(function(r) {
           var url = 'https://res.cloudinary.com/' + CLOUD + '/image/upload/w_1920/' + r.public_id + '.jpg';
           var position = Number(heroPositions[r.public_id] == null ? 20 : heroPositions[r.public_id]);
