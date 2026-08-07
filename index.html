@@ -543,14 +543,17 @@ h2 {
 }
 
 /* ── SERVICIOS ── */
+#servicios { padding-bottom:3.5rem; }
 .servicios-grid {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:1.5rem;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  align-items:stretch;
+  gap:1rem;
 }
 .servicio-card {
+  height:100%;
   background:white; border-radius:var(--radio);
-  padding:2.5rem 2rem; text-align:center;
+  padding:2rem 1.25rem; text-align:center;
   box-shadow:var(--sombra);
   border-top:5px solid transparent;
   transition:transform .35s, box-shadow .35s;
@@ -1222,6 +1225,18 @@ header.menu-open.scrolled {
 }
 
 /* ── RESPONSIVE ── */
+@media(max-width:1100px) {
+  .servicios-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media(max-width:640px) {
+  #servicios { padding-bottom:3rem; }
+  .servicios-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:.85rem; }
+  .servicio-card { padding:1.5rem 1rem; }
+}
+@media(max-width:460px) {
+  .servicios-grid { grid-template-columns:1fr; }
+}
+
 @media(max-width:1024px) {
   .precios-grid { grid-template-columns:1fr; max-width:400px; margin:auto; }
   .precio-card.destacado { transform:none; }
