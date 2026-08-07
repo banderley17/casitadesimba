@@ -2327,15 +2327,13 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
     }, 4500);
   }
 
-  Promise.all([
-    fetch('https://casitadesimba.vercel.app/api/galeria?collection=hero&meta=1').then(function(r){ return r.json(); }).catch(function(){ return {order:[],positions:{}}; }),
-    fetch('https://res.cloudinary.com/' + CLOUD + '/image/list/hero.json').then(function(r) { return r.json(); })
-  ])
-    .then(function(results) {
-      var heroMeta = results[0] && typeof results[0] === 'object' ? results[0] : {};
+  fetch('https://casitadesimba.vercel.app/api/galeria?collection=hero&meta=1')
+    .then(function(r) { return r.json(); })
+    .then(function(heroMeta) {
+      heroMeta = heroMeta && typeof heroMeta === 'object' ? heroMeta : {};
       var order = Array.isArray(heroMeta) ? heroMeta : (Array.isArray(heroMeta.order) ? heroMeta.order : []);
       var heroPositions = heroMeta.positions && typeof heroMeta.positions === 'object' ? heroMeta.positions : {};
-      var raw = (results[1].resources || []).slice(0, 100);
+      var raw = (heroMeta.resources || []).slice(0, 100);
       var byId = {};
       raw.forEach(function(r){ byId[r.public_id] = r; });
       var resources = [];

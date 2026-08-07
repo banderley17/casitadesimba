@@ -19,6 +19,17 @@ async function kvSet(key, val, url, tok) {
   });
 }
 
+
+async function getHeroResources() {
+  try {
+    const response = await fetch('https://res.cloudinary.com/dqboccvby/image/list/hero.json');
+    if (!response.ok) return [];
+    const data = await response.json();
+    return Array.isArray(data.resources) ? data.resources.slice(0, 100) : [];
+  } catch (_) {
+    return [];
+  }
+}
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
 
@@ -35,7 +46,20 @@ export default async function handler(req) {
     const order = raw ? JSON.parse(raw) : [];
     if (collection === 'hero' && new URL(req.url).searchParams.get('meta') === '1') {
       const rawPositions = await kvGet('casita_hero_positions', kvUrl, kvTok);
-      return ok({ order, positions: rawPositions ? JSON.parse(rawPositions) : {} });
+      // Se envian las fotos desde el servidor para no depender de Cloudinary en el navegador.
+      const resources = await getHeroResources();
+      const available = new Set(resources.map((item) => item.public_id));
+      const effectiveOrder = [];
+      order.forEach((id) => {
+        if (available.has(id)) {
+          effectiveOrder.push(id);
+          available.delete(id);
+        }
+      });
+      resources.forEach((item) => {
+        if (available.has(item.public_id)) effectiveOrder.push(item.public_id);
+      });
+      return ok({ order: effectiveOrder, positions: rawPositions ? JSON.parse(rawPositions) : {}, resources });
     }
     return ok(order);
   }
