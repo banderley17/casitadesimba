@@ -2597,48 +2597,44 @@ function enviar(e) {
   });
 })();
 
-// Galería dinámica — carga desde Cloudinary ordenada por el orden guardado en admin
+// Dynamic gallery: the saved admin order is the only source of truth.
 (function(){
   var CLD = 'dqboccvby';
   var GAPI = 'https://casitadesimba.vercel.app/api/galeria';
 
   function buildGrid(fotos) {
     var grid = document.getElementById('galeria-grid');
-    if (!grid || !fotos.length) return;
+    if (!grid) return;
     grid.innerHTML = fotos.map(function(f){
       var cap = f.cap || '';
       return '<div class="galeria-item" data-src="'+f.full+'" data-caption="'+cap.replace(/"/g,'&quot;')+'">' +
         '<img src="'+f.thumb+'" alt="'+(cap||'La Casita de Simba').replace(/"/g,'&quot;')+'" loading="lazy">' +
-        '<div class="galeria-zoom">🔍</div>' +
+        '<div class="galeria-zoom">??</div>' +
         (cap?'<div class="galeria-caption">'+cap+'</div>':'')+
       '</div>';
     }).join('');
     if (window.reinitLightbox) window.reinitLightbox();
   }
 
-  Promise.all([
-    fetch(GAPI).then(function(r){return r.json();}).catch(function(){return [];}),
-    fetch('https://res.cloudinary.com/'+CLD+'/image/list/galeria.json').then(function(r){return r.json();}).catch(function(){return {resources:[]};})
-  ]).then(function(results){
-    var order = Array.isArray(results[0]) ? results[0] : [];
-    var raw   = results[1].resources || [];
-    if (!raw.length) return;
-
+  fetch(GAPI+'?meta=1').then(function(r){ return r.json(); }).then(function(meta){
+    meta = meta && typeof meta === 'object' ? meta : {};
+    var order = Array.isArray(meta.order) ? meta.order : [];
+    var raw = Array.isArray(meta.resources) ? meta.resources : [];
+    if (!raw.length) { buildGrid([]); return; }
     var byId = {};
     raw.forEach(function(r){ byId[r.public_id] = r; });
     var sorted = [];
-    order.forEach(function(id){ if (byId[id]){ sorted.push(byId[id]); delete byId[id]; } });
-    raw.forEach(function(r){ if (byId[r.public_id]) sorted.push(r); });
-
+    order.forEach(function(id){ if (byId[id]) sorted.push(byId[id]); });
+    if (!order.length) raw.forEach(function(r){ sorted.push(r); });
     buildGrid(sorted.map(function(r){
       var cap = (r.context&&r.context.custom&&r.context.custom.caption)||'';
       return {
         thumb: 'https://res.cloudinary.com/'+CLD+'/image/upload/c_fill,w_800,h_600,q_auto/'+r.public_id+'.jpg',
-        full:  'https://res.cloudinary.com/'+CLD+'/image/upload/q_auto/'+r.public_id+'.jpg',
-        cap:   cap
+        full: 'https://res.cloudinary.com/'+CLD+'/image/upload/q_auto/'+r.public_id+'.jpg',
+        cap: cap
       };
     }));
-  });
+  }).catch(function(){ buildGrid([]); });
 })();
 
 // WhatsApp bubble — aparece a los 10 segundos, se cierra al pulsar X

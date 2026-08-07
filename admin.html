@@ -1729,9 +1729,12 @@ function subirFoto(tipo) {
     }
   }, function(error, result) {
     if (!error && result && result.event === 'success') {
-      showToast('✅ Foto subida — ya aparece en la web');
+      fetch(API+'/galeria?t='+T, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ collection: tipo === 'hero' ? 'hero' : 'gallery', add: result.info.public_id })
+      }).finally(function() { cargarFotos(); });
+      showToast('Foto subida y anadida a la web');
       document.getElementById('foto-caption').value = '';
-      cargarFotos();
     }
     if (error) showToast('❌ Error: ' + (error.message || error));
   });
@@ -1772,14 +1775,14 @@ function cargarFotos() {
     galRaw.forEach(function(f){ byId[f.public_id] = f; });
     var galFotos = [];
     order.forEach(function(id){ if (byId[id]){ galFotos.push(byId[id]); delete byId[id]; } });
-    galRaw.forEach(function(f){ if (byId[f.public_id]) galFotos.push(f); });
+    if (!order.length) galRaw.forEach(function(f){ if (byId[f.public_id]) galFotos.push(f); });
     galFotosOrder = galFotos.map(function(f){ return f.public_id; });
 
     var heroById = {};
     heroRaw.forEach(function(f){ heroById[f.public_id] = f; });
     var heroFotos = [];
     heroOrder.forEach(function(id){ if (heroById[id]) { heroFotos.push(heroById[id]); delete heroById[id]; } });
-    heroRaw.forEach(function(f){ if (heroById[f.public_id]) heroFotos.push(f); });
+    if (!heroOrder.length) heroRaw.forEach(function(f){ if (heroById[f.public_id]) heroFotos.push(f); });
     heroFotosOrder = heroFotos.map(function(f){ return f.public_id; });
 
     document.getElementById('cnt-galeria').textContent = galFotos.length;

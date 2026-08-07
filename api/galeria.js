@@ -20,9 +20,9 @@ async function kvSet(key, val, url, tok) {
 }
 
 
-async function getHeroResources() {
+async function getCollectionResources(collection) {
   try {
-    const response = await fetch('https://res.cloudinary.com/dqboccvby/image/list/hero.json');
+    const response = await fetch('https://res.cloudinary.com/dqboccvby/image/list/' + collection + '.json');
     if (!response.ok) return [];
     const data = await response.json();
     return Array.isArray(data.resources) ? data.resources.slice(0, 100) : [];
@@ -30,6 +30,7 @@ async function getHeroResources() {
     return [];
   }
 }
+
 export default async function handler(req) {
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
 
@@ -44,21 +45,18 @@ export default async function handler(req) {
     const key = collection === 'hero' ? 'casita_hero_order' : 'casita_galeria_order';
     const raw = await kvGet(key, kvUrl, kvTok);
     const order = raw ? JSON.parse(raw) : [];
-    if (collection === 'hero' && new URL(req.url).searchParams.get('meta') === '1') {
-      const rawPositions = await kvGet('casita_hero_positions', kvUrl, kvTok);
-      // Se envian las fotos desde el servidor para no depender de Cloudinary en el navegador.
-      const resources = await getHeroResources();
-      const available = new Set(resources.map((item) => item.public_id));
-      const effectiveOrder = [];
-      order.forEach((id) => {
-        if (available.has(id)) {
-          effectiveOrder.push(id);
-          available.delete(id);
-        }
-      });
-      resources.forEach((item) => {
-        if (available.has(item.public_id)) effectiveOrder.push(item.public_id);
-      });
+    if (new URL(req.url).searchParams.get('meta') === '1') {
+      const allResources = await getCollectionResources(collection === 'hero' ? 'hero' : 'galeria');
+      const byId = new Map(allResources.map((item) => [item.public_id, item]));
+      // Once an order exists, it is authoritative. This prevents deleted files
+      // from returning while a Cloudinary list is still cached.
+      const effectiveOrder = order.length
+        ? order.filter((id) => byId.has(id))
+        : allResources.map((item) => item.public_id);
+      const resources = effectiveOrder.map((id) => byId.get(id)).filter(Boolean);
+      const rawPositions = collection === 'hero'
+        ? await kvGet('casita_hero_positions', kvUrl, kvTok)
+        : null;
       return ok({ order: effectiveOrder, positions: rawPositions ? JSON.parse(rawPositions) : {}, resources });
     }
     return ok(order);
@@ -69,11 +67,21 @@ export default async function handler(req) {
 
   // POST con token — guarda nuevo orden
   if (req.method === 'POST') {
-    const { order, collection, positions } = await req.json();
+    const { order, collection, positions, add } = await req.json();
     const isHero = collection === 'hero';
-    if (!Array.isArray(order) && !(isHero && positions && typeof positions === 'object' && !Array.isArray(positions))) return err('order debe ser un array');
+    const canSavePositions = isHero && positions && typeof positions === 'object' && !Array.isArray(positions);
+    const canAdd = typeof add === 'string' && add.startsWith('casita/');
+    if (!Array.isArray(order) && !canSavePositions && !canAdd) return err('order debe ser un array');
     const key = isHero ? 'casita_hero_order' : 'casita_galeria_order';
     if (Array.isArray(order)) await kvSet(key, JSON.stringify(order), kvUrl, kvTok);
+    if (canAdd) {
+      const currentRaw = await kvGet(key, kvUrl, kvTok);
+      const current = currentRaw ? JSON.parse(currentRaw) : [];
+      if (Array.isArray(current) && !current.includes(add)) {
+        current.push(add);
+        await kvSet(key, JSON.stringify(current), kvUrl, kvTok);
+      }
+    }
     if (isHero && positions && typeof positions === 'object' && !Array.isArray(positions)) {
       const clean = {};
       Object.keys(positions).slice(0, 100).forEach((id) => { const value = Number(positions[id]); if (Number.isFinite(value)) clean[id] = Math.max(0, Math.min(100, value)); });
