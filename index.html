@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -707,6 +707,14 @@ h2 {
   pointer-events:none;
 }
 .galeria-item:hover .galeria-zoom { transform:translate(-50%,-50%) scale(1); }
+.galeria-zoom::before {
+  content:""; width:15px; height:15px; border:2px solid white; border-radius:50%;
+  position:absolute; left:13px; top:11px; box-sizing:border-box;
+}
+.galeria-zoom::after {
+  content:""; width:9px; height:2px; background:white; border-radius:2px;
+  position:absolute; left:26px; top:28px; transform:rotate(45deg); transform-origin:left center;
+}
 
 /* ── GALERÍA SLIDESHOW ── */
 .galeria-show{position:relative;border-radius:20px;overflow:hidden;width:100%;aspect-ratio:16/9;max-height:500px;background:#e0e0e0;margin-top:2rem;}
@@ -1784,15 +1792,15 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <p class="section-desc">Imágenes reales de nuestros peludos disfrutando en La Casita de Simba.</p>
     </div>
     <div class="galeria-grid reveal" id="galeria-grid">
-      <div class="galeria-item" data-src="images/galeria1.jpeg" data-caption="Jugando juntos 🐾"><img src="images/galeria1.jpeg" alt="Perritos jugando en La Casita de Simba" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Jugando juntos 🐾</div></div>
-      <div class="galeria-item" data-src="images/galeria2.jpeg" data-caption="Hora del recreo 🎾"><img src="images/galeria2.jpeg" alt="Perritos en hora del recreo" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Hora del recreo 🎾</div></div>
-      <div class="galeria-item" data-src="images/galeria3.jpeg" data-caption="Descanso en familia 😴"><img src="images/galeria3.jpeg" alt="Perritos descansando" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Descanso en familia 😴</div></div>
-      <div class="galeria-item" data-src="images/galeria4.jpeg" data-caption="Amigos peludos 🐕"><img src="images/galeria4.jpeg" alt="Perros felices haciendo amigos" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Amigos peludos 🐕</div></div>
-      <div class="galeria-item" data-src="images/galeria5.jpeg" data-caption="Como en casa 🏡"><img src="images/galeria5.jpeg" alt="La Casita de Simba como en casa" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Como en casa 🏡</div></div>
-      <div class="galeria-item" data-src="images/galeria6.jpeg" data-caption="Diversión 🐶"><img src="images/galeria6.jpeg" alt="Perritos en guardería canina Madrid" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Diversión 🐶</div></div>
-      <div class="galeria-item" data-src="images/galeria7.jpeg" data-caption="Nuevos amigos 🐾"><img src="images/galeria7.jpeg" alt="Perros haciendo amigos en La Casita de Simba" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Nuevos amigos 🐾</div></div>
-      <div class="galeria-item" data-src="images/galeria8.jpeg" data-caption="Felices y libres 🌟"><img src="images/galeria8.jpeg" alt="Perros felices en guardería canina Madrid" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Felices y libres 🌟</div></div>
-      <div class="galeria-item" data-src="images/galeria9.jpeg" data-caption="Pura alegría 😊"><img src="images/galeria9.jpeg" alt="Perritos alegres en La Casita de Simba" loading="lazy"><div class="galeria-zoom">🔍</div><div class="galeria-caption">Pura alegría 😊</div></div>
+      <div class="galeria-item" data-src="images/galeria1.jpeg" data-caption="Jugando juntos 🐾"><img src="images/galeria1.jpeg" alt="Perritos jugando en La Casita de Simba" loading="lazy"><div class="galeria-zoom" aria-hidden="true"></div><div class="galeria-caption">Jugando juntos 🐾</div></div>
+      <div class="galeria-item" data-src="images/galeria2.jpeg" data-caption="Hora del recreo 🎾"><img src="images/galeria2.jpeg" alt="Perritos en hora del recreo" loading="lazy"><div class="galeria-zoom" aria-hidden="true"></div><div class="galeria-caption">Hora del recreo 🎾</div></div>
+      <div class="galeria-item" data-src="images/galeria3.jpeg" data-caption="Descanso en familia 😴"><img src="images/galeria3.jpeg" alt="Perritos descansando" loading="lazy"><div class="galeria-zoom" aria-hidden="true"></div><div class="galeria-caption">Descanso en familia 😴</div></div>
+      <div class="galeria-item" data-src="images/galeria4.jpeg" data-caption="Amigos peludos 🐕"><img src="images/galeria4.jpeg" alt="Perros felices haciendo amigos" loading="lazy"><div class="galeria-zoom" aria-hidden="true"></div><div class="galeria-caption">Amigos peludos 🐕</div></div>
+      <div class="galeria-item" data-src="images/galeria5.jpeg" data-caption="Como en casa 🏡"><img src="images/galeria5.jpeg" alt="La Casita de Simba como en casa" loading="lazy"><div class="galeria-zoom" aria-hidden="true"></div><div class="galeria-caption">Como en casa 🏡</div></div>
+      <div class="galeria-item" data-src="images/galeria6.jpeg" data-caption="Diversión 🐶"><img src="images/galeria6.jpeg" alt="Perritos en guardería canina Madrid" loading="lazy"><div class="galeria-zoom" aria-hidden="true"></div><div class="galeria-caption">Diversión 🐶</div></div>
+      <div class="galeria-item" data-src="images/galeria7.jpeg" data-caption="Nuevos amigos 🐾"><img src="images/galeria7.jpeg" alt="Perros haciendo amigos en La Casita de Simba" loading="lazy"><div class="galeria-zoom" aria-hidden="true"></div><div class="galeria-caption">Nuevos amigos 🐾</div></div>
+      <div class="galeria-item" data-src="images/galeria8.jpeg" data-caption="Felices y libres 🌟"><img src="images/galeria8.jpeg" alt="Perros felices en guardería canina Madrid" loading="lazy"><div class="galeria-zoom" aria-hidden="true"></div><div class="galeria-caption">Felices y libres 🌟</div></div>
+      <div class="galeria-item" data-src="images/galeria9.jpeg" data-caption="Pura alegría 😊"><img src="images/galeria9.jpeg" alt="Perritos alegres en La Casita de Simba" loading="lazy"><div class="galeria-zoom" aria-hidden="true"></div><div class="galeria-caption">Pura alegría 😊</div></div>
     </div>
     <div class="galeria-ig reveal">
       <a href="https://instagram.com/lacasitadesimba" target="_blank" rel="noopener noreferrer" class="btn-ig">
@@ -2624,7 +2632,7 @@ function enviar(e) {
       var cap = f.cap || '';
       return '<div class="galeria-item" data-src="'+f.full+'" data-caption="'+cap.replace(/"/g,'&quot;')+'">' +
         '<img src="'+f.thumb+'" alt="'+(cap||'La Casita de Simba').replace(/"/g,'&quot;')+'" loading="lazy">' +
-        '<div class="galeria-zoom">??</div>' +
+        '<div class="galeria-zoom" aria-hidden="true"></div>' +
         (cap?'<div class="galeria-caption">'+cap+'</div>':'')+
       '</div>';
     }).join('');
