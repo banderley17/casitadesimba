@@ -32,7 +32,12 @@ export default async function handler(req) {
     const collection = new URL(req.url).searchParams.get('collection') === 'hero' ? 'hero' : 'gallery';
     const key = collection === 'hero' ? 'casita_hero_order' : 'casita_galeria_order';
     const raw = await kvGet(key, kvUrl, kvTok);
-    return ok(raw ? JSON.parse(raw) : []);
+    const order = raw ? JSON.parse(raw) : [];
+    if (collection === 'hero' && new URL(req.url).searchParams.get('meta') === '1') {
+      const rawPositions = await kvGet('casita_hero_positions', kvUrl, kvTok);
+      return ok({ order, positions: rawPositions ? JSON.parse(rawPositions) : {} });
+    }
+    return ok(order);
   }
 
   const url = new URL(req.url);
@@ -40,10 +45,16 @@ export default async function handler(req) {
 
   // POST con token — guarda nuevo orden
   if (req.method === 'POST') {
-    const { order, collection } = await req.json();
-    if (!Array.isArray(order)) return err('order debe ser un array');
-    const key = collection === 'hero' ? 'casita_hero_order' : 'casita_galeria_order';
-    await kvSet(key, JSON.stringify(order), kvUrl, kvTok);
+    const { order, collection, positions } = await req.json();
+    const isHero = collection === 'hero';
+    if (!Array.isArray(order) && !(isHero && positions && typeof positions === 'object' && !Array.isArray(positions))) return err('order debe ser un array');
+    const key = isHero ? 'casita_hero_order' : 'casita_galeria_order';
+    if (Array.isArray(order)) await kvSet(key, JSON.stringify(order), kvUrl, kvTok);
+    if (isHero && positions && typeof positions === 'object' && !Array.isArray(positions)) {
+      const clean = {};
+      Object.keys(positions).slice(0, 100).forEach((id) => { const value = Number(positions[id]); if (Number.isFinite(value)) clean[id] = Math.max(0, Math.min(100, value)); });
+      await kvSet('casita_hero_positions', JSON.stringify(clean), kvUrl, kvTok);
+    }
     return ok({ ok: true });
   }
 

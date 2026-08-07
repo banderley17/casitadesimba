@@ -239,6 +239,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .foto-thumb{width:100%;aspect-ratio:1;object-fit:cover;border-radius:11px;border:2px solid var(--border);display:block;}
 .hero-grid{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));}
 .hero-grid .foto-thumb{aspect-ratio:16/9;}
+.hero-frame-control{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:.35rem .55rem;padding:.45rem .1rem 0;font-size:.68rem;color:var(--muted)}
+.hero-frame-control input{accent-color:var(--purple);width:100%}.hero-frame-control small{grid-column:1/-1;font-size:.62rem;line-height:1.25}
 @media(min-width:900px){.fotos-workspace{grid-template-columns:minmax(0,1fr) minmax(0,2fr);align-items:start;}.photo-group.hero-group{position:sticky;top:132px;}.hero-grid{grid-template-columns:1fr;}}
 @media(max-width:639px){.fotos-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.hero-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
 .foto-thumb-tag{position:absolute;top:4px;left:4px;background:rgba(0,0,0,.7);border-radius:6px;font-size:.62rem;font-weight:800;padding:2px 5px;color:white;}
@@ -1737,6 +1739,7 @@ function subirFoto(tipo) {
 
 var galFotosOrder = [];
 var heroFotosOrder = [];
+var heroFotoPositions = {};
 
 function cargarFotos() {
   var galleryGrid = document.getElementById('fotos-grid');
@@ -1755,12 +1758,14 @@ function cargarFotos() {
     fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/galeria.json'+cacheBust).then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
     fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/hero.json'+cacheBust).then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
     fetch(API+'/galeria').then(function(r){return r.json();}).catch(function(){return [];}),
-    fetch(API+'/galeria?collection=hero').then(function(r){return r.json();}).catch(function(){return [];})
+    fetch(API+'/galeria?collection=hero&meta=1').then(function(r){return r.json();}).catch(function(){return {order:[],positions:{}};})
   ]).then(function(res) {
     var galRaw = (res[0].resources || []).slice(0, 100);
     var heroRaw = (res[1].resources || []).slice(0, 100);
     var order = Array.isArray(res[2]) ? res[2] : [];
-    var heroOrder = Array.isArray(res[3]) ? res[3] : [];
+    var heroMeta = res[3] && typeof res[3] === 'object' ? res[3] : {};
+    var heroOrder = Array.isArray(heroMeta) ? heroMeta : (Array.isArray(heroMeta.order) ? heroMeta.order : []);
+    heroFotoPositions = heroMeta.positions && typeof heroMeta.positions === 'object' ? heroMeta.positions : {};
 
     // Ordenar galería según el orden guardado
     var byId = {};
@@ -1800,7 +1805,7 @@ function cargarFotos() {
     all.forEach(function(item) {
       var wrap = document.createElement('div');
       wrap.className = 'foto-thumb-wrap';
-      var url     = 'https://res.cloudinary.com/'+CLOUD_NAME+'/image/upload/w_200,h_200,c_fill/'+item.r.public_id+'.jpg';
+      var url     = item.tipo === 'hero' ? 'https://res.cloudinary.com/'+CLOUD_NAME+'/image/upload/w_600/'+item.r.public_id+'.jpg' : 'https://res.cloudinary.com/'+CLOUD_NAME+'/image/upload/w_200,h_200,c_fill/'+item.r.public_id+'.jpg';
       var caption = (item.r.context && item.r.context.custom && item.r.context.custom.caption) ? item.r.context.custom.caption : '';
       var emoji   = item.tipo === 'hero' ? '🌅' : '🖼';
       var pid     = item.r.public_id.replace(/'/g,"\\'");
@@ -1815,11 +1820,13 @@ function cargarFotos() {
         + '<button '+(pos===total-1?'disabled':'')+' onclick="'+moveFn+'(\''+pid+'\',\'down\')">&#8595;</button>'
         + '</div>';
 
-      wrap.innerHTML = '<img class="foto-thumb" src="'+url+'" loading="lazy">'
+      var frame = item.tipo === 'hero' ? Number(heroFotoPositions[item.r.public_id] == null ? 20 : heroFotoPositions[item.r.public_id]) : 50;
+      wrap.innerHTML = '<img class="foto-thumb" src="'+url+'" loading="lazy" style="object-position:center '+frame+'%">'
                      + '<span class="foto-thumb-tag">'+emoji+'</span>'
                      + posBadge
                      + '<button class="foto-del-btn" onclick="eliminarFoto(\''+pid+'\',this.closest(\'.foto-thumb-wrap\'))">✕</button>'
                      + ordBtns
+                     + (item.tipo === 'hero' ? '<div class="hero-frame-control"><span>Encuadre</span><input type="range" min="0" max="100" value="'+frame+'" oninput="previsualizarEncuadreHero(\''+pid+'\',this.value,this)" onchange="guardarEncuadreHero(\''+pid+'\',this.value)"><small>Arrastra para subir o bajar la foto</small></div>' : '')
                      + (caption ? '<div class="foto-caption">'+esc(caption)+'</div>' : '');
       (item.tipo === 'hero' ? heroGrid : galleryGrid).appendChild(wrap);
     });
@@ -1828,6 +1835,17 @@ function cargarFotos() {
     if (heroFotos.length) heroGrid.style.display = 'grid';
     if (galFotos.length) galleryGrid.style.display = 'grid';
   });
+}
+
+function previsualizarEncuadreHero(publicId, value, input) {
+  var wrap = input.closest('.foto-thumb-wrap'); var img = wrap && wrap.querySelector('.foto-thumb');
+  if (img) img.style.objectPosition = 'center ' + value + '%';
+}
+function guardarEncuadreHero(publicId, value) {
+  heroFotoPositions[publicId] = Math.max(0, Math.min(100, Number(value)));
+  fetch(API+'/galeria?t='+T, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({collection:'hero', positions:heroFotoPositions}) })
+    .then(function(){ showToast('Encuadre de portada guardado'); })
+    .catch(function(){ showToast('Error al guardar el encuadre'); });
 }
 
 function moverFotoHero(publicId, dir) {
