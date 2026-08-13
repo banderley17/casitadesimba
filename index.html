@@ -2695,8 +2695,9 @@ function enviar(e) {
     if (!grid) return;
     grid.innerHTML = fotos.map(function(f){
       var cap = f.cap || '';
+      var position = Math.max(0, Math.min(100, Number(f.position == null ? 50 : f.position)));
       return '<div class="galeria-item" data-src="'+galleryHtml(f.full)+'" data-caption="'+galleryHtml(cap)+'">' +
-        '<img src="'+galleryHtml(f.thumb)+'" alt="'+galleryHtml(cap||'La Casita de Simba')+'" loading="lazy">' +
+        '<img src="'+galleryHtml(f.thumb)+'" alt="'+galleryHtml(cap||'La Casita de Simba')+'" loading="lazy" style="object-position:center '+position+'%">' +
         '<div class="galeria-zoom" aria-hidden="true"></div>' +
         (cap?'<div class="galeria-caption">'+galleryHtml(cap)+'</div>':'')+
       '</div>';
@@ -2707,6 +2708,7 @@ function enviar(e) {
   fetch(GAPI+'?meta=1').then(function(r){ return r.json(); }).then(function(meta){
     meta = meta && typeof meta === 'object' ? meta : {};
     var order = Array.isArray(meta.order) ? meta.order : [];
+    var positions = meta.positions && typeof meta.positions === 'object' ? meta.positions : {};
     var raw = Array.isArray(meta.resources) ? meta.resources : [];
     // Si la API tarda o no trae recursos, conservamos las fotos estaticas
     // que ya estan en el HTML para que la galeria nunca desaparezca.
@@ -2719,9 +2721,10 @@ function enviar(e) {
     buildGrid(sorted.map(function(r){
       var cap = (r.context&&r.context.custom&&r.context.custom.caption)||'';
       return {
-        thumb: 'https://res.cloudinary.com/'+CLD+'/image/upload/c_fill,w_800,h_600,q_auto/'+r.public_id+'.jpg',
+        thumb: 'https://res.cloudinary.com/'+CLD+'/image/upload/w_1000,q_auto/'+r.public_id+'.jpg',
         full: 'https://res.cloudinary.com/'+CLD+'/image/upload/q_auto/'+r.public_id+'.jpg',
-        cap: cap
+        cap: cap,
+        position: positions[r.public_id]
       };
     }));
   }).catch(function(){});

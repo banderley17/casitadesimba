@@ -54,9 +54,8 @@ export default async function handler(req) {
         ? order.filter((id) => byId.has(id))
         : allResources.map((item) => item.public_id);
       const resources = effectiveOrder.map((id) => byId.get(id)).filter(Boolean);
-      const rawPositions = collection === 'hero'
-        ? await kvGet('casita_hero_positions', kvUrl, kvTok)
-        : null;
+      const positionsKey = collection === 'hero' ? 'casita_hero_positions' : 'casita_galeria_positions';
+      const rawPositions = await kvGet(positionsKey, kvUrl, kvTok);
       return ok({ order: effectiveOrder, positions: rawPositions ? JSON.parse(rawPositions) : {}, resources });
     }
     return ok(order);
@@ -69,7 +68,7 @@ export default async function handler(req) {
   if (req.method === 'POST') {
     const { order, collection, positions, add } = await req.json();
     const isHero = collection === 'hero';
-    const canSavePositions = isHero && positions && typeof positions === 'object' && !Array.isArray(positions);
+    const canSavePositions = positions && typeof positions === 'object' && !Array.isArray(positions);
     const canAdd = typeof add === 'string' && add.startsWith('casita/');
     if (!Array.isArray(order) && !canSavePositions && !canAdd) return err('order debe ser un array');
     const key = isHero ? 'casita_hero_order' : 'casita_galeria_order';
@@ -82,10 +81,10 @@ export default async function handler(req) {
         await kvSet(key, JSON.stringify(current), kvUrl, kvTok);
       }
     }
-    if (isHero && positions && typeof positions === 'object' && !Array.isArray(positions)) {
+    if (canSavePositions) {
       const clean = {};
       Object.keys(positions).slice(0, 100).forEach((id) => { const value = Number(positions[id]); if (Number.isFinite(value)) clean[id] = Math.max(0, Math.min(100, value)); });
-      await kvSet('casita_hero_positions', JSON.stringify(clean), kvUrl, kvTok);
+      await kvSet(isHero ? 'casita_hero_positions' : 'casita_galeria_positions', JSON.stringify(clean), kvUrl, kvTok);
     }
     return ok({ ok: true });
   }

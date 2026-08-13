@@ -1764,6 +1764,7 @@ function subirFoto(tipo) {
 
 var galFotosOrder = [];
 var heroFotosOrder = [];
+var galFotoPositions = {};
 var heroFotoPositions = {};
 
 function cargarFotos() {
@@ -1788,6 +1789,7 @@ function cargarFotos() {
     var heroRaw = Array.isArray(heroMeta.resources) ? heroMeta.resources.slice(0, 100) : [];
     var order = Array.isArray(galMeta.order) ? galMeta.order : [];
     var heroOrder = Array.isArray(heroMeta.order) ? heroMeta.order : [];
+    galFotoPositions = galMeta.positions && typeof galMeta.positions === 'object' ? galMeta.positions : {};
     heroFotoPositions = heroMeta.positions && typeof heroMeta.positions === 'object' ? heroMeta.positions : {};
 
     // Ordenar galería según el orden guardado
@@ -1843,13 +1845,15 @@ function cargarFotos() {
         + '<button '+(pos===total-1?'disabled':'')+' onclick="'+moveFn+'(\''+pid+'\',\'down\')">&#8595;</button>'
         + '</div>';
 
-      var frame = item.tipo === 'hero' ? Number(heroFotoPositions[item.r.public_id] == null ? 20 : heroFotoPositions[item.r.public_id]) : 50;
+      var frames = item.tipo === 'hero' ? heroFotoPositions : galFotoPositions;
+      var frame = Number(frames[item.r.public_id] == null ? (item.tipo === 'hero' ? 20 : 50) : frames[item.r.public_id]);
+      var collection = item.tipo === 'hero' ? 'hero' : 'gallery';
       wrap.innerHTML = '<img class="foto-thumb" src="'+url+'" loading="lazy" style="object-position:center '+frame+'%">'
                      + '<span class="foto-thumb-tag">'+emoji+'</span>'
                      + posBadge
-                     + '<button class="foto-del-btn" onclick="eliminarFoto(\''+pid+'\',this.closest(\'.foto-thumb-wrap\'))">✕</button>'
+                     + '<button class="foto-del-btn" onclick="eliminarFoto(\''+pid+'\',this.closest(\'.foto-thumb-wrap\'))">?</button>'
                      + ordBtns
-                     + (item.tipo === 'hero' ? '<div class="hero-frame-control"><span>Encuadre</span><input type="range" min="0" max="100" value="'+frame+'" oninput="previsualizarEncuadreHero(\''+pid+'\',this.value,this)" onchange="guardarEncuadreHero(\''+pid+'\',this.value)"><small>Arrastra para subir o bajar la foto</small></div>' : '')
+                     + '<div class="hero-frame-control"><span>Encuadre</span><input type="range" min="0" max="100" value="'+frame+'" oninput="previsualizarEncuadreFoto(this.value,this)" onchange="guardarEncuadreFoto(\''+pid+'\',\''+collection+'\',this.value)"><small>Arrastra para subir o bajar la foto</small></div>'
                      + (caption ? '<div class="foto-caption">'+esc(caption)+'</div>' : '');
       (item.tipo === 'hero' ? heroGrid : galleryGrid).appendChild(wrap);
     });
@@ -1860,14 +1864,15 @@ function cargarFotos() {
   });
 }
 
-function previsualizarEncuadreHero(publicId, value, input) {
+function previsualizarEncuadreFoto(value, input) {
   var wrap = input.closest('.foto-thumb-wrap'); var img = wrap && wrap.querySelector('.foto-thumb');
   if (img) img.style.objectPosition = 'center ' + value + '%';
 }
-function guardarEncuadreHero(publicId, value) {
-  heroFotoPositions[publicId] = Math.max(0, Math.min(100, Number(value)));
-  fetch(API+'/galeria?t='+T, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({collection:'hero', positions:heroFotoPositions}) })
-    .then(function(){ showToast('Encuadre de portada guardado'); })
+function guardarEncuadreFoto(publicId, collection, value) {
+  var positions = collection === 'hero' ? heroFotoPositions : galFotoPositions;
+  positions[publicId] = Math.max(0, Math.min(100, Number(value)));
+  fetch(API+'/galeria?t='+T, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({collection:collection, positions:positions}) })
+    .then(function(){ showToast(collection === 'hero' ? 'Encuadre de portada guardado' : 'Encuadre de foto guardado'); })
     .catch(function(){ showToast('Error al guardar el encuadre'); });
 }
 

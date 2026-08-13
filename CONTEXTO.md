@@ -157,3 +157,8 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 ## Actualizaci?n 2026-08-13
 
 - Rese?as: se corrigi? el render de las fotos de autores. Una URL de foto vac?a se interpretaba como la portada de la web, generando im?genes rotas; ahora se muestra el avatar con inicial cuando no hay foto y se conservan las fotos reales de Cloudinary.
+
+
+## Actualizaci?n 2026-08-13
+
+- Galer?a: cada imagen cuenta ahora con el control de encuadre del hero en el panel. El desplazamiento vertical se guarda y se aplica en la web p?blica sin alterar el orden ni la imagen ampliada.
