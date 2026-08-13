@@ -22,7 +22,7 @@ async function kvSet(key, val, url, tok) {
 
 async function getCollectionResources(collection) {
   try {
-    const response = await fetch('https://res.cloudinary.com/dqboccvby/image/list/' + collection + '.json');
+    const response = await fetch('https://res.cloudinary.com/dqboccvby/image/list/' + collection + '.json?max_results=100&_=' + Date.now(), { cache: 'no-store' });
     if (!response.ok) return [];
     const data = await response.json();
     return Array.isArray(data.resources) ? data.resources.slice(0, 100) : [];

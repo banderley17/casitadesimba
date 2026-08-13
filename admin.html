@@ -508,7 +508,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
         <textarea id="rv-texto" placeholder="Lo que puso en Google..."></textarea>
 
         <label>Fecha <span style="font-weight:400;opacity:.5">(opcional)</span></label>
-        <input type="month" id="rv-fecha">
+        <input type="date" id="rv-fecha">
 
         <!-- Bloque fotos separado en 2 secciones claras -->
         <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:.9rem;display:flex;flex-direction:column;gap:.75rem;">
@@ -1095,7 +1095,7 @@ function setEstado(v){
   document.getElementById('e-cliente').className ='estado-btn'+(v==='cliente' ?' sel-cliente' :'');
   document.getElementById('e-excluido').className ='estado-btn'+(v==='excluido'?' sel-excluido':'');
   document.getElementById('f-extra').style.display = v==='excluido' ? 'none' : '';
-  document.getElementById('f-notas').placeholder = v==='excluido' ? 'Porque jode el hdp...' : 'Raza, edad, horario, observaciones…';
+  document.getElementById('f-notas').placeholder = v==='excluido' ? 'Motivo de exclusion...' : 'Raza, edad, horario, observaciones…';
 }
 
 document.getElementById('f-save').addEventListener('click', function(){
@@ -1204,6 +1204,7 @@ var revFotoUrl    = '';
 var revImageUrl   = '';
 var revRespuesta  = '';
 var revEditId     = null;
+var revFechaOriginal = '';
 var revCache      = [];
 
 document.getElementById('stars-sel').addEventListener('click', function(e){
@@ -1272,7 +1273,7 @@ function guardarReseña() {
 
   var isEditing = !!revEditId;
   var respuesta = document.getElementById('rv-respuesta').value.trim();
-  var payload = { nombre: nombre, foto: revFotoUrl, imagen: revImageUrl, estrellas: revStars, texto: texto, respuesta: respuesta, fecha: fecha };
+  var payload = { nombre: nombre, foto: revFotoUrl, imagen: revImageUrl, estrellas: revStars, texto: texto, respuesta: respuesta, fecha: fecha || (isEditing ? revFechaOriginal : '') };
   if (isEditing) payload.id = revEditId;
 
   fetch(API+'/reviews?t='+T, {
@@ -1298,7 +1299,7 @@ function resetRevForm() {
   document.getElementById('rv-nombre').value = '';
   document.getElementById('rv-texto').value  = '';
   document.getElementById('rv-fecha').value  = '';
-  revFotoUrl = ''; revImageUrl = ''; revRespuesta = ''; revEditId = null;
+  revFotoUrl = ''; revImageUrl = ''; revRespuesta = ''; revEditId = null; revFechaOriginal = '';
   document.getElementById('rv-respuesta').value = '';
   document.getElementById('rv-foto-preview').style.display   = 'none';
   document.getElementById('rv-imagen-preview').style.display = 'none';
@@ -1333,9 +1334,10 @@ function eliminarFotoRev(tipo) {
 function editarReseña(r) {
   document.getElementById('rv-nombre').value = r.nombre || '';
   document.getElementById('rv-texto').value  = r.texto  || '';
-  document.getElementById('rv-fecha').value  = r.fecha  || '';
+  document.getElementById('rv-fecha').value  = fechaResenaParaMes(r.fecha);
   revStars      = r.estrellas || 5;
   revEditId     = r.id;
+  revFechaOriginal = r.fecha || '';
   revFotoUrl    = r.foto      || '';
   revImageUrl   = r.imagen    || '';
   revRespuesta  = r.respuesta || '';
@@ -1360,6 +1362,26 @@ function editarReseña(r) {
   document.getElementById('section-rev').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+function fechaResenaParaMes(valor) {
+  if (!valor) return '';
+  var fecha = String(valor).trim();
+  var iso = fecha.match(/^(\d{4})-(\d{1,2})(?:-(\d{1,2}))?$/);
+  if (iso && iso[3]) return iso[1] + '-' + String(iso[2]).padStart(2, '0') + '-' + String(iso[3]).padStart(2, '0');
+  var local = fecha.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})$/);
+  if (!local) return '';
+  var ano = local[3].length === 2 ? '20' + local[3] : local[3];
+  return ano + '-' + String(local[2]).padStart(2, '0') + '-' + String(local[1]).padStart(2, '0');
+}
+function fechaResenaVisible(valor) {
+  var completa = fechaResenaParaMes(valor);
+  if (completa) {
+    var p = completa.split('-');
+    return p[2] + ' / ' + p[1] + ' / ' + p[0];
+  }
+  var mes = String(valor || '').match(/^(\d{4})-(\d{1,2})$/);
+  return mes ? String(mes[2]).padStart(2, '0') + ' / ' + mes[1] : '';
+}
+
 function loadReseñas() {
   fetch(API+'/reviews?t='+T).then(function(r){ return r.json(); }).then(renderReseñas).catch(function(){
     document.getElementById('rev-list').innerHTML = '<div class="cl-empty">Error cargando reseñas</div>';
@@ -1378,7 +1400,7 @@ function renderReseñas(reviews) {
       ? '<div class="rev-avatar"><img src="'+esc(r.foto)+'" alt=""></div>'
       : '<div class="rev-avatar">'+esc(initial(r.nombre))+'</div>';
     var stars  = '★'.repeat(r.estrellas)+'☆'.repeat(5-r.estrellas);
-    var fecha  = r.fecha ? r.fecha.slice(0,7).replace('-',' / ') : '';
+    var fecha  = fechaResenaVisible(r.fecha);
     var imgHtml = r.imagen ? '<img class="rev-img" src="'+esc(r.imagen)+'" alt="" loading="lazy">' : '';
     var rid = esc(r.id);
     var respSection =
@@ -1754,20 +1776,18 @@ function cargarFotos() {
   galleryGrid.innerHTML = '';
   heroGrid.innerHTML = '';
 
-  // La lista p?blica de Cloudinary puede quedarse en cach?; esta marca temporal
-  // obliga a traer el estado real despu?s de subir o eliminar una foto.
-  var cacheBust = '?max_results=100&_=' + Date.now();
+  // Panel y web usan la misma fuente de verdad para evitar fotos eliminadas
+  // que reaparezcan o diferencias de orden por la cache de Cloudinary.
   Promise.all([
-    fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/galeria.json'+cacheBust).then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
-    fetch('https://res.cloudinary.com/'+CLOUD_NAME+'/image/list/hero.json'+cacheBust).then(function(r){return r.json();}).catch(function(){return {resources:[]};}),
-    fetch(API+'/galeria').then(function(r){return r.json();}).catch(function(){return [];}),
-    fetch(API+'/galeria?collection=hero&meta=1').then(function(r){return r.json();}).catch(function(){return {order:[],positions:{}};})
+    fetch(API+'/galeria?collection=gallery&meta=1').then(function(r){return r.json();}).catch(function(){return {order:[],resources:[]};}),
+    fetch(API+'/galeria?collection=hero&meta=1').then(function(r){return r.json();}).catch(function(){return {order:[],positions:{},resources:[]};})
   ]).then(function(res) {
-    var galRaw = (res[0].resources || []).slice(0, 100);
-    var heroRaw = (res[1].resources || []).slice(0, 100);
-    var order = Array.isArray(res[2]) ? res[2] : [];
-    var heroMeta = res[3] && typeof res[3] === 'object' ? res[3] : {};
-    var heroOrder = Array.isArray(heroMeta) ? heroMeta : (Array.isArray(heroMeta.order) ? heroMeta.order : []);
+    var galMeta = res[0] && typeof res[0] === 'object' ? res[0] : {};
+    var heroMeta = res[1] && typeof res[1] === 'object' ? res[1] : {};
+    var galRaw = Array.isArray(galMeta.resources) ? galMeta.resources.slice(0, 100) : [];
+    var heroRaw = Array.isArray(heroMeta.resources) ? heroMeta.resources.slice(0, 100) : [];
+    var order = Array.isArray(galMeta.order) ? galMeta.order : [];
+    var heroOrder = Array.isArray(heroMeta.order) ? heroMeta.order : [];
     heroFotoPositions = heroMeta.positions && typeof heroMeta.positions === 'object' ? heroMeta.positions : {};
 
     // Ordenar galería según el orden guardado

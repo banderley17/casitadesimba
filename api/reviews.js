@@ -85,7 +85,7 @@ export default async function handler(req) {
         estrellas: parseInt(estrellas),
         texto: texto.trim(),
         respuesta: respuesta ? respuesta.trim() : '',
-        fecha: fecha || new Date().toISOString().slice(0, 7),
+        fecha: fecha || new Date().toISOString().slice(0, 10),
         visible: true,
       };
       reviews.unshift(nueva);

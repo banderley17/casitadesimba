@@ -2017,7 +2017,19 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       var MESES_CORTOS = ['ene','feb','mar','abr','may','jun','jul','ago','sept','oct','nov','dic'];
 
       // Las rese?as antiguas pueden tener fecha YYYY-MM, DD/MM o DD/MM/AAAA.
-      // Nunca se muestra el valor sin procesar: as? evitamos textos como "undefined 05/08".
+      // Los valores invalidos se ocultan en lugar de mostrar una fecha rota.
+      function reviewHtml(valor) {
+        return String(valor == null ? '' : valor)
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      }
+      function reviewUrl(valor) {
+        try {
+          var url = new URL(String(valor || ''), location.href);
+          return url.protocol === 'https:' ? reviewHtml(url.href) : '';
+        } catch (_) { return ''; }
+      }
+
       function fechaResena(valor) {
         if (!valor) return '';
         var fecha = String(valor).trim();
@@ -2047,10 +2059,13 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
           var cols    = wrapW < 600 ? 1 : 3;
           var cardW   = Math.floor((wrapW - (cols - 1) * 14) / cols) + 'px';
           grid.innerHTML = reviews.map(function(r, i){
-            var avatar = r.foto
-              ? '<img src="'+r.foto+'" alt="'+r.nombre+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;">'
-              : '<div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#F08A7C,#D9695B);display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:900;color:white;flex-shrink:0;">'+r.nombre.charAt(0).toUpperCase()+'</div>';
-            var stars = '<span style="color:#FFB400;font-size:.95rem;letter-spacing:.04em;">'+'★'.repeat(r.estrellas)+'</span>'+(r.estrellas<5?'<span style="color:#ddd;font-size:.95rem;">'+'★'.repeat(5-r.estrellas)+'</span>':'');
+            var fotoUrl = reviewUrl(r.foto);
+            var reviewImageUrl = reviewUrl(r.imagen);
+            var avatar = fotoUrl
+              ? '<img src="'+fotoUrl+'" alt="'+reviewHtml(r.nombre)+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;">'
+              : '<div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#F08A7C,#D9695B);display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:900;color:white;flex-shrink:0;">'+reviewHtml(String(r.nombre || '?').charAt(0).toUpperCase())+'</div>';
+            var rating = Math.max(1, Math.min(5, Number(r.estrellas) || 5));
+            var stars = '<span style="color:#FFB400;font-size:.95rem;letter-spacing:.04em;">'+'★'.repeat(rating)+'</span>'+(rating<5?'<span style="color:#ddd;font-size:.95rem;">'+'★'.repeat(5-rating)+'</span>':'');
             var fecha = fechaResena(r.fecha);
             var respHtml = r.respuesta
               ? '<div style="background:#f0f4ff;border-left:3px solid #1a73e8;border-radius:0 8px 8px 0;padding:.65rem .8rem;margin-top:.5rem;">'+
@@ -2058,7 +2073,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
                     '<img src="images/Letrero2.png" alt="La Casita de Simba" style="width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0;">'+
                     '<span style="font-size:.7rem;font-weight:800;color:#1a73e8;">La Casita de Simba</span>'+
                   '</div>'+
-                  '<p style="font-size:.8rem;color:#444;line-height:1.55;margin:0;">'+r.respuesta+'</p>'+
+                  '<p style="font-size:.8rem;color:#444;line-height:1.55;margin:0;">'+reviewHtml(r.respuesta)+'</p>'+
                 '</div>'
               : '';
             return '<div style="background:white;border:1px solid rgba(240,138,124,.15);border-radius:14px;padding:1.1rem;box-shadow:0 2px 10px rgba(240,138,124,.1);display:flex;flex-direction:column;gap:.5rem;flex-shrink:0;width:'+cardW+';scroll-snap-align:start;">'+
@@ -2066,7 +2081,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
                 avatar+
                 '<div style="flex:1;min-width:0;">'+
                   '<div style="display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;">'+
-                    '<span style="font-weight:700;color:#1a1a1a;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px;">'+r.nombre+'</span>'+
+                    '<span style="font-weight:700;color:#1a1a1a;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px;">'+reviewHtml(r.nombre)+'</span>'+
                     CHECK+
                     '<span style="color:#aaa;font-size:.7rem;">· Google Reviews</span>'+
                   '</div>'+
@@ -2075,8 +2090,8 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
                 GLOGO_SM+
               '</div>'+
               '<div>'+stars+'</div>'+
-              '<p style="font-size:.84rem;color:#555;line-height:1.6;margin:0;">'+r.texto+'</p>'+
-              (r.imagen?'<img src="'+r.imagen+'" alt="" style="width:100%;max-height:160px;object-fit:cover;border-radius:9px;" loading="lazy">':'')+
+              '<p style="font-size:.84rem;color:#555;line-height:1.6;margin:0;">'+reviewHtml(r.texto)+'</p>'+
+              (reviewImageUrl?'<img src="'+reviewImageUrl+'" alt="" style="width:100%;max-height:160px;object-fit:cover;border-radius:9px;" loading="lazy">':'')+
               respHtml+
             '</div>';
           }).join('');
@@ -2651,7 +2666,7 @@ function enviar(e) {
   document.getElementById('lbClose').addEventListener('click', close);
   document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); prev(); });
   document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); next(); });
-  overlay.addEventListener('click', function(e){ if(e.target === overlay || e.target === img) return; close(); });
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) close(); });
   img.addEventListener('click', function(e){ e.stopPropagation(); next(); });
   document.addEventListener('keydown', function(e){
     if(!overlay.classList.contains('open')) return;
@@ -2666,15 +2681,21 @@ function enviar(e) {
   var CLD = 'dqboccvby';
   var GAPI = 'https://casitadesimba.vercel.app/api/galeria';
 
+  function galleryHtml(valor) {
+    return String(valor == null ? '' : valor)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
   function buildGrid(fotos) {
     var grid = document.getElementById('galeria-grid');
     if (!grid) return;
     grid.innerHTML = fotos.map(function(f){
       var cap = f.cap || '';
-      return '<div class="galeria-item" data-src="'+f.full+'" data-caption="'+cap.replace(/"/g,'&quot;')+'">' +
-        '<img src="'+f.thumb+'" alt="'+(cap||'La Casita de Simba').replace(/"/g,'&quot;')+'" loading="lazy">' +
+      return '<div class="galeria-item" data-src="'+galleryHtml(f.full)+'" data-caption="'+galleryHtml(cap)+'">' +
+        '<img src="'+galleryHtml(f.thumb)+'" alt="'+galleryHtml(cap||'La Casita de Simba')+'" loading="lazy">' +
         '<div class="galeria-zoom" aria-hidden="true"></div>' +
-        (cap?'<div class="galeria-caption">'+cap+'</div>':'')+
+        (cap?'<div class="galeria-caption">'+galleryHtml(cap)+'</div>':'')+
       '</div>';
     }).join('');
     if (window.reinitLightbox) window.reinitLightbox();
@@ -2684,7 +2705,9 @@ function enviar(e) {
     meta = meta && typeof meta === 'object' ? meta : {};
     var order = Array.isArray(meta.order) ? meta.order : [];
     var raw = Array.isArray(meta.resources) ? meta.resources : [];
-    if (!raw.length) { buildGrid([]); return; }
+    // Si la API tarda o no trae recursos, conservamos las fotos estaticas
+    // que ya estan en el HTML para que la galeria nunca desaparezca.
+    if (!raw.length) return;
     var byId = {};
     raw.forEach(function(r){ byId[r.public_id] = r; });
     var sorted = [];
@@ -2698,7 +2721,7 @@ function enviar(e) {
         cap: cap
       };
     }));
-  }).catch(function(){ buildGrid([]); });
+  }).catch(function(){});
 })();
 
 // WhatsApp bubble — aparece a los 10 segundos, se cierra al pulsar X
@@ -3387,9 +3410,9 @@ document.addEventListener('click', function(e) {
 });
 
 // Formulario → Lead
-var formBtn = document.querySelector('.btn-form');
-if (formBtn) {
-  formBtn.addEventListener('click', function() {
+var bookingForm = document.getElementById('reservaForm');
+if (bookingForm) {
+  bookingForm.addEventListener('submit', function() {
     _trackPair('Lead', {});
   });
 }

@@ -6,7 +6,7 @@ const KV_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
@@ -53,6 +53,7 @@ export default async function handler(req) {
       id: Date.now().toString(),
       nombre: (body.nombre || '').trim(),
       tel: (body.tel || '').trim(),
+      mascota: (body.mascota || '').trim(),
       servicio: body.servicio || '',
       estado: body.estado || 'consulta',
       fecha: body.fecha || new Date().toISOString().slice(0, 10),
