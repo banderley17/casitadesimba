@@ -2024,8 +2024,11 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
           .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
       }
       function reviewUrl(valor) {
+        var raw = String(valor == null ? '' : valor).trim();
+        // Una foto vac?a no debe convertirse en la URL de la p?gina actual.
+        if (!raw) return '';
         try {
-          var url = new URL(String(valor || ''), location.href);
+          var url = new URL(raw, location.href);
           return url.protocol === 'https:' ? reviewHtml(url.href) : '';
         } catch (_) { return ''; }
       }

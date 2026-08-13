@@ -152,3 +152,8 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - Analitica: un Lead se registra solo al enviar un formulario valido.
 - Panel: se sustituyo un texto interno inapropiado por una etiqueta profesional.
 - Verificacion: sintaxis de todos los scripts HTML y APIs, IDs duplicados, referencias locales, datos de rese?as y coherencia de orden de 13 portadas y 31 fotos.
+
+
+## Actualizaci?n 2026-08-13
+
+- Rese?as: se corrigi? el render de las fotos de autores. Una URL de foto vac?a se interpretaba como la portada de la web, generando im?genes rotas; ahora se muestra el avatar con inicial cuando no hay foto y se conservan las fotos reales de Cloudinary.
