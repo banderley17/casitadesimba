@@ -1851,7 +1851,7 @@ function cargarFotos() {
       wrap.innerHTML = '<img class="foto-thumb" src="'+url+'" loading="lazy" style="object-position:center '+frame+'%">'
                      + '<span class="foto-thumb-tag">'+emoji+'</span>'
                      + posBadge
-                     + '<button class="foto-del-btn" onclick="eliminarFoto(\''+pid+'\',this.closest(\'.foto-thumb-wrap\'))">?</button>'
+                     + '<button class="foto-del-btn" onclick="eliminarFoto(\''+pid+'\',this.closest(\'.foto-thumb-wrap\'))">&#10005;</button>'
                      + ordBtns
                      + '<div class="hero-frame-control"><span>Encuadre</span><input type="range" min="0" max="100" value="'+frame+'" oninput="previsualizarEncuadreFoto(this.value,this)" onchange="guardarEncuadreFoto(\''+pid+'\',\''+collection+'\',this.value)"><small>Arrastra para subir o bajar la foto</small></div>'
                      + (caption ? '<div class="foto-caption">'+esc(caption)+'</div>' : '');
