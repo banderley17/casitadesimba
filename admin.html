@@ -1830,7 +1830,7 @@ function cargarFotos() {
     all.forEach(function(item) {
       var wrap = document.createElement('div');
       wrap.className = 'foto-thumb-wrap';
-      var url     = item.tipo === 'hero' ? 'https://res.cloudinary.com/'+CLOUD_NAME+'/image/upload/w_600/'+item.r.public_id+'.jpg' : 'https://res.cloudinary.com/'+CLOUD_NAME+'/image/upload/w_200,h_200,c_fill/'+item.r.public_id+'.jpg';
+      var url     = item.tipo === 'hero' ? 'https://res.cloudinary.com/'+CLOUD_NAME+'/image/upload/w_600/'+item.r.public_id+'.jpg' : 'https://res.cloudinary.com/'+CLOUD_NAME+'/image/upload/w_600/'+item.r.public_id+'.jpg';
       var caption = (item.r.context && item.r.context.custom && item.r.context.custom.caption) ? item.r.context.custom.caption : '';
       var emoji   = item.tipo === 'hero' ? '🌅' : '🖼';
       var pid     = item.r.public_id.replace(/'/g,"\\'");

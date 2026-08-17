@@ -186,3 +186,10 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 
 - Se fijo grid-auto-rows:220px para todas las filas de la galeria. Las filas automaticas antes quedaban con altura natural y el object-position no podia recortar verticalmente esas fotos.
 - Verificado: sintaxis correcta y despliegue Vercel READY aliasado en casitadesimba.vercel.app. Pendiente la propagacion normal de GitHub Pages.
+
+
+## Actualizacion 2026-08-17 - Previsualizacion de encuadre en admin
+
+- Las miniaturas de galeria del admin ya no usan la transformacion Cloudinary c_fill, que recortaba la imagen antes de aplicar object-position.
+- Ahora cargan la imagen sin recorte previo y la miniatura cuadrada aplica el encuadre mediante CSS, igual que la portada.
+- Despliegue Vercel READY y aliasado en casitadesimba.vercel.app; se sincroniza tambien con GitHub Pages.
