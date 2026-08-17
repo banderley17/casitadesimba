@@ -162,3 +162,21 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 ## Actualizaci?n 2026-08-13
 
 - Galer?a: cada imagen cuenta ahora con el control de encuadre del hero en el panel. El desplazamiento vertical se guarda y se aplica en la web p?blica sin alterar el orden ni la imagen ampliada.
+
+
+## Actualizacion 2026-08-17 - Orden de galeria
+
+- Se corrigio dmin.html: moverFotoGal ahora envia collection: 'gallery' al API. Antes el API interpretaba la peticion como portada y guardaba el orden en casita_hero_order, por eso el admin parecia mover la foto pero la galeria publica no cambiaba.
+- Commit: 2f9248a (Fix gallery order persistence) y push completado a GitHub.
+- Verificacion de lectura API: la galeria publica responde 31 recursos y 31 elementos de orden.
+- Pendiente: publicar dmin.html en el proyecto Vercel de Casita. La sesion CLI actual solo ve el equipo Encam y no ve el proyecto casitadesimba; hay que autorizar la cuenta Vercel propietaria de Casita antes de desplegar.
+
+- Se corrigio tambien el icono de eliminar fotos: ahora usa la entidad HTML &#10005; para mostrar X, sin depender de la codificacion del archivo.
+- Despliegue Vercel completado y aliasado en https://casitadesimba.vercel.app (dpl_A15h4ruxfuP31Dzb6e8tQr3rxmrU, estado READY). Se verifico en produccion el payload de galeria, el icono X y la API con 31 recursos/31 posiciones.
+
+
+## Actualizacion 2026-08-17 - Encuadre de galeria publico
+
+- La galeria publica ahora solicita explicitamente la coleccion gallery con una consulta sin cache y aplica object-fit/object-position inline a cada foto.
+- La API de galeria responde las lecturas con Cache-Control no-store para que los cambios de encuadre del panel no queden retenidos por el navegador/CDN.
+- Verificado en produccion: deployment Vercel READY, respuesta API con posiciones y HTML publicado con el fetch actualizado.

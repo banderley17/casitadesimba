@@ -2697,7 +2697,7 @@ function enviar(e) {
       var cap = f.cap || '';
       var position = Math.max(0, Math.min(100, Number(f.position == null ? 50 : f.position)));
       return '<div class="galeria-item" data-src="'+galleryHtml(f.full)+'" data-caption="'+galleryHtml(cap)+'">' +
-        '<img src="'+galleryHtml(f.thumb)+'" alt="'+galleryHtml(cap||'La Casita de Simba')+'" loading="lazy" style="object-position:center '+position+'%">' +
+        '<img src="'+galleryHtml(f.thumb)+'" alt="'+galleryHtml(cap||'La Casita de Simba')+'" loading="lazy" style="object-fit:cover;object-position:center '+position+'%">' +
         '<div class="galeria-zoom" aria-hidden="true"></div>' +
         (cap?'<div class="galeria-caption">'+galleryHtml(cap)+'</div>':'')+
       '</div>';
@@ -2705,7 +2705,7 @@ function enviar(e) {
     if (window.reinitLightbox) window.reinitLightbox();
   }
 
-  fetch(GAPI+'?meta=1').then(function(r){ return r.json(); }).then(function(meta){
+  fetch(GAPI+'?collection=gallery&meta=1&_='+Date.now(), {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(meta){
     meta = meta && typeof meta === 'object' ? meta : {};
     var order = Array.isArray(meta.order) ? meta.order : [];
     var positions = meta.positions && typeof meta.positions === 'object' ? meta.positions : {};

@@ -36,7 +36,7 @@ export default async function handler(req) {
 
   const kvUrl = process.env.UPSTASH_REDIS_REST_URL;
   const kvTok = process.env.UPSTASH_REDIS_REST_TOKEN;
-  const ok  = (d) => new Response(JSON.stringify(d), { headers: { ...CORS, 'Content-Type': 'application/json' } });
+  const ok  = (d) => new Response(JSON.stringify(d), { headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store, max-age=0' } });
   const err = (m, s = 400) => new Response(JSON.stringify({ ok: false, msg: m }), { status: s, headers: { ...CORS, 'Content-Type': 'application/json' } });
 
   // GET público — devuelve el array de public_ids en el orden guardado
