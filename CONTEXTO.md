@@ -180,3 +180,9 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - La galeria publica ahora solicita explicitamente la coleccion gallery con una consulta sin cache y aplica object-fit/object-position inline a cada foto.
 - La API de galeria responde las lecturas con Cache-Control no-store para que los cambios de encuadre del panel no queden retenidos por el navegador/CDN.
 - Verificado en produccion: deployment Vercel READY, respuesta API con posiciones y HTML publicado con el fetch actualizado.
+
+
+## Actualizacion 2026-08-17 - Altura de filas de galeria
+
+- Se fijo grid-auto-rows:220px para todas las filas de la galeria. Las filas automaticas antes quedaban con altura natural y el object-position no podia recortar verticalmente esas fotos.
+- Verificado: sintaxis correcta y despliegue Vercel READY aliasado en casitadesimba.vercel.app. Pendiente la propagacion normal de GitHub Pages.
