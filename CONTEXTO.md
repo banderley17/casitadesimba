@@ -193,3 +193,10 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - Las miniaturas de galeria del admin ya no usan la transformacion Cloudinary c_fill, que recortaba la imagen antes de aplicar object-position.
 - Ahora cargan la imagen sin recorte previo y la miniatura cuadrada aplica el encuadre mediante CSS, igual que la portada.
 - Despliegue Vercel READY y aliasado en casitadesimba.vercel.app; se sincroniza tambien con GitHub Pages.
+
+
+## Actualizacion 2026-08-17 - Visibilidad de Publicidad
+
+- La pestana Publicidad del admin queda oculta por defecto y solo se muestra cuando Meta confirma ok:true y al menos una campana con estado ACTIVE.
+- Si Meta devuelve error de token, respuesta vacia o fallo de conexion, no se muestra la pestana ni un mensaje de error al usuario.
+- Verificado con la respuesta actual de Meta: sesion invalidada, por lo que Publicidad queda correctamente oculta. Despliegue Vercel READY y sincronizacion con GitHub completada.

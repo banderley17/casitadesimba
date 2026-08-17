@@ -382,7 +382,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <button class="dash-tab" id="tab-rev-btn">⭐ Reseñas</button>
     <button class="dash-tab" id="tab-prec-btn">🌐 Web</button>
     <button class="dash-tab" id="tab-fotos-btn">📸 Fotos</button>
-    <button class="dash-tab" id="tab-ads-btn">📣 Publicidad</button>
+    <button class="dash-tab" id="tab-ads-btn" style="display:none">📣 Publicidad</button>
   </div>
   <div class="dash-content">
 
@@ -726,7 +726,7 @@ function boot() {
 function checkAdsActive() {
   fetch(API + '/ads-stats?t=' + T + '&period=today').then(function(r){ return r.json(); }).then(function(d){
     var btn = document.getElementById('tab-ads-btn');
-    if (d && d.ok && (!d.campaigns || !d.campaigns.length)) {
+    if (!(d && d.ok && Array.isArray(d.campaigns) && d.campaigns.length)) {
       btn.style.display = 'none';
       // si estaba en esa pestaña cuando se desactivó la campaña, vuelve a Stats
       if (btn.classList.contains('active')) { showTab('stats'); loadStats(); }
@@ -816,8 +816,8 @@ function loadAds(period) {
     .then(function(res){
       var d  = res[0];
       var cl = Array.isArray(res[1]) ? res[1] : [];
-      if (!d.ok) { document.getElementById('ads-body').innerHTML = '<div class="ads-empty">Error: '+d.error+'</div>'; return; }
-      if (!d.campaigns || !d.campaigns.length) {
+      if (!d || !d.ok) { document.getElementById('tab-ads-btn').style.display = 'none'; if (document.getElementById('tab-ads-btn').classList.contains('active')) { showTab('stats'); loadStats(); } return; }
+      if (!Array.isArray(d.campaigns) || !d.campaigns.length) { var adsTab = document.getElementById('tab-ads-btn'); adsTab.style.display = 'none'; if (adsTab.classList.contains('active')) { showTab('stats'); loadStats(); }
         document.getElementById('ads-body').innerHTML = '<div class="ads-empty">⏸ No hay campañas activas ahora mismo.</div>';
         return;
       }
@@ -832,7 +832,7 @@ function loadAds(period) {
       var html = d.campaigns.map(function(c){ return renderCamp(c, d.period, count); }).join('');
       document.getElementById('ads-body').innerHTML = html;
     })
-    .catch(function(){ document.getElementById('ads-body').innerHTML = '<div class="ads-empty">Error de conexión</div>'; });
+    .catch(function(){ document.getElementById('tab-ads-btn').style.display = 'none'; });
 }
 
 function colorCtr(v) {
