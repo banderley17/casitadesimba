@@ -1902,7 +1902,7 @@ function moverFotoGal(publicId, dir) {
   fetch(API+'/galeria?t='+T, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({order: galFotosOrder})
+    body: JSON.stringify({order: galFotosOrder, collection: 'gallery'})
   }).then(function(){ showToast('✅ Orden guardado'); cargarFotos(); })
     .catch(function(){ showToast('❌ Error al guardar orden'); });
 }
