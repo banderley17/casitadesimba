@@ -3,6 +3,7 @@ import { cleanText, jsonResponse, optionsResponse, publicRateLimit, readJson } f
 export const config = { runtime: 'edge' };
 const METHODS = 'POST, OPTIONS';
 const PIXEL_ID = '4281036645446757';
+const GRAPH_VERSION = process.env.META_GRAPH_API_VERSION || 'v24.0';
 const EVENTS = new Set(['PageView', 'Contact', 'Lead']);
 const SITE_URL = 'https://lacasitadesimba.es/';
 
@@ -37,7 +38,7 @@ export default async function handler(req) {
       ...(body.event_id ? { event_id: cleanMetaId(body.event_id, 150) } : {}),
       ...(customData?.content_name ? { custom_data: customData } : {}),
     };
-    const response = await fetch(`https://graph.facebook.com/v19.0/${PIXEL_ID}/events`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ data: [event] }) });
+    const response = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${PIXEL_ID}/events`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ data: [event] }) });
     if (!response.ok) throw new Error('META_ERROR');
     const kvUrl = process.env.UPSTASH_REDIS_REST_URL;
     const kvToken = process.env.UPSTASH_REDIS_REST_TOKEN;

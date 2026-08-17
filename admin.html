@@ -1172,14 +1172,15 @@ document.getElementById('btn-sync').addEventListener('click', function(){
   apiFetch('/sync-audience?filter='+encodeURIComponent(filterVal), { method:'POST' })
     .then(function(r){ return r.json(); })
     .then(function(d){
+      var message = (d && (d.message || d.msg || d.error)) || 'No se pudo sincronizar con Meta';
       if (d.ok) {
         status.style.color = 'var(--green)';
-        status.textContent = d.msg + ' · Público ID: ' + d.audienceId;
-        showToast(d.msg);
+        status.textContent = message + (d.audienceId ? ' · Público ID: ' + d.audienceId : '');
+        showToast(message);
       } else {
         status.style.color = 'var(--red)';
-        status.textContent = '❌ ' + d.msg;
-        showToast('❌ ' + d.msg);
+        status.textContent = '❌ ' + message;
+        showToast('❌ ' + message);
       }
     })
     .catch(function(e){ status.style.color='var(--red)'; status.textContent='Error de conexión'; showToast('Error de conexión'); })

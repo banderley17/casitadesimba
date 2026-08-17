@@ -2,7 +2,8 @@ import { jsonResponse, optionsResponse, requireAdmin } from '../lib/security.js'
 
 export const config = { runtime: 'edge' };
 const METHODS = 'GET, OPTIONS';
-const GRAPH = 'https://graph.facebook.com/v19.0';
+const GRAPH_VERSION = process.env.META_GRAPH_API_VERSION || 'v24.0';
+const GRAPH = `https://graph.facebook.com/${GRAPH_VERSION}`;
 const AD_ACCOUNT = 'act_1513350607502989';
 const PERIODS = new Set(['today', 'yesterday', 'last_7d', 'last_14d', 'last_30d', 'this_month', 'last_month']);
 

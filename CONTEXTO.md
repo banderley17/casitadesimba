@@ -224,3 +224,13 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - La cookie administrativa se confirmó con `HttpOnly`, `Secure` y `SameSite=Strict`; la firma protegida de Cloudinary respondió 200.
 - En el dominio público, `admin.html` ya redirige al panel seguro y no contiene credenciales; `CONTEXTO.md` y las copias antiguas responden 404.
 - A petición del usuario se conservó la contraseña histórica, pero solo como hash PBKDF2 en Vercel. Sigue recomendándose cambiarla porque estuvo expuesta en versiones anteriores.
+
+## Actualizacion 2026-08-17 - Sincronizacion de contactos con Meta
+
+- Se corrigio el flujo `POST /api/sync-audience`: ahora devuelve los campos `message`, `msg` y `audienceId` que utiliza el panel, por lo que el resultado ya no aparece como `undefined`.
+- La version de Graph API ya no esta fijada en una version antigua: usa `META_GRAPH_API_VERSION` y `v24.0` por defecto. Si Meta publica otra version, basta actualizar esa variable en Vercel.
+- Se muestran mensajes utiles cuando el token caduca, carece de permisos o Meta limita temporalmente la peticion, sin exponer tokens ni detalles sensibles.
+- Si el publico guardado en Redis fue eliminado o quedo obsoleto, se borra solo ese identificador y se crea un publico nuevo una vez antes de informar del fallo.
+- `api/ads-stats.js` y `api/track.js` usan la misma version configurable de Graph para mantener coherentes estadisticas y eventos.
+- Verificado localmente: `node --check` correcto en las tres APIs y `git diff --check` sin errores.
+- Pendiente para produccion: comprobar que `FB_ADS_TOKEN` vigente y `META_GRAPH_API_VERSION` (si se quiere fijar otra) estan definidos en las variables de Vercel y volver a desplegar.

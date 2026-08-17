@@ -2,7 +2,11 @@ import { jsonResponse, optionsResponse, requireAdmin } from '../lib/security.js'
 
 export const config = { runtime: 'edge' };
 const METHODS = 'POST, OPTIONS';
-const GRAPH = 'https://graph.facebook.com/v19.0';
+// Keep the Graph API version configurable so an API retirement does not silently
+// break contact synchronisation. Update the env var when Meta releases a new
+// version; v24.0 is the current default for this project.
+const GRAPH_VERSION = process.env.META_GRAPH_API_VERSION || 'v24.0';
+const GRAPH = `https://graph.facebook.com/${GRAPH_VERSION}`;
 const AD_ACCOUNT = 'act_1513350607502989';
 const FILTERS = new Set(['todos', 'consulta', 'cliente', 'excluido']);
 
@@ -30,9 +34,37 @@ async function kv(command) {
 }
 async function graph(path, payload, token) {
   const response = await fetch(`${GRAPH}${path}`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-  const data = await response.json();
-  if (!response.ok || data.error) throw new Error('META_ERROR');
+  let data = {};
+  try { data = await response.json(); } catch (_) {}
+  if (!response.ok || data.error) {
+    const error = new Error(data?.error?.message || 'META_ERROR');
+    error.metaCode = data?.error?.code;
+    error.metaSubcode = data?.error?.error_subcode;
+    error.httpStatus = response.status;
+    throw error;
+  }
   return data;
+}
+
+const AUDIENCE_NAMES = {
+  cliente: 'Casita - Clientes CRM',
+  consulta: 'Casita - Consultas CRM',
+  excluido: 'Casita - Excluidos',
+  todos: 'Casita - Todos los contactos CRM',
+};
+
+function isStaleAudienceError(error) {
+  const message = String(error?.message || '').toLowerCase();
+  return error?.httpStatus === 404 || error?.metaCode === 100 || error?.metaCode === 803
+    || /audience|unsupported get request|invalid id|does not exist/.test(message);
+}
+
+function metaErrorMessage(error) {
+  const code = Number(error?.metaCode);
+  if (code === 190) return 'El token de Meta ha caducado o no es válido. Renueva FB_ADS_TOKEN en Vercel.';
+  if (code === 10 || code === 200) return 'El token de Meta no tiene permisos para administrar públicos personalizados.';
+  if (code === 17 || error?.httpStatus === 429) return 'Meta ha limitado temporalmente la sincronización. Espera unos minutos y vuelve a intentarlo.';
+  return 'Meta rechazó la sincronización. Comprueba el token y los permisos de la aplicación.';
 }
 
 export default async function handler(req) {
@@ -53,20 +85,33 @@ export default async function handler(req) {
     if (!valid.length) return jsonResponse(req, { ok: false, error: 'No hay contactos válidos para sincronizar' }, 400, METHODS, { csrf: true });
     const key = `meta_audience_${filter}`;
     let audienceId = await kv(['GET', key]);
-    if (!audienceId) {
-      const names = { cliente: 'Casita · Clientes CRM', consulta: 'Casita · Consultas CRM', excluido: 'Casita · Excluidos', todos: 'Casita · Todos los contactos CRM' };
-      const audience = await graph(`/${AD_ACCOUNT}/customaudiences`, { name: names[filter], subtype: 'CUSTOM', description: 'Sincronizado desde el panel de La Casita de Simba', customer_file_source: 'USER_PROVIDED_ONLY' }, token);
-      audienceId = audience.id;
-      await kv(['SET', key, audienceId]);
-    }
     const rows = [];
     for (const client of valid) {
       const parts = String(client.nombre || '').trim().split(/\s+/);
       rows.push([await sha256(client.normalizedPhone), await sha256(parts[0] || ''), await sha256(parts.slice(1).join(' '))]);
     }
-    await graph(`/${audienceId}/users`, { payload: { schema: ['PHONE', 'FN', 'LN'], data: rows } }, token);
-    return jsonResponse(req, { ok: true, synced: rows.length, filter, message: `${rows.length} contacto${rows.length === 1 ? '' : 's'} sincronizado${rows.length === 1 ? '' : 's'} con Meta` }, 200, METHODS, { csrf: true });
-  } catch (_) {
-    return jsonResponse(req, { ok: false, error: 'No se pudo sincronizar con Meta' }, 502, METHODS, { csrf: true });
+    const upload = async () => {
+      if (!audienceId) {
+        const audience = await graph(`/${AD_ACCOUNT}/customaudiences`, { name: AUDIENCE_NAMES[filter], subtype: 'CUSTOM', description: 'Sincronizado desde el panel de La Casita de Simba', customer_file_source: 'USER_PROVIDED_ONLY' }, token);
+        audienceId = audience.id;
+        if (!audienceId) throw new Error('META_ERROR');
+        await kv(['SET', key, audienceId]);
+      }
+      return graph(`/${audienceId}/users`, { payload: { schema: ['PHONE', 'FN', 'LN'], data: rows } }, token);
+    };
+    try {
+      await upload();
+    } catch (error) {
+      // Audience IDs can become invalid when a Meta audience is deleted or expires.
+      if (!isStaleAudienceError(error) || !audienceId) throw error;
+      await kv(['DEL', key]);
+      audienceId = '';
+      await upload();
+    }
+    const message = `${rows.length} contacto${rows.length === 1 ? '' : 's'} sincronizado${rows.length === 1 ? '' : 's'} con Meta`;
+    return jsonResponse(req, { ok: true, synced: rows.length, filter, audienceId, message, msg: message }, 200, METHODS, { csrf: true });
+  } catch (error) {
+    const message = metaErrorMessage(error);
+    return jsonResponse(req, { ok: false, error: message, msg: message }, 502, METHODS, { csrf: true });
   }
 }
