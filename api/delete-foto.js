@@ -40,7 +40,7 @@ export default async function handler(req) {
     const publicId = cleanId(body.public_id);
     if (!publicId.startsWith('casita/')) throw new Error('INVALID_INPUT');
     const apiKey = process.env.CLOUDINARY_API_KEY;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET || process.env.LOUDINARY_API_SECRET;
     if (!apiKey || !apiSecret) return jsonResponse(req, { ok: false, error: 'Servicio de imágenes no configurado' }, 503, METHODS, { csrf: true });
     const timestamp = Math.floor(Date.now() / 1000);
     const signature = await sha1(`invalidate=true&public_id=${publicId}&timestamp=${timestamp}${apiSecret}`);

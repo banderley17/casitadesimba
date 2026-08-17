@@ -27,7 +27,7 @@ export default async function handler(req) {
   const auth = await requireAdmin(req, { csrf: req.method === 'POST' });
   if (!auth.ok) return auth.response;
   const apiKey = process.env.CLOUDINARY_API_KEY;
-  const secret = process.env.CLOUDINARY_API_SECRET;
+  const secret = process.env.CLOUDINARY_API_SECRET || process.env.LOUDINARY_API_SECRET;
   if (!apiKey || !secret) return jsonResponse(req, { ok: false, error: 'Servicio de imágenes no configurado' }, 503, METHODS, { csrf: true });
   if (req.method === 'GET') return jsonResponse(req, { ok: true, apiKey }, 200, METHODS, { csrf: true });
   if (req.method !== 'POST') return jsonResponse(req, { ok: false, error: 'Método no permitido' }, 405, METHODS, { csrf: true });
