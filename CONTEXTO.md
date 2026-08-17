@@ -53,8 +53,8 @@ URL: `https://casitadesimba.vercel.app/admin.html` (siempre actualizado, usar es
 
 - API: `https://casitadesimba.vercel.app/api/reviews` (`api/reviews.js`, edge function)
 - Storage: Upstash Redis, clave `casita_reviews` (array JSON)
-- Token admin: `simba2026`
-- `GET` sin token → solo visibles (index.html) · `GET ?t=simba2026` → todas (admin) · `POST ?t=simba2026` → crear/actualizar (con `id` en body para actualizar) · `DELETE ?t=simba2026` → eliminar
+- La autenticación administrativa se realiza en servidor mediante una sesión segura `HttpOnly`; no se guardan contraseñas ni tokens de administración en este archivo ni en el navegador.
+- `GET` público devuelve solo reseñas visibles. Las lecturas completas y todas las mutaciones requieren una sesión de administrador y protección CSRF.
 - **⚠️ Nunca usar PATCH** — Vercel Edge Runtime lo bloquea silenciosamente
 - Campos: `id, nombre, foto, imagen, estrellas, texto, respuesta, fecha (YYYY-MM), visible`
 - Cloudinary preset: `casita_resenas`, carpeta `casita/resenas`, tag `resena`
@@ -207,3 +207,12 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - El valor se guarda junto a cada reseña mediante `fotoPosition` e `imagenPosition`, con valores seguros entre 0 y 100.
 - La web pública y la vista del admin aplican el mismo encuadre; las reseñas antiguas usan 50% como valor predeterminado.
 - Verificación: sintaxis de `api/reviews.js` y de los scripts inline de `admin.html` e `index.html` correcta.
+
+## Actualización 2026-08-17 - Endurecimiento de seguridad
+
+- Se eliminó la contraseña y el token administrativo del JavaScript público. El panel usa ahora autenticación en servidor, sesión opaca en Redis, cookie `HttpOnly`/`Secure`/`SameSite=Strict`, caducidad de 8 horas y protección CSRF.
+- Se añadió limitación de intentos de acceso, validación y límites de tamaño en APIs, CORS restringido, errores genéricos y cabeceras de seguridad.
+- Las operaciones administrativas de clientes, reseñas, tarifas, horarios, galería, estadísticas, audiencias y Cloudinary requieren sesión; las subidas y eliminaciones de imágenes se firman en servidor.
+- Se eliminó el panel oculto de la web pública y se retiraron del despliegue las copias antiguas del panel. Se conservaron localmente fuera del repositorio en `C:\Users\bande\Desktop\casitadesimba-local-backups\2026-08-17-security-cleanup`.
+- La clave administrativa expuesta anteriormente debe considerarse invalidada. La nueva clave se gestiona únicamente como hash PBKDF2 en Vercel y no se escribe en archivos de contexto.
+- No existe seguridad absoluta; queda como mejora futura migrar el JavaScript inline para poder aplicar una CSP estricta con `script-src` sin romper la web actual.

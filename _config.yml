@@ -1,0 +1,14 @@
+exclude:
+  - AGENTS.md
+  - CONTEXTO.md
+  - security_best_practices_report.md
+  - api
+  - lib
+  - vercel.json
+  - .vercelignore
+  - message.txt
+  - skills-lock.json
+  - .agents
+  - .claude
+  - backups
+

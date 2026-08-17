@@ -1,134 +1,72 @@
+import { jsonResponse, optionsResponse, requireAdmin } from '../lib/security.js';
+
 export const config = { runtime: 'edge' };
+const METHODS = 'POST, OPTIONS';
+const GRAPH = 'https://graph.facebook.com/v19.0';
+const AD_ACCOUNT = 'act_1513350607502989';
+const FILTERS = new Set(['todos', 'consulta', 'cliente', 'excluido']);
 
-const PIXEL_ID   = '4281036645446757';
-const GRAPH      = 'https://graph.facebook.com/v19.0';
-const PANEL_TOK  = 'simba2026';
-const CORS = {
-  'Access-Control-Allow-Origin' : '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
-
-// SHA-256 via Web Crypto (disponible en Edge runtime)
-async function sha256(s) {
-  if (!s || !s.trim()) return '';
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s.toLowerCase().trim()));
-  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+async function sha256(value) {
+  if (!value?.trim()) return '';
+  const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value.toLowerCase().trim()));
+  return [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
 }
-
-// Normalizar teléfono a formato Meta: 34612345678 (sin +, con prefijo país)
-function normalizePhone(raw) {
-  let t = (raw||'').replace(/\s|\(|\)|-/g,'');
-  t = t.replace(/^\+/,'');
-  t = t.replace(/^0034/,'34');
-  if (/^[6-9]\d{8}$/.test(t)) t = '34' + t; // 9 dígitos españoles → añade 34
-  return t;
+function phone(value) {
+  let clean = String(value || '').replace(/[\s()+-]/g, '').replace(/^0034/, '34');
+  if (/^[6-9]\d{8}$/.test(clean)) clean = `34${clean}`;
+  return /^\d{10,15}$/.test(clean) ? clean : '';
 }
-
-async function kvGet(key, url, tok) {
-  const r = await fetch(`${url}/get/${encodeURIComponent(key)}`, { headers:{ Authorization:`Bearer ${tok}` } });
-  return (await r.json()).result;
+function kvConfig() {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) throw new Error('KV_UNAVAILABLE');
+  return { url, token };
 }
-async function kvSet(key, val, url, tok) {
-  await fetch(`${url}/pipeline`, {
-    method:'POST',
-    headers:{ Authorization:`Bearer ${tok}`, 'Content-Type':'application/json' },
-    body: JSON.stringify([['SET', key, val]]),
-  });
+async function kv(command) {
+  const { url, token } = kvConfig();
+  const response = await fetch(`${url}/pipeline`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify([command]) });
+  if (!response.ok) throw new Error('KV_UNAVAILABLE');
+  return (await response.json())?.[0]?.result;
 }
-
-async function fbPost(path, body, fbToken) {
-  const r = await fetch(`${GRAPH}${path}`, {
-    method:'POST',
-    headers:{ 'Content-Type':'application/json' },
-    body: JSON.stringify({ ...body, access_token: fbToken }),
-  });
-  return r.json();
+async function graph(path, payload, token) {
+  const response = await fetch(`${GRAPH}${path}`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+  const data = await response.json();
+  if (!response.ok || data.error) throw new Error('META_ERROR');
+  return data;
 }
 
 export default async function handler(req) {
-  if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
-
-  const url  = new URL(req.url);
-  if (url.searchParams.get('t') !== PANEL_TOK)
-    return new Response('Unauthorized', { status:401, headers:CORS });
-
-  const fbToken = process.env.FB_ADS_TOKEN;
-  const kvUrl   = process.env.UPSTASH_REDIS_REST_URL;
-  const kvTok   = process.env.UPSTASH_REDIS_REST_TOKEN;
-  const AD_ACCOUNT = 'act_1513350607502989';
-
-  const ok  = (d) => new Response(JSON.stringify(d), { headers:{...CORS,'Content-Type':'application/json'} });
-  const err = (m) => new Response(JSON.stringify({ ok:false, msg:m }), { status:400, headers:{...CORS,'Content-Type':'application/json'} });
-
-  const filter = url.searchParams.get('filter') || 'todos'; // todos | consulta | cliente
-
+  if (req.method === 'OPTIONS') return optionsResponse(req, METHODS, { csrf: true });
+  if (req.method !== 'POST') return jsonResponse(req, { ok: false, error: 'Método no permitido' }, 405, METHODS, { csrf: true });
+  const auth = await requireAdmin(req, { csrf: true });
+  if (!auth.ok) return auth.response;
+  const token = process.env.FB_ADS_TOKEN;
+  if (!token) return jsonResponse(req, { ok: false, error: 'Meta no configurado' }, 503, METHODS, { csrf: true });
+  const requested = new URL(req.url).searchParams.get('filter') || 'todos';
+  const filter = FILTERS.has(requested) ? requested : 'todos';
   try {
-    // 1. Obtener lista de clientes de Redis
-    const raw = await kvGet('client_list', kvUrl, kvTok);
-    let clients = raw ? JSON.parse(raw) : [];
-    if (filter !== 'todos') clients = clients.filter(c => c.estado === filter);
-    const withPhone = clients.filter(c => c.tel && c.tel.trim());
-
-    if (!withPhone.length)
-      return err('Sin contactos con teléfono para sincronizar' + (filter !== 'todos' ? ' (filtro: '+filter+')' : ''));
-
-    // 2. Obtener o crear el público en Meta
-    const kvKey = 'meta_audience_' + filter;
-    let audienceId = await kvGet(kvKey, kvUrl, kvTok);
-
+    let clients = [];
+    try { clients = JSON.parse(await kv(['GET', 'client_list']) || '[]'); } catch (_) {}
+    if (!Array.isArray(clients)) clients = [];
+    if (filter !== 'todos') clients = clients.filter((client) => client.estado === filter);
+    const valid = clients.map((client) => ({ ...client, normalizedPhone: phone(client.tel) })).filter((client) => client.normalizedPhone).slice(0, 10_000);
+    if (!valid.length) return jsonResponse(req, { ok: false, error: 'No hay contactos válidos para sincronizar' }, 400, METHODS, { csrf: true });
+    const key = `meta_audience_${filter}`;
+    let audienceId = await kv(['GET', key]);
     if (!audienceId) {
-      // 2a. Crear el público personalizado
-      const audienceName = filter === 'cliente'
-        ? 'Casita · Clientes CRM'
-        : filter === 'consulta'
-          ? 'Casita · Consultas CRM'
-          : filter === 'excluido'
-            ? 'Casita · Excluidos'
-            : 'Casita · Todos los contactos CRM';
-
-      const newAud = await fbPost(`/${AD_ACCOUNT}/customaudiences`, {
-        name: audienceName,
-        subtype: 'CUSTOM',
-        description: 'Sincronizado automáticamente desde el panel de La Casita de Simba',
-        customer_file_source: 'USER_PROVIDED_ONLY',
-      }, fbToken);
-
-      if (newAud.error) return err('Error crear público: ' + newAud.error.message);
-
-      audienceId = newAud.id;
-      await kvSet(kvKey, audienceId, kvUrl, kvTok);
+      const names = { cliente: 'Casita · Clientes CRM', consulta: 'Casita · Consultas CRM', excluido: 'Casita · Excluidos', todos: 'Casita · Todos los contactos CRM' };
+      const audience = await graph(`/${AD_ACCOUNT}/customaudiences`, { name: names[filter], subtype: 'CUSTOM', description: 'Sincronizado desde el panel de La Casita de Simba', customer_file_source: 'USER_PROVIDED_ONLY' }, token);
+      audienceId = audience.id;
+      await kv(['SET', key, audienceId]);
     }
-
-    // 3. Hashear datos y subir a Meta
     const rows = [];
-    for (const c of withPhone) {
-      const phone = normalizePhone(c.tel);
-      const parts = (c.nombre || '').trim().split(' ');
-      const fn = parts[0] || '';
-      const ln = parts.slice(1).join(' ') || '';
-      rows.push([
-        await sha256(phone),
-        await sha256(fn),
-        await sha256(ln),
-      ]);
+    for (const client of valid) {
+      const parts = String(client.nombre || '').trim().split(/\s+/);
+      rows.push([await sha256(client.normalizedPhone), await sha256(parts[0] || ''), await sha256(parts.slice(1).join(' '))]);
     }
-
-    const uploadRes = await fbPost(`/${audienceId}/users`, {
-      payload: { schema: ['PHONE', 'FN', 'LN'], data: rows },
-    }, fbToken);
-
-    if (uploadRes.error) return err('Error subir usuarios: ' + uploadRes.error.message);
-
-    return ok({
-      ok: true,
-      synced: rows.length,
-      audienceId,
-      filter,
-      msg: `✅ ${rows.length} contacto${rows.length !== 1 ? 's' : ''} sincronizado${rows.length !== 1 ? 's' : ''} con Meta`,
-    });
-
-  } catch (e) {
-    return err('Error interno: ' + e.message);
+    await graph(`/${audienceId}/users`, { payload: { schema: ['PHONE', 'FN', 'LN'], data: rows } }, token);
+    return jsonResponse(req, { ok: true, synced: rows.length, filter, message: `${rows.length} contacto${rows.length === 1 ? '' : 's'} sincronizado${rows.length === 1 ? '' : 's'} con Meta` }, 200, METHODS, { csrf: true });
+  } catch (_) {
+    return jsonResponse(req, { ok: false, error: 'No se pudo sincronizar con Meta' }, 502, METHODS, { csrf: true });
   }
 }

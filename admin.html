@@ -36,8 +36,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 }
 .login-input:focus{outline:none;border-color:var(--purple)}
 .login-input::placeholder{color:var(--muted);letter-spacing:normal}
-.login-remember{display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:.85rem;color:var(--muted);margin-bottom:1.2rem;cursor:pointer}
-.login-remember input{accent-color:var(--purple);width:16px;height:16px;cursor:pointer}
+.login-session-note{font-size:.78rem;color:var(--muted);margin-bottom:1.2rem;line-height:1.45}
 .login-btn{
   width:100%;background:var(--purple);border:none;color:white;border-radius:12px;
   padding:.85rem;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s;
@@ -361,10 +360,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <div class="login-title">La Casita de Simba</div>
     <div class="login-sub">Panel de administración</div>
     <input class="login-input" type="password" id="pass-input" placeholder="Contraseña" autocomplete="current-password" />
-    <label class="login-remember">
-      <input type="checkbox" id="remember" />
-      Recordar contraseña en este dispositivo
-    </label>
+    <p class="login-session-note">La sesión segura se cerrará automáticamente después de 8 horas.</p>
     <button class="login-btn" id="login-btn">Entrar →</button>
     <div class="login-error" id="login-error">Contraseña incorrecta</div>
   </div>
@@ -706,55 +702,88 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 </div>
 
 <script>
-var API  = 'https://casitadesimba.vercel.app/api';
-var T    = 'simba2026';
-var PASS = 'Simba041206!';
+var API = '/api';
+var CSRF = '';
+var booted = false;
 
-// ── Auth ──
-var savedPass = localStorage.getItem('ap_pass');
-if (savedPass === PASS) boot();
+if (!/^(casitadesimba\.vercel\.app|localhost|127\.0\.0\.1)$/.test(location.hostname) && !location.hostname.endsWith('.vercel.app')) {
+  location.replace('https://casitadesimba.vercel.app/admin.html');
+}
+
+function apiFetch(path, options) {
+  var init = Object.assign({}, options || {});
+  var method = String(init.method || 'GET').toUpperCase();
+  init.credentials = 'same-origin';
+  init.headers = Object.assign({}, init.headers || {});
+  if (!['GET', 'HEAD', 'OPTIONS'].includes(method)) init.headers['X-CSRF-Token'] = CSRF;
+  return fetch(API + path, init).then(function(response) {
+    if (response.status === 401 && path !== '/admin-auth') showLogin();
+    return response;
+  });
+}
+
+function showLogin() {
+  booted = false;
+  CSRF = '';
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
 
 document.getElementById('pass-input').addEventListener('keydown', function(e){ if(e.key==='Enter') tryLogin(); });
 document.getElementById('login-btn').addEventListener('click', tryLogin);
 
 function tryLogin() {
-  var v = document.getElementById('pass-input').value;
-  if (v === PASS) {
-    if (document.getElementById('remember').checked) localStorage.setItem('ap_pass', PASS);
+  var password = document.getElementById('pass-input').value;
+  var button = document.getElementById('login-btn');
+  button.disabled = true;
+  document.getElementById('login-error').style.display = 'none';
+  fetch(API + '/admin-auth', {
+    method: 'POST', credentials: 'same-origin', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ action: 'login', password: password })
+  }).then(function(response){
+    return response.json().then(function(data){ return { response: response, data: data }; });
+  }).then(function(result){
+    document.getElementById('pass-input').value = '';
+    if (!result.response.ok || !result.data.ok) throw new Error(result.data.error || 'Credenciales incorrectas');
+    CSRF = result.data.csrf;
     boot();
-  } else {
-    document.getElementById('login-error').style.display = 'block';
+  }).catch(function(error){
+    var label = document.getElementById('login-error');
+    label.textContent = error.message || 'No se pudo iniciar sesión';
+    label.style.display = 'block';
     document.getElementById('pass-input').focus();
-  }
+  }).finally(function(){ button.disabled = false; });
 }
 
 function boot() {
+  if (booted) return;
+  booted = true;
   document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('dashboard').style.display    = 'flex';
+  document.getElementById('dashboard').style.display = 'flex';
   document.getElementById('f-fecha').value = new Date().toISOString().slice(0,10);
   loadClients();
   checkAdsActive();
 }
 
-// Si no hay ninguna campaña ACTIVA en Meta, la pestaña se ve apagada — así no hay
-// que entrar a comprobarlo cada vez.
 function checkAdsActive() {
-  fetch(API + '/ads-stats?t=' + T + '&period=today').then(function(r){ return r.json(); }).then(function(d){
+  apiFetch('/ads-stats?period=today').then(function(r){ return r.json(); }).then(function(d){
     var btn = document.getElementById('tab-ads-btn');
     if (!(d && d.ok && Array.isArray(d.campaigns) && d.campaigns.length)) {
       btn.style.display = 'none';
-      // si estaba en esa pestaña cuando se desactivó la campaña, vuelve a Stats
       if (btn.classList.contains('active')) { showTab('stats'); loadStats(); }
-    } else {
-      btn.style.display = '';
-    }
+    } else { btn.style.display = ''; }
   }).catch(function(){});
 }
 
 document.getElementById('logout-btn').addEventListener('click', function() {
-  localStorage.removeItem('ap_pass');
-  location.reload();
+  apiFetch('/admin-auth', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({action:'logout'}) })
+    .finally(function(){ showLogin(); });
 });
+
+fetch(API + '/admin-auth', { credentials:'same-origin' })
+  .then(function(response){ if (!response.ok) throw new Error('NO_SESSION'); return response.json(); })
+  .then(function(data){ CSRF = data.csrf || ''; boot(); })
+  .catch(showLogin);
 
 document.getElementById('backup-btn').addEventListener('click', async function() {
   var btn = this;
@@ -762,8 +791,8 @@ document.getElementById('backup-btn').addEventListener('click', async function()
   btn.disabled = true;
   try {
     var results = await Promise.all([
-      fetch(API + '/clients?t=' + T).then(function(r){ return r.json(); }),
-      fetch(API + '/reviews?t=' + T).then(function(r){ return r.json(); })
+      apiFetch( '/clients').then(function(r){ return r.json(); }),
+      apiFetch( '/reviews').then(function(r){ return r.json(); })
     ]);
     var backup = {
       fecha: new Date().toISOString(),
@@ -825,8 +854,8 @@ document.querySelectorAll('.ads-per-btn').forEach(function(btn){
 
 function loadAds(period) {
   document.getElementById('ads-body').innerHTML = '<div class="ads-loading">Cargando campañas…</div>';
-  var adsPromise = fetch(API+'/ads-stats?t='+T+'&period='+period).then(function(r){ return r.json(); });
-  var clPromise  = fetch(API+'/clients?t='+T).then(function(r){ return r.json(); });
+  var adsPromise = apiFetch('/ads-stats?period='+encodeURIComponent(period)).then(function(r){ return r.json(); });
+  var clPromise  = apiFetch('/clients').then(function(r){ return r.json(); });
   Promise.all([adsPromise, clPromise])
     .then(function(res){
       var d  = res[0];
@@ -937,7 +966,7 @@ function fmtFecha(f) {
 
 function loadStats() {
   document.getElementById('stats-updated').textContent = 'Actualizando…';
-  fetch(API+'/stats?t='+T).then(function(r){return r.json();}).then(function(s){
+  apiFetch('/stats').then(function(r){return r.json();}).then(function(s){
     document.getElementById('pv-h').textContent = fmt(s.hoy.pv);
     document.getElementById('pv-s').textContent = fmt(s.semana.pv);
     document.getElementById('pv-m').textContent = fmt(s.mes.pv);
@@ -961,12 +990,12 @@ var filterVal = 'consulta';
 var estadoSel = 'consulta';
 
 function loadClients() {
-  fetch(API+'/clients?t='+T).then(function(r){return r.json();}).then(function(d){
+  apiFetch('/clients').then(function(r){return r.json();}).then(function(d){
     clients = d; renderClients();
   }).catch(function(){});
 }
 
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 function initial(n){ return (n||'?').trim().charAt(0).toUpperCase(); }
 
 function renderClients() {
@@ -1013,12 +1042,12 @@ document.getElementById('cl-list').addEventListener('click', function(e) {
     if (!c) return;
     var nv = c.estado==='consulta'?'cliente':c.estado==='cliente'?'excluido':'consulta';
     var label = nv==='cliente'?'✅ Marcado como venta':nv==='excluido'?'💼 Marcado como CV':'💬 Marcado como consulta';
-    fetch(API+'/clients?t='+T+'&id='+tid,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({estado:nv})})
+    apiFetch('/clients?id='+encodeURIComponent(tid),{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({estado:nv})})
       .then(function(){loadClients(); showToast(label);});
   }
   var did = e.target.getAttribute('data-del');
   if (did && confirm('¿Eliminar este contacto?')) {
-    fetch(API+'/clients?t='+T+'&id='+did,{method:'DELETE'}).then(function(){loadClients(); showToast('Contacto eliminado');});
+    apiFetch('/clients?id='+encodeURIComponent(did),{method:'DELETE'}).then(function(){loadClients(); showToast('Contacto eliminado');});
   }
   var waBtn = e.target.closest('[data-wa]');
   if (waBtn && !waBtn.closest('#wa-dropdown')) { openWaDropdown(waBtn.getAttribute('data-wa'), waBtn); }
@@ -1118,7 +1147,7 @@ document.getElementById('f-save').addEventListener('click', function(){
   if (!tel){ document.getElementById('f-tel').focus(); return; }
   var nombre = document.getElementById('f-nombre').value.trim() || tel;
   var btn = this; btn.textContent = 'Guardando…'; btn.disabled = true;
-  fetch(API+'/clients?t='+T,{
+  apiFetch('/clients',{
     method:'POST', headers:{'Content-Type':'application/json'},
     body:JSON.stringify({nombre:nombre, tel:tel,
       mascota:document.getElementById('f-mascota').value.trim(),
@@ -1140,7 +1169,7 @@ document.getElementById('btn-sync').addEventListener('click', function(){
   btn.disabled = true;
   btn.textContent = '⏳ Sincronizando…';
   status.textContent = '';
-  fetch(API+'/sync-audience?t='+T+'&filter='+filterVal, { method:'POST' })
+  apiFetch('/sync-audience?filter='+encodeURIComponent(filterVal), { method:'POST' })
     .then(function(r){ return r.json(); })
     .then(function(d){
       if (d.ok) {
@@ -1211,9 +1240,6 @@ function showToast(msg){
 
 // ── Reseñas ──
 var CLOUD_NAME  = 'dqboccvby';
-var PRESET_REV  = 'casita_resenas';
-var PRESET_GAL  = 'casita_galeria';
-var PRESET_HERO = 'casita_hero';
 var revStars      = 5;
 var revFotoUrl    = '';
 var revImageUrl   = '';
@@ -1257,10 +1283,41 @@ function setReviewFramePosition(tipo, value, show) {
 function previsualizarEncuadreResena(tipo, value) {
   setReviewFramePosition(tipo, value, true);
 }
+var cloudinaryConfigPromise = null;
+function getCloudinaryConfig() {
+  if (!cloudinaryConfigPromise) {
+    cloudinaryConfigPromise = apiFetch('/cloudinary-sign').then(function(response){
+      if (!response.ok) throw new Error('No se pudo autorizar la subida');
+      return response.json();
+    });
+  }
+  return cloudinaryConfigPromise;
+}
+
+function openSecureUploadWidget(options, callback) {
+  getCloudinaryConfig().then(function(config){
+    var secureOptions = Object.assign({}, options, {
+      cloudName: CLOUD_NAME,
+      apiKey: config.apiKey,
+      uploadSignature: function(done, paramsToSign) {
+        apiFetch('/cloudinary-sign', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({params:paramsToSign})
+        }).then(function(response){
+          if (!response.ok) throw new Error('Firma rechazada');
+          return response.json();
+        }).then(function(data){ done(data.signature); })
+          .catch(function(){ showToast('No se pudo autorizar la subida'); });
+      }
+    });
+    cloudinary.openUploadWidget(secureOptions, callback);
+  }).catch(function(error){ showToast(error.message || 'No se pudo abrir el cargador'); });
+}
+
 function subirImagenReseña() {
-  cloudinary.openUploadWidget({
+  openSecureUploadWidget({
     cloudName: CLOUD_NAME,
-    uploadPreset: PRESET_REV,
+
     folder: 'casita/resenas',
     tags: ['resena','imagen'],
     sources: ['local','camera'],
@@ -1283,9 +1340,9 @@ function subirImagenReseña() {
 
 function subirFotoReseña() {
   if (CLOUD_NAME === 'CLOUD_NAME_AQUI') { showToast('⚠️ Cloudinary pendiente de configurar'); return; }
-  cloudinary.openUploadWidget({
+  openSecureUploadWidget({
     cloudName: CLOUD_NAME,
-    uploadPreset: PRESET_REV,
+
     folder: 'casita/resenas',
     tags: ['resena'],
     sources: ['local','camera'],
@@ -1321,7 +1378,7 @@ function guardarReseña() {
   var payload = { nombre: nombre, foto: revFotoUrl, imagen: revImageUrl, fotoPosition: revFotoPosition, imagenPosition: revImagePosition, estrellas: revStars, texto: texto, respuesta: respuesta, fecha: fecha || (isEditing ? revFechaOriginal : '') };
   if (isEditing) payload.id = revEditId;
 
-  fetch(API+'/reviews?t='+T, {
+  apiFetch('/reviews', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify(payload)
@@ -1438,7 +1495,7 @@ function fechaResenaVisible(valor) {
 }
 
 function loadReseñas() {
-  fetch(API+'/reviews?t='+T).then(function(r){ return r.json(); }).then(renderReseñas).catch(function(){
+  apiFetch('/reviews').then(function(r){ return r.json(); }).then(renderReseñas).catch(function(){
     document.getElementById('rev-list').innerHTML = '<div class="cl-empty">Error cargando reseñas</div>';
   });
 }
@@ -1555,7 +1612,7 @@ function guardarRespuesta(id) {
   if (!ta || !btn) return;
   var respuesta = ta.value.trim();
   btn.disabled = true; btn.textContent = 'Guardando…';
-  fetch(API+'/reviews?t='+T, {
+  apiFetch('/reviews', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ id: id, respuesta: respuesta })
@@ -1573,7 +1630,7 @@ function guardarRespuesta(id) {
 }
 
 function moverResena(id, dir) {
-  fetch(API+'/reviews?t='+T, {
+  apiFetch('/reviews', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ action:'reorder', id:id, dir:dir })
@@ -1594,7 +1651,7 @@ document.getElementById('rev-list').addEventListener('click', function(e){
   if (delBtn) {
     var rid = delBtn.getAttribute('data-rid');
     if (confirm('¿Eliminar esta reseña?')) {
-      fetch(API+'/reviews?t='+T, { method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:rid}) })
+      apiFetch('/reviews', { method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:rid}) })
         .then(function(){ loadReseñas(); showToast('Reseña eliminada'); });
     }
   }
@@ -1612,7 +1669,7 @@ var precCache = null;
 var PREC_CARD_LABELS = ['Tarjeta 1 (Estancia)', 'Tarjeta 2 (Eventos y Cumpleaños)', 'Tarjeta 3 (Bono de 7 días) — el "Título" también cambia el nombre en Servicios y en el formulario de reserva', 'Tarjeta 4 (Bono Mensual)'];
 
 function loadPrecios() {
-  fetch(API + '/pricing').then(function(r){ return r.json(); }).then(function(p){
+  apiFetch( '/pricing').then(function(r){ return r.json(); }).then(function(p){
     precCache = p;
     renderPrecios(p);
   }).catch(function(){ showToast('Error cargando precios'); });
@@ -1719,7 +1776,7 @@ function guardarPrecios() {
 
   var btn = document.getElementById('btn-save-prec');
   btn.disabled = true; btn.textContent = 'Guardando…';
-  fetch(API + '/pricing?t=' + T, {
+  apiFetch( '/pricing', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
@@ -1735,7 +1792,7 @@ function guardarPrecios() {
 
 // Horario
 function loadHorario() {
-  fetch(API + '/hours').then(function(r){ return r.json(); }).then(function(data){
+  apiFetch( '/hours').then(function(r){ return r.json(); }).then(function(data){
     document.getElementById('hours-month').value = data && data.month ? data.month : '';
     document.getElementById('hours-display').value = data && data.display ? data.display : '';
   }).catch(function(){ showToast('Error cargando horario'); });
@@ -1746,7 +1803,7 @@ function guardarHorario() {
   if (!display) { showToast('Escribe el horario'); return; }
   var btn = document.getElementById('btn-save-hours');
   btn.disabled = true; btn.textContent = 'Guardando...';
-  fetch(API + '/hours?t=' + T, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ month: month, display: display }) })
+  apiFetch( '/hours', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ month: month, display: display }) })
     .then(function(r){ return r.json(); }).then(function(r){
       btn.disabled = false; btn.textContent = 'Guardar horario';
       showToast(r && r.ok ? 'Horario guardado, ya esta en tu web' : 'No se pudo guardar, prueba de nuevo');
@@ -1757,7 +1814,7 @@ function guardarHorario() {
 function eliminarFoto(publicId, wrap) {
   if (!confirm('¿Eliminar esta foto? No se puede deshacer.')) return;
   wrap.style.opacity = '.4';
-  fetch(API+'/delete-foto?t='+T, {
+  apiFetch('/delete-foto', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ public_id: publicId })
@@ -1777,14 +1834,14 @@ function eliminarFoto(publicId, wrap) {
 }
 
 function subirFoto(tipo) {
-  var preset  = tipo === 'hero' ? PRESET_HERO : PRESET_GAL;
+
   var folder  = tipo === 'hero' ? 'casita/hero' : 'casita/galeria';
   var tags    = tipo === 'hero' ? 'hero' : 'galeria';
   var caption = document.getElementById('foto-caption').value.trim();
 
-  cloudinary.openUploadWidget({
+  openSecureUploadWidget({
     cloudName: CLOUD_NAME,
-    uploadPreset: preset,
+
     folder: folder,
     tags: [tags],
     context: caption ? { caption: caption, alt: caption } : {},
@@ -1806,7 +1863,7 @@ function subirFoto(tipo) {
     }
   }, function(error, result) {
     if (!error && result && result.event === 'success') {
-      fetch(API+'/galeria?t='+T, {
+      apiFetch('/galeria', {
         method:'POST', headers:{'Content-Type':'application/json'},
         body:JSON.stringify({ collection: tipo === 'hero' ? 'hero' : 'gallery', add: result.info.public_id })
       }).finally(function() { cargarFotos(); });
@@ -1835,8 +1892,8 @@ function cargarFotos() {
   // Panel y web usan la misma fuente de verdad para evitar fotos eliminadas
   // que reaparezcan o diferencias de orden por la cache de Cloudinary.
   Promise.all([
-    fetch(API+'/galeria?collection=gallery&meta=1').then(function(r){return r.json();}).catch(function(){return {order:[],resources:[]};}),
-    fetch(API+'/galeria?collection=hero&meta=1').then(function(r){return r.json();}).catch(function(){return {order:[],positions:{},resources:[]};})
+    apiFetch('/galeria?collection=gallery&meta=1').then(function(r){return r.json();}).catch(function(){return {order:[],resources:[]};}),
+    apiFetch('/galeria?collection=hero&meta=1').then(function(r){return r.json();}).catch(function(){return {order:[],positions:{},resources:[]};})
   ]).then(function(res) {
     var galMeta = res[0] && typeof res[0] === 'object' ? res[0] : {};
     var heroMeta = res[1] && typeof res[1] === 'object' ? res[1] : {};
@@ -1926,7 +1983,7 @@ function previsualizarEncuadreFoto(value, input) {
 function guardarEncuadreFoto(publicId, collection, value) {
   var positions = collection === 'hero' ? heroFotoPositions : galFotoPositions;
   positions[publicId] = Math.max(0, Math.min(100, Number(value)));
-  fetch(API+'/galeria?t='+T, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({collection:collection, positions:positions}) })
+  apiFetch('/galeria', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({collection:collection, positions:positions}) })
     .then(function(){ showToast(collection === 'hero' ? 'Encuadre de portada guardado' : 'Encuadre de foto guardado'); })
     .catch(function(){ showToast('Error al guardar el encuadre'); });
 }
@@ -1939,7 +1996,7 @@ function moverFotoHero(publicId, dir) {
   var tmp = heroFotosOrder[idx];
   heroFotosOrder[idx] = heroFotosOrder[newIdx];
   heroFotosOrder[newIdx] = tmp;
-  fetch(API+'/galeria?t='+T, {
+  apiFetch('/galeria', {
     method: 'POST', headers: {'Content-Type':'application/json'},
     body: JSON.stringify({order: heroFotosOrder, collection: 'hero'})
   }).then(function(){ showToast('Orden de portada guardado'); cargarFotos(); })
@@ -1954,7 +2011,7 @@ function moverFotoGal(publicId, dir) {
   var tmp = galFotosOrder[idx];
   galFotosOrder[idx]    = galFotosOrder[newIdx];
   galFotosOrder[newIdx] = tmp;
-  fetch(API+'/galeria?t='+T, {
+  apiFetch('/galeria', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({order: galFotosOrder, collection: 'gallery'})

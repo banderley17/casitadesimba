@@ -1,87 +1,104 @@
+import { cleanId, cleanText, jsonResponse, optionsResponse, readJson, requireAdmin } from '../lib/security.js';
+
 export const config = { runtime: 'edge' };
+const METHODS = 'GET, POST, PATCH, DELETE, OPTIONS';
+const STATES = new Set(['consulta', 'cliente', 'excluido']);
 
-const TOKEN = 'simba2026';
-const KV_URL = process.env.UPSTASH_REDIS_REST_URL;
-const KV_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
-
-const CORS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
-
-const json = (data, status = 200) =>
-  new Response(JSON.stringify(data), {
-    status,
-    headers: { ...CORS, 'Content-Type': 'application/json' },
-  });
+function kvConfig() {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) throw new Error('KV_UNAVAILABLE');
+  return { url, token };
+}
 
 async function kvGet(key) {
-  const res = await fetch(`${KV_URL}/get/${encodeURIComponent(key)}`, {
-    headers: { Authorization: `Bearer ${KV_TOKEN}` },
-  });
-  const data = await res.json();
-  return data.result;
+  const { url, token } = kvConfig();
+  const response = await fetch(`${url}/get/${encodeURIComponent(key)}`, { headers: { Authorization: `Bearer ${token}` } });
+  if (!response.ok) throw new Error('KV_UNAVAILABLE');
+  return (await response.json()).result;
 }
 
 async function kvSet(key, value) {
-  await fetch(`${KV_URL}/pipeline`, {
+  const { url, token } = kvConfig();
+  const response = await fetch(`${url}/pipeline`, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${KV_TOKEN}`, 'Content-Type': 'application/json' },
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify([['SET', key, value]]),
   });
+  if (!response.ok) throw new Error('KV_UNAVAILABLE');
+}
+
+function parseClients(raw) {
+  if (!raw) return [];
+  try { const parsed = JSON.parse(raw); return Array.isArray(parsed) ? parsed.slice(0, 2_000) : []; } catch (_) { return []; }
+}
+
+function cleanDate(value) {
+  if (!value) return new Date().toISOString().slice(0, 10);
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) throw new Error('INVALID_INPUT');
+  return value;
 }
 
 export default async function handler(req) {
-  if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
+  if (req.method === 'OPTIONS') return optionsResponse(req, METHODS, { csrf: true });
+  const auth = await requireAdmin(req, { csrf: req.method !== 'GET' });
+  if (!auth.ok) return auth.response;
 
-  const url = new URL(req.url);
-  if (url.searchParams.get('t') !== TOKEN) {
-    return new Response('Unauthorized', { status: 401, headers: CORS });
+  try {
+    const url = new URL(req.url);
+    if (req.method === 'GET') return jsonResponse(req, parseClients(await kvGet('client_list')), 200, METHODS, { csrf: true });
+
+    const clients = parseClients(await kvGet('client_list'));
+    if (req.method === 'POST') {
+      const body = await readJson(req, 12_000);
+      const estado = body.estado || 'consulta';
+      if (!STATES.has(estado)) throw new Error('INVALID_INPUT');
+      const client = {
+        id: crypto.randomUUID(),
+        nombre: cleanText(body.nombre, 100, { required: true }),
+        tel: cleanText(body.tel, 30, { required: true }),
+        mascota: cleanText(body.mascota, 100),
+        servicio: cleanText(body.servicio, 100),
+        estado,
+        fecha: cleanDate(body.fecha),
+        notas: cleanText(body.notas, 1_500),
+      };
+      clients.unshift(client);
+      await kvSet('client_list', JSON.stringify(clients.slice(0, 2_000)));
+      return jsonResponse(req, client, 201, METHODS, { csrf: true });
+    }
+
+    const id = cleanId(url.searchParams.get('id') || '');
+    const index = clients.findIndex((client) => client.id === id);
+    if (index < 0) return jsonResponse(req, { ok: false, error: 'Contacto no encontrado' }, 404, METHODS, { csrf: true });
+
+    if (req.method === 'DELETE') {
+      clients.splice(index, 1);
+      await kvSet('client_list', JSON.stringify(clients));
+      return jsonResponse(req, { ok: true }, 200, METHODS, { csrf: true });
+    }
+
+    if (req.method === 'PATCH') {
+      const body = await readJson(req, 8_000);
+      const next = { ...clients[index] };
+      if (Object.hasOwn(body, 'estado')) {
+        if (!STATES.has(body.estado)) throw new Error('INVALID_INPUT');
+        next.estado = body.estado;
+      }
+      if (Object.hasOwn(body, 'nombre')) next.nombre = cleanText(body.nombre, 100, { required: true });
+      if (Object.hasOwn(body, 'tel')) next.tel = cleanText(body.tel, 30, { required: true });
+      if (Object.hasOwn(body, 'mascota')) next.mascota = cleanText(body.mascota, 100);
+      if (Object.hasOwn(body, 'servicio')) next.servicio = cleanText(body.servicio, 100);
+      if (Object.hasOwn(body, 'notas')) next.notas = cleanText(body.notas, 1_500);
+      if (Object.hasOwn(body, 'fecha')) next.fecha = cleanDate(body.fecha);
+      clients[index] = next;
+      await kvSet('client_list', JSON.stringify(clients));
+      return jsonResponse(req, next, 200, METHODS, { csrf: true });
+    }
+
+    return jsonResponse(req, { ok: false, error: 'Método no permitido' }, 405, METHODS, { csrf: true });
+  } catch (error) {
+    const status = error?.message === 'PAYLOAD_TOO_LARGE' ? 413 : error?.message === 'INVALID_INPUT' || error?.message === 'INVALID_JSON' ? 400 : 500;
+    return jsonResponse(req, { ok: false, error: status === 500 ? 'Error interno' : 'Datos inválidos' }, status, METHODS, { csrf: true });
   }
-
-  if (req.method === 'GET') {
-    const raw = await kvGet('client_list');
-    return json(raw ? JSON.parse(raw) : []);
-  }
-
-  if (req.method === 'POST') {
-    const body = await req.json();
-    const raw = await kvGet('client_list');
-    const clients = raw ? JSON.parse(raw) : [];
-    const client = {
-      id: Date.now().toString(),
-      nombre: (body.nombre || '').trim(),
-      tel: (body.tel || '').trim(),
-      mascota: (body.mascota || '').trim(),
-      servicio: body.servicio || '',
-      estado: body.estado || 'consulta',
-      fecha: body.fecha || new Date().toISOString().slice(0, 10),
-      notas: (body.notas || '').trim(),
-    };
-    clients.unshift(client);
-    await kvSet('client_list', JSON.stringify(clients));
-    return json(client, 201);
-  }
-
-  if (req.method === 'DELETE') {
-    const id = url.searchParams.get('id');
-    const raw = await kvGet('client_list');
-    const clients = raw ? JSON.parse(raw) : [];
-    await kvSet('client_list', JSON.stringify(clients.filter(c => c.id !== id)));
-    return json({ ok: true });
-  }
-
-  if (req.method === 'PATCH') {
-    const id = url.searchParams.get('id');
-    const body = await req.json();
-    const raw = await kvGet('client_list');
-    const clients = raw ? JSON.parse(raw) : [];
-    const idx = clients.findIndex(c => c.id === id);
-    if (idx !== -1) { clients[idx] = { ...clients[idx], ...body }; }
-    await kvSet('client_list', JSON.stringify(clients));
-    return json(clients[idx] || {});
-  }
-
-  return json({ error: 'Method not allowed' }, 405);
 }
