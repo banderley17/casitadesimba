@@ -11,6 +11,11 @@ async function kvGet(key, url, tok) {
   const r = await fetch(`${url}/get/${encodeURIComponent(key)}`, { headers: { Authorization: `Bearer ${tok}` } });
   return (await r.json()).result;
 }
+function reviewPosition(value) {
+  const n = Number(value);
+  return Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : 50;
+}
+
 async function kvSet(key, val, url, tok) {
   await fetch(`${url}/pipeline`, {
     method: 'POST',
@@ -42,7 +47,7 @@ export default async function handler(req) {
 
   if (req.method === 'POST') {
     const body = await req.json();
-    const { action, id, nombre, foto, imagen, estrellas, texto, fecha, respuesta } = body;
+    const { action, id, nombre, foto, imagen, fotoPosition, imagenPosition, estrellas, texto, fecha, respuesta } = body;
 
     const raw = await kvGet('casita_reviews', kvUrl, kvTok);
     let reviews = raw ? JSON.parse(raw) : [];
@@ -68,6 +73,8 @@ export default async function handler(req) {
           ...(nombre    != null ? { nombre:    nombre.trim()       } : {}),
           ...(foto      != null ? { foto                           } : {}),
           ...(imagen    != null ? { imagen                         } : {}),
+          ...(fotoPosition   != null ? { fotoPosition:   reviewPosition(fotoPosition)   } : {}),
+          ...(imagenPosition != null ? { imagenPosition: reviewPosition(imagenPosition) } : {}),
           ...(estrellas != null ? { estrellas: parseInt(estrellas) } : {}),
           ...(texto     != null ? { texto:     texto.trim()        } : {}),
           ...(respuesta != null ? { respuesta: respuesta.trim()    } : {}),
@@ -82,6 +89,8 @@ export default async function handler(req) {
         nombre: nombre.trim(),
         foto: foto || '',
         imagen: imagen || '',
+        fotoPosition: reviewPosition(fotoPosition),
+        imagenPosition: reviewPosition(imagenPosition),
         estrellas: parseInt(estrellas),
         texto: texto.trim(),
         respuesta: respuesta ? respuesta.trim() : '',

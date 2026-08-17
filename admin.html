@@ -310,13 +310,19 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .btn-foto-rev:hover{background:rgba(255,255,255,.1);color:var(--text)}
 .foto-preview{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--purple);display:none}
 .imagen-preview{width:90px;height:64px;border-radius:8px;object-fit:cover;border:2px solid var(--purple);display:none}
+.review-frame-control{display:none;align-items:center;gap:.45rem;flex-wrap:wrap;margin-top:.5rem;padding:.45rem .55rem;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:.7rem;color:var(--muted)}
+.review-frame-control.show{display:flex}
+.review-frame-control label{font-size:.68rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.review-frame-control input{flex:1;min-width:120px;width:auto;padding:0;background:transparent;border:0;accent-color:var(--purple)}
+.review-frame-control output{min-width:2.7rem;text-align:right;color:var(--text);font-variant-numeric:tabular-nums}
+.review-frame-control small{flex-basis:100%;font-size:.62rem;line-height:1.25;color:rgba(255,255,255,.38)}
 .foto-row{display:flex;align-items:center;gap:.8rem}
 .rev-edit-banner{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);border-radius:10px;padding:.6rem .9rem;font-size:.8rem;color:#a78bfa;display:none;align-items:center;justify-content:space-between;}
 .rev-cancel-edit{background:none;border:none;color:#a78bfa;cursor:pointer;font-size:.8rem;font-weight:700;text-decoration:underline;}
 .rev-actions{display:flex;align-items:center;gap:.5rem;margin-top:.8rem;justify-content:flex-end;}
 .rev-edit-btn{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.25);color:#a78bfa;cursor:pointer;font-size:.72rem;font-weight:700;border-radius:8px;padding:.25rem .65rem;transition:all .2s;}
 .rev-edit-btn:hover{background:rgba(124,58,237,.25);color:white;}
-.rev-img{width:100%;max-height:180px;object-fit:cover;border-radius:10px;margin-top:.5rem;}
+.rev-img{width:100%;height:180px;object-fit:cover;border-radius:10px;margin-top:.5rem;}
 
 /* ── Sección de respuesta inline en cada reseña ── */
 .rev-resp-section{margin-top:.7rem;padding-top:.65rem;border-top:1px solid rgba(255,255,255,.06);}
@@ -524,8 +530,13 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
               </div>
               <button class="btn-foto-rev" id="btn-foto-rev" onclick="subirFotoReseña()">📷 Subir foto de perfil</button>
             </div>
+            <div class="review-frame-control" id="rv-foto-frame-control">
+              <label for="rv-foto-position">Encuadre</label>
+              <input id="rv-foto-position" type="range" min="0" max="100" value="50" oninput="previsualizarEncuadreResena('foto', this.value)">
+              <output id="rv-foto-position-output">50%</output>
+              <small>Mueve la imagen arriba o abajo dentro del marco.</small>
+            </div>
           </div>
-
           <div style="border-top:1px solid var(--border);"></div>
 
           <!-- Foto de la reseña -->
@@ -539,10 +550,14 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
               </div>
               <button class="btn-foto-rev" id="btn-imagen-rev" onclick="subirImagenReseña()">🖼 Subir foto de la reseña</button>
             </div>
+            <div class="review-frame-control" id="rv-imagen-frame-control">
+              <label for="rv-imagen-position">Encuadre</label>
+              <input id="rv-imagen-position" type="range" min="0" max="100" value="50" oninput="previsualizarEncuadreResena('imagen', this.value)">
+              <output id="rv-imagen-position-output">50%</output>
+              <small>Mueve la imagen arriba o abajo dentro del marco.</small>
+            </div>
           </div>
-
         </div>
-
         <label>Tu respuesta <span style="font-weight:400;opacity:.5">(opcional)</span></label>
         <div class="rv-resp-wrap">
           <textarea id="rv-respuesta" placeholder="Escribe tu respuesta a esta reseña..." style="height:72px;"></textarea>
@@ -1202,6 +1217,8 @@ var PRESET_HERO = 'casita_hero';
 var revStars      = 5;
 var revFotoUrl    = '';
 var revImageUrl   = '';
+var revFotoPosition  = 50;
+var revImagePosition = 50;
 var revRespuesta  = '';
 var revEditId     = null;
 var revFechaOriginal = '';
@@ -1216,6 +1233,30 @@ document.getElementById('stars-sel').addEventListener('click', function(e){
   });
 });
 
+function clampReviewPosition(value) {
+  var n = Number(value);
+  return Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : 50;
+}
+
+function setReviewFramePosition(tipo, value, show) {
+  var n = clampReviewPosition(value);
+  var isFoto = tipo === 'foto';
+  var positionKey = isFoto ? 'revFotoPosition' : 'revImagePosition';
+  window[positionKey] = n;
+  var preview = document.getElementById(isFoto ? 'rv-foto-preview' : 'rv-imagen-preview');
+  var control = document.getElementById(isFoto ? 'rv-foto-frame-control' : 'rv-imagen-frame-control');
+  var range = document.getElementById(isFoto ? 'rv-foto-position' : 'rv-imagen-position');
+  var output = document.getElementById(isFoto ? 'rv-foto-position-output' : 'rv-imagen-position-output');
+  if (preview) preview.style.objectPosition = 'center ' + n + '%';
+  if (range) range.value = n;
+  if (output) output.textContent = n + '%';
+  if (control && show !== false) control.classList.add('show');
+  if (control && show === false) control.classList.remove('show');
+}
+
+function previsualizarEncuadreResena(tipo, value) {
+  setReviewFramePosition(tipo, value, true);
+}
 function subirImagenReseña() {
   cloudinary.openUploadWidget({
     cloudName: CLOUD_NAME,
@@ -1229,8 +1270,10 @@ function subirImagenReseña() {
   }, function(error, result) {
     if (!error && result && result.event === 'success') {
       revImageUrl = result.info.secure_url;
+      revImagePosition = 50;
       var prev = document.getElementById('rv-imagen-preview');
       prev.src = revImageUrl; prev.style.display = 'block';
+      setReviewFramePosition('imagen', revImagePosition, true);
       document.getElementById('btn-del-imagen').style.display = 'block';
       document.getElementById('btn-imagen-rev').textContent = '✅ Imagen lista';
       showToast('✅ Imagen subida');
@@ -1254,8 +1297,10 @@ function subirFotoReseña() {
   }, function(error, result) {
     if (!error && result && result.event === 'success') {
       revFotoUrl = result.info.secure_url;
+      revFotoPosition = 50;
       var prev = document.getElementById('rv-foto-preview');
       prev.src = revFotoUrl; prev.style.display = 'block';
+      setReviewFramePosition('foto', revFotoPosition, true);
       document.getElementById('btn-del-foto').style.display = 'block';
       document.getElementById('btn-foto-rev').textContent = '✅ Foto lista';
       showToast('✅ Foto subida');
@@ -1273,7 +1318,7 @@ function guardarReseña() {
 
   var isEditing = !!revEditId;
   var respuesta = document.getElementById('rv-respuesta').value.trim();
-  var payload = { nombre: nombre, foto: revFotoUrl, imagen: revImageUrl, estrellas: revStars, texto: texto, respuesta: respuesta, fecha: fecha || (isEditing ? revFechaOriginal : '') };
+  var payload = { nombre: nombre, foto: revFotoUrl, imagen: revImageUrl, fotoPosition: revFotoPosition, imagenPosition: revImagePosition, estrellas: revStars, texto: texto, respuesta: respuesta, fecha: fecha || (isEditing ? revFechaOriginal : '') };
   if (isEditing) payload.id = revEditId;
 
   fetch(API+'/reviews?t='+T, {
@@ -1299,12 +1344,14 @@ function resetRevForm() {
   document.getElementById('rv-nombre').value = '';
   document.getElementById('rv-texto').value  = '';
   document.getElementById('rv-fecha').value  = '';
-  revFotoUrl = ''; revImageUrl = ''; revRespuesta = ''; revEditId = null; revFechaOriginal = '';
+  revFotoUrl = ''; revImageUrl = ''; revFotoPosition = 50; revImagePosition = 50; revRespuesta = ''; revEditId = null; revFechaOriginal = '';
   document.getElementById('rv-respuesta').value = '';
   document.getElementById('rv-foto-preview').style.display   = 'none';
   document.getElementById('rv-imagen-preview').style.display = 'none';
   document.getElementById('btn-del-foto').style.display   = 'none';
   document.getElementById('btn-del-imagen').style.display = 'none';
+  setReviewFramePosition('foto', 50, false);
+  setReviewFramePosition('imagen', 50, false);
   document.getElementById('btn-foto-rev').textContent   = '📷 Subir foto';
   document.getElementById('btn-imagen-rev').textContent = '🖼 Añadir imagen';
   document.getElementById('rev-edit-banner').style.display = 'none';
@@ -1321,12 +1368,14 @@ function eliminarFotoRev(tipo) {
     document.getElementById('rv-foto-preview').style.display = 'none';
     document.getElementById('rv-foto-preview').src = '';
     document.getElementById('btn-del-foto').style.display = 'none';
+    setReviewFramePosition('foto', 50, false);
     document.getElementById('btn-foto-rev').textContent = '📷 Subir foto de perfil';
   } else {
     revImageUrl = '';
     document.getElementById('rv-imagen-preview').style.display = 'none';
     document.getElementById('rv-imagen-preview').src = '';
     document.getElementById('btn-del-imagen').style.display = 'none';
+    setReviewFramePosition('imagen', 50, false);
     document.getElementById('btn-imagen-rev').textContent = '🖼 Subir foto de la reseña';
   }
 }
@@ -1340,20 +1389,26 @@ function editarReseña(r) {
   revFechaOriginal = r.fecha || '';
   revFotoUrl    = r.foto      || '';
   revImageUrl   = r.imagen    || '';
+  revFotoPosition  = clampReviewPosition(r.fotoPosition);
+  revImagePosition = clampReviewPosition(r.imagenPosition);
   revRespuesta  = r.respuesta || '';
   document.getElementById('rv-respuesta').value = revRespuesta;
+  document.getElementById('rv-foto-frame-control').classList.remove('show');
+  document.getElementById('rv-imagen-frame-control').classList.remove('show');
   document.querySelectorAll('.star-btn').forEach(function(b){
     b.classList.toggle('on', parseInt(b.getAttribute('data-s')) <= revStars);
   });
   if (revFotoUrl) {
     var fp = document.getElementById('rv-foto-preview');
     fp.src = revFotoUrl; fp.style.display = 'block';
+    setReviewFramePosition('foto', revFotoPosition, true);
     document.getElementById('btn-del-foto').style.display = 'block';
     document.getElementById('btn-foto-rev').textContent = '✅ Foto lista';
   }
   if (revImageUrl) {
     var ip = document.getElementById('rv-imagen-preview');
     ip.src = revImageUrl; ip.style.display = 'block';
+    setReviewFramePosition('imagen', revImagePosition, true);
     document.getElementById('btn-del-imagen').style.display = 'block';
     document.getElementById('btn-imagen-rev').textContent = '✅ Imagen lista';
   }
@@ -1397,11 +1452,11 @@ function renderReseñas(reviews) {
   }
   list.innerHTML = reviews.map(function(r, i){
     var avatar = r.foto
-      ? '<div class="rev-avatar"><img src="'+esc(r.foto)+'" alt=""></div>'
+      ? '<div class="rev-avatar"><img src="'+esc(r.foto)+'" alt="" style="object-position:center '+clampReviewPosition(r.fotoPosition)+'%;"></div>'
       : '<div class="rev-avatar">'+esc(initial(r.nombre))+'</div>';
     var stars  = '★'.repeat(r.estrellas)+'☆'.repeat(5-r.estrellas);
     var fecha  = fechaResenaVisible(r.fecha);
-    var imgHtml = r.imagen ? '<img class="rev-img" src="'+esc(r.imagen)+'" alt="" loading="lazy">' : '';
+    var imgHtml = r.imagen ? '<img class="rev-img" src="'+esc(r.imagen)+'" alt="" loading="lazy" style="object-position:center '+clampReviewPosition(r.imagenPosition)+'%;">' : '';
     var rid = esc(r.id);
     var respSection =
       '<div class="rev-resp-section">'+

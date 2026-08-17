@@ -2034,6 +2034,11 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
         } catch (_) { return ''; }
       }
 
+      function reviewPosition(valor) {
+        if (valor == null || valor === '') return 50;
+        var n = Number(valor);
+        return Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : 50;
+      }
       function fechaResena(valor) {
         if (!valor) return '';
         var fecha = String(valor).trim();
@@ -2066,7 +2071,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
             var fotoUrl = reviewUrl(r.foto);
             var reviewImageUrl = reviewUrl(r.imagen);
             var avatar = fotoUrl
-              ? '<img src="'+fotoUrl+'" alt="'+reviewHtml(r.nombre)+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;">'
+              ? '<img src="'+fotoUrl+'" alt="'+reviewHtml(r.nombre)+'" style="width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:center '+reviewPosition(r.fotoPosition)+'%;flex-shrink:0;">'
               : '<div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#F08A7C,#D9695B);display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:900;color:white;flex-shrink:0;">'+reviewHtml(String(r.nombre || '?').charAt(0).toUpperCase())+'</div>';
             var rating = Math.max(1, Math.min(5, Number(r.estrellas) || 5));
             var stars = '<span style="color:#FFB400;font-size:.95rem;letter-spacing:.04em;">'+'★'.repeat(rating)+'</span>'+(rating<5?'<span style="color:#ddd;font-size:.95rem;">'+'★'.repeat(5-rating)+'</span>':'');
@@ -2095,7 +2100,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
               '</div>'+
               '<div>'+stars+'</div>'+
               '<p style="font-size:.84rem;color:#555;line-height:1.6;margin:0;">'+reviewHtml(r.texto)+'</p>'+
-              (reviewImageUrl?'<img src="'+reviewImageUrl+'" alt="" style="width:100%;max-height:160px;object-fit:cover;border-radius:9px;" loading="lazy">':'')+
+              (reviewImageUrl?'<img src="'+reviewImageUrl+'" alt="" style="width:100%;height:160px;object-fit:cover;object-position:center '+reviewPosition(r.imagenPosition)+'%;border-radius:9px;" loading="lazy">':'')+
               respHtml+
             '</div>';
           }).join('');

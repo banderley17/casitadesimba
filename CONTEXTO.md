@@ -200,3 +200,10 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - La pestana Publicidad del admin queda oculta por defecto y solo se muestra cuando Meta confirma ok:true y al menos una campana con estado ACTIVE.
 - Si Meta devuelve error de token, respuesta vacia o fallo de conexion, no se muestra la pestana ni un mensaje de error al usuario.
 - Verificado con la respuesta actual de Meta: sesion invalidada, por lo que Publicidad queda correctamente oculta. Despliegue Vercel READY y sincronizacion con GitHub completada.
+
+## Actualizacion 2026-08-17 - Encuadre de reseñas
+
+- Las fotos de perfil y las imágenes adjuntas a las reseñas ahora tienen un control de encuadre vertical en el admin.
+- El valor se guarda junto a cada reseña mediante `fotoPosition` e `imagenPosition`, con valores seguros entre 0 y 100.
+- La web pública y la vista del admin aplican el mismo encuadre; las reseñas antiguas usan 50% como valor predeterminado.
+- Verificación: sintaxis de `api/reviews.js` y de los scripts inline de `admin.html` e `index.html` correcta.
