@@ -216,3 +216,11 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - Se eliminó el panel oculto de la web pública y se retiraron del despliegue las copias antiguas del panel. Se conservaron localmente fuera del repositorio en `C:\Users\bande\Desktop\casitadesimba-local-backups\2026-08-17-security-cleanup`.
 - La clave administrativa expuesta anteriormente debe considerarse invalidada. La nueva clave se gestiona únicamente como hash PBKDF2 en Vercel y no se escribe en archivos de contexto.
 - No existe seguridad absoluta; queda como mejora futura migrar el JavaScript inline para poder aplicar una CSP estricta con `script-src` sin romper la web actual.
+
+## Verificación de producción 2026-08-17
+
+- Despliegue de seguridad publicado en GitHub Pages y en `https://casitadesimba.vercel.app`.
+- Pruebas reales: APIs públicas 200; clientes y escrituras sin sesión 401; origen ajeno 403; acceso con sesión 200; cierre de sesión e invalidación posterior correctos.
+- La cookie administrativa se confirmó con `HttpOnly`, `Secure` y `SameSite=Strict`; la firma protegida de Cloudinary respondió 200.
+- En el dominio público, `admin.html` ya redirige al panel seguro y no contiene credenciales; `CONTEXTO.md` y las copias antiguas responden 404.
+- A petición del usuario se conservó la contraseña histórica, pero solo como hash PBKDF2 en Vercel. Sigue recomendándose cambiarla porque estuvo expuesta en versiones anteriores.

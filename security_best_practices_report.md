@@ -60,3 +60,13 @@ La aplicación queda sustancialmente endurecida, pero no existe la “seguridad 
 - Validación de `vercel.json`.
 - Revisión de que las rutas administrativas invocan `requireAdmin()` y las mutaciones usan CSRF.
 
+## Validación en producción
+
++- Acceso público a reseñas y tarifas: HTTP 200.
++- Acceso a clientes y escrituras sin sesión: HTTP 401.
++- Intento de inicio desde un origen ajeno: HTTP 403.
++- Inicio con la contraseña conservada y acceso autenticado: HTTP 200.
++- Cookie confirmada con `HttpOnly`, `Secure` y `SameSite=Strict`.
++- Configuración y firma de Cloudinary con sesión/CSRF: HTTP 200.
++- Tras cerrar sesión, el acceso protegido vuelve a HTTP 401.
++- En GitHub Pages, el panel público es solo una redirección sin credenciales y los archivos operativos/copia antigua responden HTTP 404.
