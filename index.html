@@ -993,6 +993,7 @@ h2 {
 }
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
 .form-group { margin-bottom:1rem; }
+.form-honeypot { position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden; }
 .form-group label {
   display:block; font-size:.82rem; font-weight:800;
   color:var(--oscuro); margin-bottom:.35rem; text-transform:uppercase; letter-spacing:.04em;
@@ -2068,6 +2069,10 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <div class="formulario reveal">
         <h3>🐶 Datos de la reserva</h3>
         <form id="reservaForm" onsubmit="enviar(event)">
+          <div class="form-honeypot" aria-hidden="true">
+            <label for="fwebsite">No rellenar este campo</label>
+            <input type="text" id="fwebsite" name="website" tabindex="-1" autocomplete="off">
+          </div>
           <div class="form-row">
             <div class="form-group">
               <label for="fn">Tu nombre</label>
@@ -2495,6 +2500,7 @@ function enviar(e) {
   var desc    = document.getElementById('fdesc').value.trim();
 
   var vacunas    = document.getElementById('fvacunas').value;
+  var website    = document.getElementById('fwebsite').value;
   var invitados  = document.getElementById('finvitados').value;
   var hora       = document.getElementById('fhora').value;
   var durEl      = document.getElementById('fduracion');
@@ -2511,6 +2517,17 @@ function enviar(e) {
     msg += '⏱️ *Duración:* ' + duracion + '\n';
   if (salida && document.getElementById('fsalida-group').style.display !== 'none')
     msg += '📅 *Salida:* ' + salida + '\n';
+  // Guarda una consulta en el panel sin bloquear la apertura de WhatsApp.
+  fetch('https://casitadesimba.vercel.app/api/public-lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    keepalive: true,
+    body: JSON.stringify({
+      nombre: n, tel: tel, mascota: perro, servicio: serv,
+      entrada: entrada, salida: salida, hora: hora, duracion: duracion,
+      invitados: invitados, vacunas: vacunas, descripcion: desc, website: website
+    })
+  }).catch(function(){});
   if (invitados) msg += '🐕 *Invitados peludos:* ' + invitados + '\n';
   if (vacunas) msg += '💉 *Vacunas y desparasitaciones al día:* ' + (vacunas === 'si' ? 'Sí ✅' : 'No ❌') + '\n';
   if (desc)    msg += '💬 *Sobre mi perro:* ' + desc;

@@ -234,3 +234,9 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - `api/ads-stats.js` y `api/track.js` usan la misma version configurable de Graph para mantener coherentes estadisticas y eventos.
 - Verificado localmente: `node --check` correcto en las tres APIs y `git diff --check` sin errores.
 - Pendiente para produccion: comprobar que `FB_ADS_TOKEN` vigente y `META_GRAPH_API_VERSION` (si se quiere fijar otra) estan definidos en las variables de Vercel y volver a desplegar.
+## Actualizacion 2026-08-26 - Reservas web a Clientes
+
+- El formulario publico de reserva guarda ahora cada solicitud valida como `consulta` en Clientes antes de abrir WhatsApp. Se conservan nombre, telefono, perro, servicio y los detalles de la solicitud.
+- Se evita crear duplicados por telefono y se mantiene el estado que Helena ya haya asignado a un contacto existente.
+- El endpoint publico `api/public-lead.js` restringe origenes permitidos, valida el contenido, limita solicitudes y utiliza un campo trampa contra bots. No expone credenciales.
+- Verificacion local: sintaxis correcta de la API y `git diff --check` limpio. Pendiente: desplegar en Vercel/GitHub Pages y realizar una reserva de prueba para confirmar que aparece en el panel y en los eventos de Meta.
