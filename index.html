@@ -3320,6 +3320,9 @@ function sendCAPI(event_name, custom_data, event_id) {
   fetch(CAPI_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    // WhatsApp puede abrirse inmediatamente después del clic: keepalive evita
+    // que el navegador cancele la petición de conversión durante la navegación.
+    keepalive: true,
     body: JSON.stringify({
       event_name: event_name,
       event_id: event_id,
@@ -3365,7 +3368,10 @@ document.addEventListener('click', function(e) {
 var bookingForm = document.getElementById('reservaForm');
 if (bookingForm) {
   bookingForm.addEventListener('submit', function() {
-    _trackPair('Lead', {});
+    // Solo medimos una solicitud completa. Así Meta no aprende de intentos
+    // fallidos ni de formularios incompletos.
+    if (!bookingForm.checkValidity()) return;
+    _trackPair('Lead', { content_name: document.getElementById('fservicio').value || 'Reserva' });
   });
 }
 

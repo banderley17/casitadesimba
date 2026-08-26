@@ -240,3 +240,11 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - Se evita crear duplicados por telefono y se mantiene el estado que Helena ya haya asignado a un contacto existente.
 - El endpoint publico `api/public-lead.js` restringe origenes permitidos, valida el contenido, limita solicitudes y utiliza un campo trampa contra bots. No expone credenciales.
 - Verificacion local: sintaxis correcta de la API y `git diff --check` limpio. Pendiente: desplegar en Vercel/GitHub Pages y realizar una reserva de prueba para confirmar que aparece en el panel y en los eventos de Meta.
+
+## Actualización 2026-08-26 - Medición Meta de reservas
+
+- Se verificó el recorrido real del píxel 4281036645446757: navegador y CAPI envían PageView, Contact y Lead con el mismo event_id para que Meta deduplique correctamente.
+- La API CAPI se comprobó en producción con una prueba técnica y respondió 200 { ok: true }; el token y el endpoint están operativos.
+- El envío CAPI usa ahora keepalive para no perder conversiones al abrir WhatsApp. El evento Lead solo se dispara si el formulario de reserva es válido e identifica el servicio elegido.
+- Para campañas nuevas de esta guardería, usar objetivo Ventas, ubicación Sitio web, conjunto de datos La Casita de Simba y evento de conversión Lead. No usar Compra hasta disponer de una confirmación/pago real dentro de la web.
+- Pendiente de comprobación visual en Meta: en Probar eventos, abrir la web y enviar una reserva real; deben aparecer PageView, Lead y Contact.
