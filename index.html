@@ -2680,7 +2680,6 @@ function enviar(e) {
 (function() {
   const bubble = document.getElementById('waBubble');
   const closeBtn = document.getElementById('waBubbleClose');
-  const waBtn = document.querySelector('.wa-float');
   let shown = false;
 
   setTimeout(() => {
@@ -2693,10 +2692,7 @@ function enviar(e) {
     bubble.classList.remove('show');
   });
 
-  // Al pulsar el botón flotante también abre el bubble si no estaba visible
-  waBtn.addEventListener('click', (e) => {
-    if (!shown) { e.preventDefault(); bubble.classList.add('show'); shown = true; }
-  });
+
 })();
 
 // ── PRECIOS (inauguración + tarifas claras) — editables desde el admin (un solo idioma) ──

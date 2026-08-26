@@ -248,3 +248,8 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - El envío CAPI usa ahora keepalive para no perder conversiones al abrir WhatsApp. El evento Lead solo se dispara si el formulario de reserva es válido e identifica el servicio elegido.
 - Para campañas nuevas de esta guardería, usar objetivo Ventas, ubicación Sitio web, conjunto de datos La Casita de Simba y evento de conversión Lead. No usar Compra hasta disponer de una confirmación/pago real dentro de la web.
 - Pendiente de comprobación visual en Meta: en Probar eventos, abrir la web y enviar una reserva real; deben aparecer PageView, Lead y Contact.
+
+## Actualización 2026-08-26 - Botón flotante WhatsApp
+
+- Se eliminó el bloqueo del primer clic del icono flotante de WhatsApp. Ahora abre directamente la conversación con el número del negocio y el mensaje preparado; la burbuja informativa sigue pudiendo cerrarse de forma independiente.
+- Verificación local: enlace publicado wa.me/34613753680, diff sin errores y sintaxis de APIs correcta. Pendiente: comprobar el clic una vez propagada la publicación.
