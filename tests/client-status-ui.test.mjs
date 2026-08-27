@@ -6,10 +6,13 @@ const adminHtml = await readFile(new URL('../admin.html', import.meta.url), 'utf
 
 test('the quick status control cannot move a sale to excluded', () => {
   assert.doesNotMatch(adminHtml, /c\.estado==='consulta'\?'cliente':c\.estado==='cliente'\?'excluido':'consulta'/);
-  assert.match(adminHtml, /var nv = c\.estado==='excluido'\?'consulta':'cliente';/);
+  assert.doesNotMatch(adminHtml, /c\.estado==='excluido'\?'consulta'/);
+  assert.match(adminHtml, /if \(c\.estado !== 'consulta'\) return;/);
+  assert.match(adminHtml, /var nv = 'cliente';/);
 });
 
-test('the sale status button is disabled instead of cycling to CV', () => {
-  assert.match(adminHtml, /c\.estado==='cliente'\?'disabled':'data-toggle="'\+c\.id\+'"'/);
+test('only consultations expose an explicit button to pass to sale', () => {
+  assert.match(adminHtml, /c\.estado==='consulta'\?'data-toggle="'\+c\.id\+'"':'disabled'/);
+  assert.match(adminHtml, /c\.estado==='cliente'\?'✅ Venta':c\.estado==='excluido'\?'🚫 Excluido':'💬 Pasar a venta'/);
   assert.doesNotMatch(adminHtml, /Marcado como CV/);
 });

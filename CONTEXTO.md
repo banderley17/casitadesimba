@@ -273,3 +273,9 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - Se eliminó del listado el cambio rápido `Venta → CV/Excluido`, que provocaba que una venta desapareciera del filtro Ventas al pulsar su etiqueta.
 - Las ventas muestran ahora su estado sin acción de cambio; `Excluir` sigue disponible únicamente como opción explícita del formulario. Las consultas pueden pasar a venta y los excluidos a consulta desde sus etiquetas.
 - Despliegue Vercel READY: `dpl_2FpaTkESfQNSZ94VWAfwXkF8pGgQ`, alias `https://casitadesimba.vercel.app`; GitHub Pages y `lacasitadesimba.es` ya sirven el ajuste tras la propagación. Verificación HTTP: las tres copias contienen el botón de Venta desactivado y no contienen el aviso antiguo de CV.
+
+## Actualización 2026-08-27 — Estado de cliente bloqueado
+
+- El listado muestra `Consulta` como botón explícito `💬 Pasar a venta`. Solo esa acción permite promocionar una consulta después del pago.
+- Las fichas `Venta` y `Excluido` muestran su estado sin acción de cambio, evitando que una venta desaparezca del filtro por un clic accidental. La selección de estado sigue disponible al crear un contacto nuevo.
+- Verificación: 5 pruebas pasan, sintaxis de APIs correcta y las copias Vercel/GitHub/dominio público sirven el texto nuevo. Despliegue Vercel READY: `dpl_5gcuF8n7xpVqLEzyyhG9JGsFXTud`. Pendiente sincronizar este último ajuste con GitHub Pages.
