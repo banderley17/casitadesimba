@@ -278,4 +278,4 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 
 - El listado muestra `Consulta` como botón explícito `💬 Pasar a venta`. Solo esa acción permite promocionar una consulta después del pago.
 - Las fichas `Venta` y `Excluido` muestran su estado sin acción de cambio, evitando que una venta desaparezca del filtro por un clic accidental. La selección de estado sigue disponible al crear un contacto nuevo.
-- Verificación: 5 pruebas pasan, sintaxis de APIs correcta y las copias Vercel/GitHub/dominio público sirven el texto nuevo. Despliegue Vercel READY: `dpl_5gcuF8n7xpVqLEzyyhG9JGsFXTud`. Pendiente sincronizar este último ajuste con GitHub Pages.
+- Verificación: 5 pruebas pasan, sintaxis de APIs correcta y las copias Vercel/GitHub/dominio público sirven el texto nuevo. Despliegue Vercel READY: `dpl_5gcuF8n7xpVqLEzyyhG9JGsFXTud`; GitHub Pages ya sincronizado tras la propagación.
