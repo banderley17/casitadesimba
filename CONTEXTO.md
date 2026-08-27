@@ -253,3 +253,17 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 
 - Se eliminó el bloqueo del primer clic del icono flotante de WhatsApp. Ahora abre directamente la conversación con el número del negocio y el mensaje preparado; la burbuja informativa sigue pudiendo cerrarse de forma independiente.
 - Verificación local: enlace publicado wa.me/34613753680, diff sin errores y sintaxis de APIs correcta. Pendiente: comprobar el clic una vez propagada la publicación.
+
+## Actualización 2026-08-26 — Auditoría integral
+
+- Auditoría realizada sin modificar la aplicación. Resultado: no se identificó una vía crítica conocida para acceder al panel ni modificar datos sin sesión válida; autenticación, CSRF, validación, CORS y límites de peticiones están activos.
+- Pendientes priorizados documentados en `security_best_practices_report.md`: consentimiento y textos de privacidad por Meta Pixel/CAPI; cabeceras del dominio público; concurrencia de la lista de clientes; CSP parcial; correcciones SEO y accesibilidad.
+- No se registraron secretos, contraseñas ni tokens en este contexto.
+
+## Actualización 2026-08-27 — Compras confirmadas en Meta
+
+- El panel mantiene el flujo existente de Clientes: `estado: cliente` representa una venta cerrada/pago confirmado. La vista revisada mostró 43 consultas, 5 ventas y 7 excluidos.
+- Al crear un contacto directamente como venta o cambiar una consulta a venta, `api/clients.js` envía un único evento `Purchase` a Meta CAPI usando `FB_CAPI_TOKEN`, teléfono hasheado y el servicio como `content_name`.
+- El evento queda identificado por cliente y se guardan marcas internas de enviado o pendiente para evitar duplicados y permitir reintentos al editar un pago pendiente. Las cinco ventas existentes no se reenvían como compras actuales.
+- Se añadió `lib/meta-purchase.mjs` con pruebas en `tests/meta-purchase.test.mjs`. Verificado con `node --test --test-isolation=none`, `node --check` de las APIs y `git diff --check`.
+- Despliegue Vercel producción READY: `dpl_5UJUzAmW1etRkBE2KVfUYgiHnDgb`, alias `https://casitadesimba.vercel.app`. Pendiente sincronizar el commit con GitHub Pages y probar un pago nuevo en Meta Events Manager.

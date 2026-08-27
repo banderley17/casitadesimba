@@ -1,4 +1,5 @@
 import { cleanId, cleanText, jsonResponse, optionsResponse, readJson, requireAdmin } from '../lib/security.js';
+import { sendPurchaseEvent, shouldTrackPurchase } from '../lib/meta-purchase.mjs';
 
 export const config = { runtime: 'edge' };
 const METHODS = 'GET, POST, PATCH, DELETE, OPTIONS';
@@ -63,9 +64,30 @@ export default async function handler(req) {
         fecha: cleanDate(body.fecha),
         notas: cleanText(body.notas, 1_500),
       };
+      let metaPurchase = 'not-needed';
+      if (client.estado === 'cliente') {
+        client.purchaseEventId = `purchase:${client.id}`;
+        client.purchasePendingAt = new Date().toISOString();
+      }
       clients.unshift(client);
       await kvSet('client_list', JSON.stringify(clients.slice(0, 2_000)));
-      return jsonResponse(req, client, 201, METHODS, { csrf: true });
+      if (client.purchaseEventId && client.purchasePendingAt) {
+        try {
+          await sendPurchaseEvent({
+            client,
+            eventId: client.purchaseEventId,
+            token: process.env.FB_CAPI_TOKEN,
+            graphVersion: process.env.META_GRAPH_API_VERSION || 'v24.0',
+          });
+          client.purchaseTrackedAt = new Date().toISOString();
+          delete client.purchasePendingAt;
+          await kvSet('client_list', JSON.stringify(clients.slice(0, 2_000)));
+          metaPurchase = 'sent';
+        } catch (_) {
+          metaPurchase = 'pending';
+        }
+      }
+      return jsonResponse(req, { ...client, metaPurchase }, 201, METHODS, { csrf: true });
     }
 
     const id = cleanId(url.searchParams.get('id') || '');
@@ -80,7 +102,8 @@ export default async function handler(req) {
 
     if (req.method === 'PATCH') {
       const body = await readJson(req, 8_000);
-      const next = { ...clients[index] };
+      const previous = clients[index];
+      const next = { ...previous };
       if (Object.hasOwn(body, 'estado')) {
         if (!STATES.has(body.estado)) throw new Error('INVALID_INPUT');
         next.estado = body.estado;
@@ -91,9 +114,34 @@ export default async function handler(req) {
       if (Object.hasOwn(body, 'servicio')) next.servicio = cleanText(body.servicio, 100);
       if (Object.hasOwn(body, 'notas')) next.notas = cleanText(body.notas, 1_500);
       if (Object.hasOwn(body, 'fecha')) next.fecha = cleanDate(body.fecha);
+      if (previous.estado === 'cliente' && next.estado !== 'cliente' && !previous.purchaseTrackedAt && !previous.purchaseEventId) {
+        next.purchaseLegacy = true;
+      }
+      const trackPurchase = shouldTrackPurchase(previous, next);
+      if (trackPurchase && !next.purchaseEventId) {
+        next.purchaseEventId = `purchase:${next.id}`;
+        next.purchasePendingAt = new Date().toISOString();
+      }
       clients[index] = next;
       await kvSet('client_list', JSON.stringify(clients));
-      return jsonResponse(req, next, 200, METHODS, { csrf: true });
+      let metaPurchase = 'not-needed';
+      if (trackPurchase && next.purchaseEventId && next.purchasePendingAt) {
+        try {
+          await sendPurchaseEvent({
+            client: next,
+            eventId: next.purchaseEventId,
+            token: process.env.FB_CAPI_TOKEN,
+            graphVersion: process.env.META_GRAPH_API_VERSION || 'v24.0',
+          });
+          next.purchaseTrackedAt = new Date().toISOString();
+          delete next.purchasePendingAt;
+          await kvSet('client_list', JSON.stringify(clients));
+          metaPurchase = 'sent';
+        } catch (_) {
+          metaPurchase = 'pending';
+        }
+      }
+      return jsonResponse(req, { ...next, metaPurchase }, 200, METHODS, { csrf: true });
     }
 
     return jsonResponse(req, { ok: false, error: 'Método no permitido' }, 405, METHODS, { csrf: true });
