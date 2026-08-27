@@ -267,3 +267,9 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - El evento queda identificado por cliente y se guardan marcas internas de enviado o pendiente para evitar duplicados y permitir reintentos al editar un pago pendiente. Las cinco ventas existentes no se reenvían como compras actuales.
 - Se añadió `lib/meta-purchase.mjs` con pruebas en `tests/meta-purchase.test.mjs`. Verificado con `node --test --test-isolation=none`, `node --check` de las APIs y `git diff --check`.
 - Despliegue Vercel producción READY: `dpl_5UJUzAmW1etRkBE2KVfUYgiHnDgb`, alias `https://casitadesimba.vercel.app`; commit `fa41df9` sincronizado con GitHub Pages. La comprobación HTTP confirmó el panel actualizado en Vercel, GitHub y el dominio público; APIs protegidas: `clients` 401 y rutas de evento 405 sin sesión. Pendiente probar un pago nuevo en Meta Events Manager.
+
+## Actualización 2026-08-27 — Estado de ventas del panel
+
+- Se eliminó del listado el cambio rápido `Venta → CV/Excluido`, que provocaba que una venta desapareciera del filtro Ventas al pulsar su etiqueta.
+- Las ventas muestran ahora su estado sin acción de cambio; `Excluir` sigue disponible únicamente como opción explícita del formulario. Las consultas pueden pasar a venta y los excluidos a consulta desde sus etiquetas.
+- Despliegue Vercel READY: `dpl_2FpaTkESfQNSZ94VWAfwXkF8pGgQ`, alias `https://casitadesimba.vercel.app`. Pendiente sincronizar este ajuste con GitHub Pages.
