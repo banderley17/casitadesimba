@@ -279,3 +279,23 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - El listado muestra `Consulta` como botón explícito `💬 Pasar a venta`. Solo esa acción permite promocionar una consulta después del pago.
 - Las fichas `Venta` y `Excluido` muestran su estado sin acción de cambio, evitando que una venta desaparezca del filtro por un clic accidental. La selección de estado sigue disponible al crear un contacto nuevo.
 - Verificación: 5 pruebas pasan, sintaxis de APIs correcta y las copias Vercel/GitHub/dominio público sirven el texto nuevo. Despliegue Vercel READY: `dpl_5gcuF8n7xpVqLEzyyhG9JGsFXTud`; GitHub Pages ya sincronizado tras la propagación.
+
+## Incidencia 2026-08-27 — Pestaña Publicidad oculta
+
+- La pestaña solo se muestra si `api/ads-stats.js` puede leer Meta y recibe al menos una campaña con estado `ACTIVE`; no depende del píxel ni de que ya existan resultados.
+- `FB_ADS_TOKEN` sigue configurado en Vercel, pero su renovación quedó pendiente y el contexto anterior registraba su caducidad aproximada el 14 de agosto. Si tras recargar el panel la pestaña no aparece, renovar ese token con permisos `ads_read` y `ads_management` y actualizarlo en Vercel; la campaña publicada no se detiene por esta incidencia, solo falla la lectura dentro del panel.
+
+## Incidencia 2026-08-31 - Galeria movil
+
+- La galeria dinamica podia quedar invisible en una sola columna: el contenedor largo no alcanzaba el 10% de interseccion exigido por `IntersectionObserver`, mientras `.reveal` mantenia `opacity:0`.
+- Se ajusto el umbral del observador a `0` para revelar la seccion en cuanto entra en el viewport, tambien en moviles con muchas fotos.
+- Verificacion local: regresion de visibilidad movil y suite Node pasan. Pendiente publicar el cambio en GitHub Pages y Vercel cuando se autorice el despliegue.
+
+## Actualizacion 2026-08-31 - Renovacion FB_ADS_TOKEN
+
+- Se renovo el token `FB_ADS_TOKEN` en Vercel. El anterior habia expirado (~14 agosto 2026), lo que ocultaba la pestana Publicidad del admin.
+- App: Casita de Simba Sync (ID 898871789900207). Se uso Graph API Explorer para generar token de corta duracion con permisos ads_management + ads_read, y se intercambio por token largo via endpoint oauth/access_token con app secret.
+- Token nuevo verificado: lee campañas activas (Venta Simba ACTIVE, Video-Imagen PAUSED).
+- Despliegue Vercel READY: dpl_8DNeRpy9qVWbx8Nd8TzyTrNp8q2j, aliasado en casitadesimba.vercel.app.
+- Proximo vencimiento estimado del token: ~60 dias desde hoy (~noviembre 2026). Renovar antes de esa fecha.
+- App secret no se almacena en este archivo ni en el repositorio.
