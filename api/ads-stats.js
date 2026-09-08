@@ -1,10 +1,11 @@
-import { jsonResponse, optionsResponse, requireAdmin } from '../lib/security.js';
+import { jsonResponse, optionsResponse, redisCommand, requireAdmin } from '../lib/security.js';
 
 export const config = { runtime: 'edge' };
 const METHODS = 'GET, OPTIONS';
 const GRAPH_VERSION = process.env.META_GRAPH_API_VERSION || 'v24.0';
 const GRAPH = `https://graph.facebook.com/${GRAPH_VERSION}`;
 const AD_ACCOUNT = 'act_1513350607502989';
+const ADS_CACHE_SECONDS = 60;
 const PERIODS = new Set(['today', 'yesterday', 'last_7d', 'last_14d', 'last_30d', 'this_month', 'last_month']);
 
 async function graph(path, token) {
@@ -31,10 +32,19 @@ export default async function handler(req) {
   if (!token) return jsonResponse(req, { ok: false, error: 'Meta no configurado' }, 503, METHODS);
   const requested = new URL(req.url).searchParams.get('period') || 'last_7d';
   const period = PERIODS.has(requested) ? requested : 'last_7d';
+  const cacheKey = `casita_ads_stats:${period}`;
   try {
+    const cached = await redisCommand(['GET', cacheKey]);
+    if (cached) {
+      try { return jsonResponse(req, JSON.parse(cached), 200, METHODS); } catch (_) { /* Fetch fresh data if a stale cache entry is malformed. */ }
+    }
     const campaignsData = await graph(`/${AD_ACCOUNT}/campaigns?fields=id,name,status,daily_budget&limit=100`, token);
     const active = (campaignsData.data || []).filter((campaign) => campaign.status === 'ACTIVE').slice(0, 50);
-    if (!active.length) return jsonResponse(req, { ok: true, period, campaigns: [], ads: [] }, 200, METHODS);
+    if (!active.length) {
+      const payload = { ok: true, period, campaigns: [], ads: [] };
+      await redisCommand(['SETEX', cacheKey, ADS_CACHE_SECONDS, JSON.stringify(payload)]);
+      return jsonResponse(req, payload, 200, METHODS);
+    }
     const time = period === 'today' ? todayRange() : `date_preset=${period}`;
     const campaigns = await Promise.all(active.map(async (campaign) => {
       const insight = await graph(`/${campaign.id}/insights?fields=impressions,reach,frequency,spend,actions&${time}`, token);
@@ -54,7 +64,9 @@ export default async function handler(req) {
       }));
       return { campaign: String(campaign.name || '').slice(0, 200), ads: items };
     }));
-    return jsonResponse(req, { ok: true, period, campaigns, ads }, 200, METHODS);
+    const payload = { ok: true, period, campaigns, ads };
+    await redisCommand(['SETEX', cacheKey, ADS_CACHE_SECONDS, JSON.stringify(payload)]);
+    return jsonResponse(req, payload, 200, METHODS);
   } catch (error) {
     console.error('ads-stats Meta request failed', { status: error.metaStatus || null, code: error.metaCode || null, subcode: error.metaSubcode || null });
     return jsonResponse(req, { ok: false, error: 'No se pudieron consultar las campañas' }, 502, METHODS);
