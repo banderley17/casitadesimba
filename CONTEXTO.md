@@ -306,3 +306,9 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - El panel ya no ocultará Publicidad si Meta o la red fallan de forma temporal; conservará el acceso y mostrará un aviso para reintentar. Solo se oculta cuando Meta confirma que no hay campañas activas.
 - Validación local: la prueba de regresión falló antes del ajuste y después pasó; suite Node completa 8/8 y `git diff --check` sin errores.
 - GitHub Pages se sincronizó mediante el commit `7615892`; queda su propagación habitual. El CLI local de Vercel no tiene sesión autorizada y el enlace `.vercel` carece de `project.json`; el intento de despliegue no modificó producción. Volver a iniciar sesión en la cuenta Vercel propietaria antes de desplegar allí.
+
+## Incidencia 2026-09-08 - Límite temporal de Meta Ads
+
+- Se reprodujo la lectura: Meta devolvió HTTP 400, código 17 y subcódigo 2446079 en `/api/ads-stats`, que indica limitación temporal de solicitudes. La campaña no está pausada; las métricas de hoy funcionaban antes de alcanzar ese límite.
+- Se añadieron trazas saneadas en Vercel y caché en Upstash por período durante 60 segundos, para que abrir o pulsar varias veces Publicidad no multiplique llamadas a Meta. Commits `55aa77c` y `8bf76ed`, desplegados en Vercel Production y GitHub Pages; suite Node 10/10 y sintaxis de APIs correcta.
+- En la comprobación inmediatamente posterior Meta mantenía el límite, por lo que el panel muestra el aviso temporal. Esperar a que Meta libere la cuota y volver a abrir la pestaña; la caché evita repetir la causa.
