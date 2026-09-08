@@ -10,7 +10,13 @@ const PERIODS = new Set(['today', 'yesterday', 'last_7d', 'last_14d', 'last_30d'
 async function graph(path, token) {
   const response = await fetch(`${GRAPH}${path}`, { headers: { Authorization: `Bearer ${token}` } });
   const data = await response.json();
-  if (!response.ok || data.error) throw new Error('META_ERROR');
+  if (!response.ok || data.error) {
+    const error = new Error('META_ERROR');
+    error.metaStatus = response.status;
+    error.metaCode = data?.error?.code;
+    error.metaSubcode = data?.error?.error_subcode;
+    throw error;
+  }
   return data;
 }
 function todayRange() { const date = new Date().toISOString().slice(0, 10); return `time_range=${encodeURIComponent(JSON.stringify({ since: date, until: date }))}`; }
@@ -49,7 +55,8 @@ export default async function handler(req) {
       return { campaign: String(campaign.name || '').slice(0, 200), ads: items };
     }));
     return jsonResponse(req, { ok: true, period, campaigns, ads }, 200, METHODS);
-  } catch (_) {
+  } catch (error) {
+    console.error('ads-stats Meta request failed', { status: error.metaStatus || null, code: error.metaCode || null, subcode: error.metaSubcode || null });
     return jsonResponse(req, { ok: false, error: 'No se pudieron consultar las campañas' }, 502, METHODS);
   }
 }
