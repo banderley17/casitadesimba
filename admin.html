@@ -769,11 +769,17 @@ function boot() {
 function checkAdsActive() {
   apiFetch('/ads-stats?period=today').then(function(r){ return r.json(); }).then(function(d){
     var btn = document.getElementById('tab-ads-btn');
-    if (!(d && d.ok && Array.isArray(d.campaigns) && d.campaigns.length)) {
+    if (!d || !d.ok) {
+      keepAdsTabVisibleOnReadFailure();
+    } else if (!Array.isArray(d.campaigns) || !d.campaigns.length) {
       btn.style.display = 'none';
       if (btn.classList.contains('active')) { showTab('stats'); loadStats(); }
     } else { btn.style.display = ''; }
-  }).catch(function(){});
+  }).catch(function(){ keepAdsTabVisibleOnReadFailure(); });
+}
+
+function keepAdsTabVisibleOnReadFailure() {
+  document.getElementById('tab-ads-btn').style.display = '';
 }
 
 document.getElementById('logout-btn').addEventListener('click', function() {
@@ -861,7 +867,7 @@ function loadAds(period) {
     .then(function(res){
       var d  = res[0];
       var cl = Array.isArray(res[1]) ? res[1] : [];
-      if (!d || !d.ok) { document.getElementById('tab-ads-btn').style.display = 'none'; if (document.getElementById('tab-ads-btn').classList.contains('active')) { showTab('stats'); loadStats(); } return; }
+      if (!d || !d.ok) { keepAdsTabVisibleOnReadFailure(); document.getElementById('ads-body').innerHTML = '<div class="ads-empty">No se pudieron actualizar los datos de Meta. Reintenta en unos segundos.</div>'; return; }
       if (!Array.isArray(d.campaigns) || !d.campaigns.length) { var adsTab = document.getElementById('tab-ads-btn'); adsTab.style.display = 'none'; if (adsTab.classList.contains('active')) { showTab('stats'); loadStats(); }
         document.getElementById('ads-body').innerHTML = '<div class="ads-empty">⏸ No hay campañas activas ahora mismo.</div>';
         return;
@@ -877,7 +883,7 @@ function loadAds(period) {
       var html = d.campaigns.map(function(c){ return renderCamp(c, d.period, count); }).join('');
       document.getElementById('ads-body').innerHTML = html;
     })
-    .catch(function(){ document.getElementById('tab-ads-btn').style.display = 'none'; });
+    .catch(function(){ keepAdsTabVisibleOnReadFailure(); document.getElementById('ads-body').innerHTML = '<div class="ads-empty">No se pudieron actualizar los datos de Meta. Reintenta en unos segundos.</div>'; });
 }
 
 function colorCtr(v) {

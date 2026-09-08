@@ -299,3 +299,10 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - Despliegue Vercel READY: dpl_8DNeRpy9qVWbx8Nd8TzyTrNp8q2j, aliasado en casitadesimba.vercel.app.
 - Proximo vencimiento estimado del token: ~60 dias desde hoy (~noviembre 2026). Renovar antes de esa fecha.
 - App secret no se almacena en este archivo ni en el repositorio.
+
+## Incidencia 2026-09-08 - Visibilidad de Publicidad
+
+- Se confirmó desde el panel de producción que la pestaña Publicidad y la campaña siguen activas: 471 impresiones, 5 clics, 0,83 € gastados y una conversación en el día de la revisión.
+- El panel ya no ocultará Publicidad si Meta o la red fallan de forma temporal; conservará el acceso y mostrará un aviso para reintentar. Solo se oculta cuando Meta confirma que no hay campañas activas.
+- Validación local: la prueba de regresión falló antes del ajuste y después pasó; suite Node completa 8/8 y `git diff --check` sin errores.
+- Pendiente de publicación: el CLI local de Vercel no tiene sesión autorizada y el enlace `.vercel` carece de `project.json`; el despliegue no modificó producción. Sincronizar GitHub Pages y volver a iniciar sesión en la cuenta Vercel propietaria antes de desplegar allí.
