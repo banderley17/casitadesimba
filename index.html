@@ -280,18 +280,24 @@ nav a:hover::after { width:100%; }
 
 /* Slideshow */
 .hero-slides {
-  position:absolute; inset:0; z-index:0;
+  position:absolute; inset:0; z-index:0; background:#1b1b24;
 }
+/* La foto nueva aparece ENCIMA de la anterior, que se queda opaca debajo
+   hasta que termina el fundido: así nunca se transparenta el fondo (sin flash). */
 .hero-slide {
   position:absolute; inset:0;
   background-size:cover; background-position:center 20%;
-  opacity:0;
-  transition:opacity 1.6s ease-in-out;
+  opacity:0; z-index:0;
   transform:scale(1.08);
 }
+.hero-slide.prev { opacity:1; z-index:1; transform:scale(1); }
 .hero-slide.active {
-  opacity:1;
+  opacity:1; z-index:2;
+  transition:opacity 1.6s ease-in-out;
   animation:kenBurns 5s ease-out forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide.active { animation:none; transform:scale(1); }
 }
 @keyframes kenBurns {
   from { transform:scale(1.08); }
@@ -2261,16 +2267,49 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
   var heroSlides = document.getElementById('heroSlides');
   var CLOUD = 'dqboccvby';
   var interval = null;
+  var FADE_MS = 1700;
 
-  function startSlideshow() {
-    var slides = heroSlides.querySelectorAll('.hero-slide');
+  function slideUrl(slide) {
+    var m = /url\(["']?([^"')]+)["']?\)/.exec(slide.style.backgroundImage || '');
+    return m ? m[1] : '';
+  }
+  // Descarga la imagen antes de mostrarla: una foto a medio cargar se ve como un destello.
+  function preload(slide) {
+    if (slide._ready) return slide._ready;
+    var url = slideUrl(slide);
+    slide._ready = new Promise(function(resolve) {
+      if (!url) return resolve(false);
+      var img = new Image();
+      img.onload = function() { slide._loaded = true; resolve(true); };
+      img.onerror = function() { resolve(false); };
+      img.src = url;
+    });
+    return slide._ready;
+  }
+  // Fundido: la anterior queda opaca debajo (.prev) hasta que la nueva la cubre del todo.
+  function show(from, to) {
+    heroSlides.querySelectorAll('.hero-slide.prev').forEach(function(s) { s.classList.remove('prev'); });
+    if (from && from !== to) { from.classList.remove('active'); from.classList.add('prev'); }
+    void to.offsetWidth;
+    to.classList.add('active');
+    if (from && from !== to) setTimeout(function() { from.classList.remove('prev'); }, FADE_MS);
+  }
+
+  function startSlideshow(list) {
+    var slides = list || Array.prototype.slice.call(heroSlides.querySelectorAll('.hero-slide'));
+    var current = heroSlides.querySelector('.hero-slide.active');
     if (!slides.length) return;
-    slides.forEach(function(s, i) { s.classList.toggle('active', i === 0); });
-    var cur = 0;
+    var cur = Math.max(0, slides.indexOf(current));
+    slides.forEach(function(s, i) { if (i !== cur) s.classList.remove('active'); });
+    if (!slides[cur].classList.contains('active')) show(null, slides[cur]);
+    if (slides.length < 2) return;
+    preload(slides[(cur + 1) % slides.length]);
     interval = setInterval(function() {
-      slides[cur].classList.remove('active');
-      cur = (cur + 1) % slides.length;
-      slides[cur].classList.add('active');
+      var next = (cur + 1) % slides.length;
+      if (!slides[next]._loaded) { preload(slides[next]); return; } // espera a que esté descargada
+      show(slides[cur], slides[next]);
+      cur = next;
+      preload(slides[(cur + 1) % slides.length]);
     }, 4500);
   }
 
@@ -2287,22 +2326,29 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
       order.forEach(function(id){ if (byId[id]) { resources.push(byId[id]); delete byId[id]; } });
       raw.forEach(function(r){ if (byId[r.public_id]) resources.push(r); });
       // All active admin cover photos can rotate; do not limit to ten.
-      if (resources.length) {
-        // Admin cover photos replace the example slides.
-        // Removed photos can never return through the old static carousel.
-        heroSlides.querySelectorAll('.hero-slide').forEach(function(slide) { slide.remove(); });
-        // Insertar las portadas activas de Cloudinary
-        resources.slice().reverse().forEach(function(r) {
-          var url = 'https://res.cloudinary.com/' + CLOUD + '/image/upload/w_1920/' + r.public_id + '.jpg';
-          var position = Number(heroPositions[r.public_id] == null ? 20 : heroPositions[r.public_id]);
-          var div = document.createElement('div');
-          div.className = 'hero-slide';
-          div.style.backgroundImage = 'url("' + url + '")';
-          div.style.backgroundPosition = 'center ' + Math.max(0, Math.min(100, position)) + '%';
-          heroSlides.insertBefore(div, heroSlides.firstChild);
-        });
-      }
-      startSlideshow();
+      if (!resources.length) return startSlideshow();
+      // Admin cover photos replace the example slides.
+      // Removed photos can never return through the old static carousel.
+      var created = resources.map(function(r) {
+        var url = 'https://res.cloudinary.com/' + CLOUD + '/image/upload/w_1920/' + r.public_id + '.jpg';
+        var position = Number(heroPositions[r.public_id] == null ? 20 : heroPositions[r.public_id]);
+        var div = document.createElement('div');
+        div.className = 'hero-slide';
+        div.style.backgroundImage = 'url("' + url + '")';
+        div.style.backgroundPosition = 'center ' + Math.max(0, Math.min(100, position)) + '%';
+        return div;
+      });
+      // La foto estática sigue visible hasta que la primera portada está descargada;
+      // entonces entra con fundido y se retiran las de ejemplo.
+      var timeout = new Promise(function(resolve) { setTimeout(resolve, 8000); });
+      Promise.race([preload(created[0]), timeout]).then(function() {
+        var old = Array.prototype.slice.call(heroSlides.querySelectorAll('.hero-slide'));
+        var visible = heroSlides.querySelector('.hero-slide.active');
+        created.forEach(function(div) { heroSlides.appendChild(div); });
+        show(visible, created[0]);
+        setTimeout(function() { old.forEach(function(s) { s.remove(); }); }, FADE_MS);
+        startSlideshow(created);
+      });
     })
     .catch(function() { startSlideshow(); });
 })();

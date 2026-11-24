@@ -339,3 +339,10 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - Eliminado el icono de patitas del final de la página que enlazaba a `/admin.html`. El panel sigue accesible escribiendo `/admin.html` directamente.
 - Verificación: suite Node 18/18.
 - Datos de la titular: nombre completo y NIF facilitados por el usuario e incorporados en `aviso-legal.html`, `politica-privacidad.html`, `politica-cookies.html` y el borrador `condiciones-contratacion.html` (el NIF se publica porque lo exige el art. 10 LSSI; no se repite aquí). Letra del NIF validada.
+
+## 2026-11-24 — Flash al cambiar las fotos del hero
+
+- Causa: el fundido cruzado bajaba la opacidad de la foto saliente a la vez que subía la entrante, así que a mitad de la transición se veía el fondo claro de la página; además, al quitar `.active` el zoom Ken Burns saltaba de golpe, y las portadas de Cloudinary sustituían a las estáticas sin esperar a que se descargara la primera.
+- Solución (`index.html`): la foto saliente queda opaca debajo (`.prev`) mientras la nueva entra encima; el contenedor tiene fondo oscuro; cada foto se precarga antes de mostrarse (si no ha cargado, se espera al siguiente ciclo), y la primera portada de Cloudinary entra con fundido sobre la estática solo cuando está descargada (máximo 8 s). Respeta `prefers-reduced-motion`.
+- Verificación: Playwright en local con la API real de portadas: cobertura mínima de las fotos = 1 durante 16 s (nunca se transparenta el fondo), las 16 portadas sustituyen a las 10 estáticas, 0 errores JS; suite Node 18/18.
+
