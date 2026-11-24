@@ -2,7 +2,7 @@
 
 **Fecha:** 24 de noviembre de 2026
 **Alcance:** web pública `lacasitadesimba.es` (repositorio local), formulario de reservas, APIs de Vercel relacionadas con datos personales e integraciones con Meta.
-**Estado:** implementado y probado en local; **publicado el 24/11/2026 a petición del usuario** (titular: María Elena; NIF y apellidos aún pendientes; condiciones de contratación sin publicar).
+**Estado:** implementado y probado en local; **publicado el 24/11/2026 a petición del usuario** (nombre completo y NIF de la titular incorporados el 24/11/2026; condiciones de contratación sin publicar).
 **Copia de seguridad previa:** `C:\Users\bande\Desktop\casitadesimba-local-backups\2026-11-24-auditoria-legal\` (incluye `index.html`, `admin.html`, `api/`, `lib/`, `tests/`, configuración, el commit de partida `eaa9cc6` y un diff de los cambios sin confirmar que ya existían).
 
 > Este informe es técnico. No sustituye el asesoramiento de un abogado. Los puntos de la sección 6 deben revisarse con un profesional antes de publicar.
@@ -21,7 +21,7 @@ La auditoría técnica sobre la web publicada detectó incumplimientos relevante
 | 4 | **Google Maps** se cargaba siempre (IP a Google y posibles cookies de google.com). | Media | Corregido (bloqueado hasta autorizar) |
 | 5 | La política de privacidad decía que el formulario recogía **email** (no lo hace), omitía los datos reales, usaba el consentimiento como base para gestionar reservas y afirmaba que **no había terceros** (sí hay: Vercel, Upstash, GitHub, Cloudinary, WhatsApp, Google, Meta). | Alta | Corregido |
 | 6 | El panel subía a Meta los **teléfonos (hash) de todos los contactos** para públicos personalizados y enviaba eventos `Purchase` con el teléfono, **sin consentimiento**. | Alta | Corregido según tu decisión: solo con consentimiento expreso |
-| 7 | El aviso legal no tenía titular, NIF ni datos exigidos por el art. 10 LSSI. | Alta | Estructura corregida; **faltan datos del titular** |
+| 7 | El aviso legal no tenía titular, NIF ni datos exigidos por el art. 10 LSSI. | Alta | Corregido (nombre completo y NIF incorporados) |
 | 8 | Google Fonts y banderas de `flagcdn.com` enviaban la IP de cada visitante a terceros. | Baja | Corregido (alojado localmente) |
 | 9 | No había condiciones de contratación pese a contratarse servicios a distancia con consumidores. | Media | Borrador preparado; **faltan condiciones reales** |
 
@@ -128,8 +128,8 @@ Recogía nombre, teléfono, nombre del perro, servicio, fechas, hora, duración,
 
 Marcados en amarillo como `[Pendiente: …]` en las páginas (buscar `class="pendiente"`):
 
-1. **Nombre y apellidos o razón social** del titular.
-2. **NIF / CIF.**
+1. ~~**Nombre y apellidos o razón social** del titular.~~ Incorporado.
+2. ~~**NIF / CIF.**~~ Incorporado.
 3. Si es sociedad: **datos del Registro Mercantil** (si es autónomo, se elimina la fila).
 4. **Inscripción como núcleo zoológico** en la Comunidad de Madrid u otra autorización exigible (si procede).
 5. Si usa **WhatsApp Business** y si las conversaciones se copian en **Google Drive o iCloud**.

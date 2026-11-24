@@ -338,4 +338,4 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - A petición del usuario se vuelve a la ilustración anterior del favicon (`images/favicon-simba.png`), rehecha: recorte cuadrado de la escena sin las bandas oscuras, esquinas rellenas con el tono del cielo, esquinas redondeadas y nitidez extra en tamaños pequeños. Genera `favicon.ico` (16/32/48) e `images/favicon-48/96/180/192.png`; versión de caché `v=20261124b`.
 - Eliminado el icono de patitas del final de la página que enlazaba a `/admin.html`. El panel sigue accesible escribiendo `/admin.html` directamente.
 - Verificación: suite Node 18/18.
-
+- Datos de la titular: nombre completo y NIF facilitados por el usuario e incorporados en `aviso-legal.html`, `politica-privacidad.html`, `politica-cookies.html` y el borrador `condiciones-contratacion.html` (el NIF se publica porque lo exige el art. 10 LSSI; no se repite aquí). Letra del NIF validada.
