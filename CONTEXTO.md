@@ -346,3 +346,11 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - Solución (`index.html`): la foto saliente queda opaca debajo (`.prev`) mientras la nueva entra encima; el contenedor tiene fondo oscuro; cada foto se precarga antes de mostrarse (si no ha cargado, se espera al siguiente ciclo), y la primera portada de Cloudinary entra con fundido sobre la estática solo cuando está descargada (máximo 8 s). Respeta `prefers-reduced-motion`.
 - Verificación: Playwright en local con la API real de portadas: cobertura mínima de las fotos = 1 durante 16 s (nunca se transparenta el fondo), las 16 portadas sustituyen a las 10 estáticas, 0 errores JS; suite Node 18/18.
 
+## 2026-11-24 — Retirada de Meta (no se usa Meta Ads)
+
+- A petición del usuario, como ahora no se usa Meta Ads: eliminado del `index.html` todo el código de Meta Pixel y API de Conversiones (eventos PageView/Contact/Lead y llamadas a `api/track`), la casilla opcional «compartir teléfono con Meta» del formulario y sus traducciones; el formulario ya no envía `consentMeta`.
+- `js/cookie-consent.js`: solo queda la categoría opcional «Funcionales (mapa)». Si un visitante tenía guardada la antigua categoría «marketing», al volver se borran `_fbp`, `_fbc` y `lastExternalReferrer*` y se reescribe su elección sin ella (se conserva la fecha original). `has()` devuelve false para categorías no existentes.
+- Políticas de privacidad y cookies actualizadas: sin Meta Pixel ni CAPI; se informa de que la categoría Publicidad existió hasta el 24/11/2026 y de la limpieza automática.
+- Backend sin cambios: `sync-audience` y el Purchase CAPI siguen filtrando por consentimiento Meta, que ya no se recoge. Consecuencia: las estadísticas del panel que dependían de `api/track` (visitas, contactos) dejan de recibir datos. Para reactivar Meta Ads, recuperar el código del commit anterior a este cambio y volver a añadir la categoría y la casilla.
+- Verificación: suite Node 19/19; Playwright local: banner sin mención a Meta, panel con 2 categorías, aceptar carga el mapa, 0 peticiones a dominios de Meta, migración del consentimiento antiguo correcta, envío del formulario sin `consentMeta` y apertura de WhatsApp; 0 errores JS.
+

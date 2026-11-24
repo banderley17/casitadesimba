@@ -10,15 +10,13 @@ test('third-party resources needing consent are not loaded directly', () => {
   assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com|flagcdn\.com/);
   assert.doesNotMatch(html, /<iframe[^>]*\ssrc="https:\/\/maps\.google/);
   assert.doesNotMatch(html, /<noscript><img[^>]*facebook\.com\/tr/);
-  const pixel = html.indexOf("connect.facebook.net/en_US/fbevents.js");
-  const gate = html.indexOf("CasitaConsent.whenGranted('marketing'");
-  assert.ok(gate > 0 && pixel > gate, 'the Meta Pixel loader must run only inside the marketing consent callback');
-  assert.equal(html.match(/connect\.facebook\.net/g).length, 1);
+  // Meta Pixel / API de Conversiones retirados al dejar de usar Meta Ads.
+  assert.doesNotMatch(html, /connect\.facebook\.net|fbq\(|api\/track/);
 });
 
-test('the booking form carries an unchecked privacy box and an optional Meta box', () => {
+test('the booking form carries an unchecked privacy box and no Meta box', () => {
   assert.match(html, /<input type="checkbox" id="fprivacidad" name="privacidad" required>/);
-  assert.match(html, /<input type="checkbox" id="fmeta" name="consent_meta">/);
+  assert.doesNotMatch(html, /id="fmeta"|consentMeta/);
   assert.match(html, /href="politica-privacidad\.html"/);
 });
 
@@ -30,4 +28,10 @@ test('the footer links every legal page and reopens cookie settings', () => {
     assert.match(doc, /data-cookie-settings/);
   }
   assert.match(html, /data-cookie-settings/);
+});
+
+test('the cookie banner only offers the map as an optional category', () => {
+  const js = readFileSync(new URL('../js/cookie-consent.js', import.meta.url), 'utf8');
+  assert.match(js, /var OPTIONAL = \['funcionales'\];/);
+  assert.doesNotMatch(js, /catRow\('marketing'\)/);
 });

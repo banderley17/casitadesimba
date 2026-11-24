@@ -11,13 +11,14 @@
  * Categorías realmente usadas por la web (auditoría 2026-11-24):
  *  - necesarias: guardar esta decisión y el idioma elegido (localStorage). Siempre activas.
  *  - funcionales: mapa de Google Maps integrado.
- *  - marketing: Meta Pixel y API de Conversiones de Meta.
- * No hay analítica: esa categoría no se muestra.
+ * No hay analítica ni publicidad: esas categorías no se muestran.
+ * (Hasta el 24/11/2026 existía «marketing» para Meta Pixel; se retiró al dejar
+ * de usar Meta Ads. Si queda guardada de antes, se ignora y se limpia.)
  *
  * API pública: window.CasitaConsent
  *   .has(cat)              -> boolean
  *   .get()                 -> objeto guardado o null
- *   .set(prefs)            -> guarda {funcionales, marketing}
+ *   .set(prefs)            -> guarda {funcionales}
  *   .grant(cat)            -> autoriza una categoría manteniendo las demás
  *   .open()                -> abre el panel de configuración
  *   .whenGranted(cat, fn)  -> ejecuta fn cuando la categoría quede autorizada
@@ -32,13 +33,13 @@
   // La AEPD considera razonable renovar el consentimiento como máximo cada 24
   // meses; usamos 12 para ir sobre seguro.
   var MAX_AGE_MS = 365 * 24 * 60 * 60 * 1000;
-  var OPTIONAL = ['funcionales', 'marketing'];
+  var OPTIONAL = ['funcionales'];
   var POLICY_URL = 'politica-cookies.html';
 
   var TEXT = {
     es: {
       title: 'Tu privacidad, a tu elección',
-      body: 'Usamos solo lo imprescindible para que la web funcione. Con tu permiso, también cargaremos el mapa de Google y la medición publicitaria de Meta (Facebook e Instagram). Puedes aceptar, rechazar o elegir, y cambiar de opinión cuando quieras desde «Configurar cookies» al pie de la página.',
+      body: 'Usamos solo lo imprescindible para que la web funcione. Con tu permiso, también cargaremos el mapa de Google. Puedes aceptar, rechazar o elegir, y cambiar de opinión cuando quieras desde «Configurar cookies» al pie de la página.',
       more: 'Política de cookies',
       accept: 'Aceptar todas',
       reject: 'Rechazar todas',
@@ -50,13 +51,12 @@
       always: 'Siempre activas',
       cats: {
         necesarias: ['Técnicas o necesarias', 'Recuerdan tu decisión sobre cookies y el idioma que eliges. Se guardan solo en tu navegador y no se comparten con nadie.'],
-        funcionales: ['Funcionales (mapa)', 'Cargan el mapa interactivo de Google Maps en la sección de contacto. Google puede instalar sus propias cookies y recibir tu dirección IP.'],
-        marketing: ['Publicidad', 'Activan el Meta Pixel y la API de Conversiones de Meta para medir qué anuncios de Facebook e Instagram funcionan. Meta instala cookies como _fbp y puede relacionar tu visita con tu cuenta.']
+        funcionales: ['Funcionales (mapa)', 'Cargan el mapa interactivo de Google Maps en la sección de contacto. Google puede instalar sus propias cookies y recibir tu dirección IP.']
       }
     },
     en: {
       title: 'Your privacy, your choice',
-      body: 'We only use what is strictly needed for the site to work. With your permission, we will also load Google Maps and Meta advertising measurement (Facebook and Instagram). You can accept, reject or choose, and change your mind at any time from “Cookie settings” in the footer.',
+      body: 'We only use what is strictly needed for the site to work. With your permission, we will also load Google Maps. You can accept, reject or choose, and change your mind at any time from “Cookie settings” in the footer.',
       more: 'Cookie policy',
       accept: 'Accept all',
       reject: 'Reject all',
@@ -68,8 +68,7 @@
       always: 'Always on',
       cats: {
         necesarias: ['Strictly necessary', 'Remember your cookie choice and selected language. Stored only in your browser and never shared.'],
-        funcionales: ['Functional (map)', 'Load the interactive Google Maps map in the contact section. Google may set its own cookies and receive your IP address.'],
-        marketing: ['Advertising', 'Enable the Meta Pixel and Meta Conversions API to measure which Facebook and Instagram ads work. Meta sets cookies such as _fbp and may link your visit to your account.']
+        funcionales: ['Functional (map)', 'Load the interactive Google Maps map in the contact section. Google may set its own cookies and receive your IP address.']
       }
     }
   };
@@ -96,13 +95,14 @@
   }
 
   function write(prefs) {
-    var data = { v: VERSION, ts: Date.now(), funcionales: !!prefs.funcionales, marketing: !!prefs.marketing };
+    var data = { v: VERSION, ts: prefs.ts || Date.now(), funcionales: !!prefs.funcionales };
     try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (_) {}
     return data;
   }
 
   function has(cat) {
     if (cat === 'necesarias') return true;
+    if (OPTIONAL.indexOf(cat) === -1) return false;
     return !!(state && state[cat] === true);
   }
 
@@ -116,7 +116,7 @@
     (listeners[cat] = listeners[cat] || []).push(fn);
   }
 
-  /* ---------- Limpieza al retirar el consentimiento ---------- */
+  /* ---------- Limpieza de restos de Meta Pixel (categoría retirada) ---------- */
   function deleteCookie(name) {
     var host = location.hostname;
     var parts = host.split('.');
@@ -143,7 +143,6 @@
     closePanel();
     applyEmbeds();
     var revoked = OPTIONAL.filter(function (c) { return prev && prev[c] && !state[c]; });
-    if (revoked.indexOf('marketing') !== -1) cleanupMarketing();
     document.dispatchEvent(new CustomEvent('casita:consent', { detail: { previous: prev, current: state } }));
     if (revoked.length) {
       // Los scripts de terceros ya cargados no pueden "descargarse": recargamos
@@ -155,7 +154,7 @@
   }
 
   function grant(cat) {
-    var next = { funcionales: has('funcionales'), marketing: has('marketing') };
+    var next = { funcionales: has('funcionales') };
     next[cat] = true;
     set(next);
   }
@@ -240,7 +239,7 @@
         '<button type="button" class="cc-close" data-cc="close" aria-label="' + tx.close + '">✕</button>' +
         '<h2 id="cc-panel-title">' + tx.panelTitle + '</h2>' +
         '<p class="cc-intro">' + tx.panelIntro + ' <a href="' + POLICY_URL + '">' + tx.more + '</a></p>' +
-        catRow('necesarias', true) + catRow('funcionales') + catRow('marketing') +
+        catRow('necesarias', true) + catRow('funcionales') +
         '<div class="cc-actions cc-actions-panel">' +
           '<button type="button" class="cc-btn" data-cc="reject">' + tx.reject + '</button>' +
           '<button type="button" class="cc-btn" data-cc="accept">' + tx.accept + '</button>' +
@@ -272,8 +271,8 @@
       return;
     }
     var action = btn.getAttribute('data-cc');
-    if (action === 'accept') set({ funcionales: true, marketing: true });
-    else if (action === 'reject') set({ funcionales: false, marketing: false });
+    if (action === 'accept') set({ funcionales: true });
+    else if (action === 'reject') set({ funcionales: false });
     else if (action === 'config') openPanel();
     else if (action === 'close') closePanel();
     else if (action === 'save') {
@@ -307,6 +306,12 @@
   function init() {
     document.addEventListener('click', onClick);
     document.addEventListener('keydown', onKey);
+    // Quien aceptó «Publicidad» antes de retirarla: borramos _fbp/_fbc y lo
+    // que dejó el script de Meta, y guardamos la elección sin esa categoría.
+    if (state && 'marketing' in state) {
+      cleanupMarketing();
+      state = write({ funcionales: state.funcionales, ts: state.ts });
+    }
     applyEmbeds();
     if (!state) showBanner();
     else OPTIONAL.forEach(function (c) { if (state[c]) emit(c); });

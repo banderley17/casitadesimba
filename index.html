@@ -1570,7 +1570,6 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
 
 </style>
 
-<!-- Meta Pixel: se carga únicamente tras el consentimiento de "Publicidad" (ver js/cookie-consent.js y el script de medición al final de la página). -->
 </head>
 <body>
 
@@ -2128,10 +2127,6 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
               <input type="checkbox" id="fprivacidad" name="privacidad" required>
               <span id="fprivacidad-txt">He leído la información sobre protección de datos.</span>
             </label>
-            <label class="form-check form-check-optional" for="fmeta">
-              <input type="checkbox" id="fmeta" name="consent_meta">
-              <span id="fmeta-txt"><em>(Opcional)</em> Acepto que La Casita de Simba comparta mi teléfono, cifrado, con Meta (Facebook e Instagram) para medir sus anuncios y no mostrármelos si ya soy cliente. Puedo retirarlo cuando quiera.</span>
-            </label>
           </div>
           <button type="submit" class="btn-form">💬 Enviar por WhatsApp</button>
         </form>
@@ -2483,7 +2478,6 @@ function enviar(e) {
   var hora       = document.getElementById('fhora').value;
   var durEl      = document.getElementById('fduracion');
   var privacidad = document.getElementById('fprivacidad').checked;
-  var consentMeta = document.getElementById('fmeta').checked;
   if (!privacidad) { document.getElementById('fprivacidad').reportValidity(); return; }
   var duracion   = durEl.options[durEl.selectedIndex].text;
   var msg = 'Hola Helena, quiero hacer una reserva en La Casita de Simba 🐾\n\n';
@@ -2510,7 +2504,7 @@ function enviar(e) {
       hora: _visible('fhora-group') ? hora : '',
       duracion: _visible('fduracion-group') ? duracion : '',
       invitados: _visible('finvitados-group') ? invitados : '', vacunas: vacunas, descripcion: desc, website: website,
-      privacidad: privacidad, consentMeta: consentMeta
+      privacidad: privacidad
     })
   }).catch(function(){});
   if (invitados) msg += '🐕 *Invitados peludos:* ' + invitados + '\n';
@@ -2882,7 +2876,6 @@ function enviar(e) {
       'form-btn':'💬 Enviar por WhatsApp',
       'fpriv-info':'<strong>Protección de datos:</strong> La Casita de Simba usará estos datos para estudiar tu solicitud, confirmarte disponibilidad y gestionar la reserva. Se guardan en nuestro gestor de reservas y se abrirá WhatsApp para enviarnos el mensaje. Puedes acceder, rectificar o suprimir tus datos y ejercer tus demás derechos escribiendo a lacasitadesimba04@gmail.com. Más información en la <a href="politica-privacidad.html" target="_blank" rel="noopener">Política de Privacidad</a>.',
       'fprivacidad-txt':'He leído la información sobre protección de datos.',
-      'fmeta-txt':'<em>(Opcional)</em> Acepto que La Casita de Simba comparta mi teléfono, cifrado, con Meta (Facebook e Instagram) para medir sus anuncios y no mostrármelos si ya soy cliente. Puedo retirarlo cuando quiera.',
       'map-ph-text':'El mapa interactivo lo ofrece Google Maps, que puede instalar cookies y recibir tu dirección IP. Solo se cargará si lo autorizas.',
       'map-ph-btn':'Mostrar mapa','map-ph-link':'Abrir en Google Maps',
       'info-dir':'Dirección','info-tel':'Teléfono','info-email':'Email','info-hora':'Horario',
@@ -2990,7 +2983,6 @@ function enviar(e) {
       'form-btn':'💬 Send via WhatsApp',
       'fpriv-info':'<strong>Data protection:</strong> La Casita de Simba will use this information to review your request, confirm availability and manage your booking. It is stored in our booking manager and WhatsApp will open so you can send us the message. You can access, correct or delete your data and exercise your other rights by writing to lacasitadesimba04@gmail.com. More information in our <a href="politica-privacidad.html" target="_blank" rel="noopener">Privacy Policy</a> (in Spanish).',
       'fprivacidad-txt':'I have read the data protection information.',
-      'fmeta-txt':'<em>(Optional)</em> I agree that La Casita de Simba may share my phone number, encrypted, with Meta (Facebook and Instagram) to measure its ads and stop showing them to me if I am already a customer. I can withdraw this at any time.',
       'map-ph-text':'The interactive map is provided by Google Maps, which may set cookies and receive your IP address. It will only load if you allow it.',
       'map-ph-btn':'Show map','map-ph-link':'Open in Google Maps',
       'info-dir':'Address','info-tel':'Phone','info-email':'Email','info-hora':'Hours',
@@ -3192,7 +3184,6 @@ function enviar(e) {
     s('.btn-form','form-btn',lang);
     s('#fpriv-info','fpriv-info',lang,'h');
     s('#fprivacidad-txt','fprivacidad-txt',lang);
-    s('#fmeta-txt','fmeta-txt',lang,'h');
     s('#map-ph-text','map-ph-text',lang);
     s('#map-ph-btn','map-ph-btn',lang);
     s('#map-ph-link','map-ph-link',lang);
@@ -3291,90 +3282,9 @@ function enviar(e) {
 
 </script>
 
-<!-- Pixel tracking + CAPI: solo se activa con el consentimiento de "Publicidad" -->
+<!-- Gestor de cookies. Ya no se usa Meta Pixel ni la API de Conversiones
+     (retirados el 24/11/2026 al dejar Meta Ads; ver historial de git si se reactivan). -->
 <script src="js/cookie-consent.js"></script>
-<script>
-var CAPI_URL = 'https://casitadesimba.vercel.app/api/track';
-var SITE_URL = 'https://lacasitadesimba.es/';
-
-function _marketingOk() { return !!(window.CasitaConsent && CasitaConsent.has('marketing')); }
-function _genId() { return Date.now() + '_' + Math.random().toString(36).slice(2,8); }
-function _getCookie(n) { var m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)'); return m ? m.pop() : ''; }
-
-function sendCAPI(event_name, custom_data, event_id) {
-  if (!_marketingOk()) return;
-  fetch(CAPI_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    // WhatsApp puede abrirse inmediatamente después del clic: keepalive evita
-    // que el navegador cancele la petición de conversión durante la navegación.
-    keepalive: true,
-    body: JSON.stringify({
-      event_name: event_name,
-      event_id: event_id,
-      event_source_url: SITE_URL,
-      fbp: _getCookie('_fbp'),
-      fbc: _getCookie('_fbc'),
-      custom_data: custom_data || {}
-    })
-  }).catch(function(){});
-}
-
-function _trackPair(event_name, custom_data) {
-  if (!_marketingOk() || typeof window.fbq !== 'function') return;
-  var id = _genId();
-  fbq('track', event_name, custom_data || {}, { eventID: id });
-  sendCAPI(event_name, custom_data, id);
-}
-
-// PageView CAPI — espera a que fbevents.js cargue y setee _fbp antes de enviar
-function _waitFbp(cb, tries) {
-  var fbp = _getCookie('_fbp');
-  if (fbp || (tries || 0) >= 15) { cb(fbp); return; }
-  setTimeout(function(){ _waitFbp(cb, (tries||0)+1); }, 200);
-}
-
-// Meta Pixel: no se descarga ni instala cookies hasta que el usuario autoriza "Publicidad".
-CasitaConsent.whenGranted('marketing', function() {
-  if (window.fbq) return;
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('consent', 'grant');
-  fbq('init', '4281036645446757');
-  var id = _genId();
-  fbq('track', 'PageView', {}, { eventID: id });
-  _waitFbp(function(){ sendCAPI('PageView', {}, id); });
-});
-
-// Clics en WhatsApp y teléfono → Contact
-document.addEventListener('click', function(e) {
-  var el = e.target.closest('a');
-  if (!el) return;
-  var href = el.getAttribute('href') || '';
-  if (href.indexOf('wa.me') !== -1) {
-    _trackPair('Contact', { content_name: 'WhatsApp' });
-  } else if (href.indexOf('tel:') === 0) {
-    _trackPair('Contact', { content_name: 'Telefono' });
-  }
-});
-
-// Formulario → Lead
-var bookingForm = document.getElementById('reservaForm');
-if (bookingForm) {
-  bookingForm.addEventListener('submit', function() {
-    // Solo medimos una solicitud completa. Así Meta no aprende de intentos
-    // fallidos ni de formularios incompletos.
-    if (!bookingForm.checkValidity()) return;
-    _trackPair('Lead', { content_name: document.getElementById('fservicio').value || 'Reserva' });
-  });
-}
-</script>
 
 
 
