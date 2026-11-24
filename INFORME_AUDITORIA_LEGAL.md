@@ -163,7 +163,7 @@ Marcados en amarillo como `[Pendiente: …]` en las páginas (buscar `class="pen
 ### Pendiente (antes de publicar)
 - Completar los datos de la sección 5 y retirar todas las marcas `[Pendiente]`.
 - Completar o retirar del pie el enlace a **Condiciones de contratación** hasta que esté terminado.
-- **Publicar** en GitHub Pages y Vercel (no hecho, por tu indicación) y repetir en producción la prueba de primera visita y una reserva de prueba.
+- ~~Publicar en GitHub Pages y Vercel~~ — hecho el 24/11/2026 (Vercel se despliega solo desde GitHub). Queda hacer una reserva de prueba real en producción.
 - Las **estadísticas del panel** (visitas, contactos, leads) se alimentan de `api/track`; desde ahora solo contarán visitantes que acepten Publicidad, por lo que las cifras bajarán.
 - La sincronización con Meta solo incluirá contactos que marquen la casilla; si Helena obtiene el consentimiento por WhatsApp, haría falta una opción en el panel para registrarlo (no implementada).
 - No existe **borrado automático** de solicitudes antiguas: hay que aplicar a mano el plazo de conservación o añadir esa función al panel.

@@ -331,3 +331,11 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - Se omitieron hasta confirmarse: fila de Registro Mercantil, núcleo zoológico, mención a WhatsApp Business y gestoría concreta. Conservación de solicitudes no convertidas: máximo 1 año.
 - `condiciones-contratacion.html` sigue siendo un borrador: no se enlaza y está excluido de GitHub Pages (`_config.yml`) y Vercel (`.vercelignore`).
 - Favicon: nuevo recorte cuadrado de la cara de Simba (legible a 48 px) en `favicon.ico` (16/32/48), `images/favicon-96.png`, `-180`, `-192`. Google tarda días o semanas en refrescar el favicon de los resultados tras volver a rastrear.
+
+## 2026-11-24 (tarde) — Vercel, favicon y acceso al panel
+
+- Vercel se despliega automáticamente desde GitHub (`main`): el commit `dd6f0cb` generó el despliegue de producción `casitadesimba-pcz27iwxa` 8 s después del push. No hace falta `vercel deploy` manual; el CLI local ya tiene sesión (usar `vercel.cmd` en PowerShell, los `.ps1` están bloqueados por la política de ejecución). Comprobado: `casitadesimba.vercel.app` sirve el mismo `index.html` que el repositorio y `condiciones-contratacion.html` da 404.
+- A petición del usuario se vuelve a la ilustración anterior del favicon (`images/favicon-simba.png`), rehecha: recorte cuadrado de la escena sin las bandas oscuras, esquinas rellenas con el tono del cielo, esquinas redondeadas y nitidez extra en tamaños pequeños. Genera `favicon.ico` (16/32/48) e `images/favicon-48/96/180/192.png`; versión de caché `v=20261124b`.
+- Eliminado el icono de patitas del final de la página que enlazaba a `/admin.html`. El panel sigue accesible escribiendo `/admin.html` directamente.
+- Verificación: suite Node 18/18.
+
