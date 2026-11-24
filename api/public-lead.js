@@ -1,4 +1,5 @@
 import { cleanText, jsonResponse, optionsResponse, publicRateLimit, readJson } from '../lib/security.js';
+import { mergeConsent } from '../lib/meta-consent.mjs';
 
 export const config = { runtime: 'edge' };
 const METHODS = 'POST, OPTIONS';
@@ -59,6 +60,8 @@ export default async function handler(req) {
     if (!(await publicRateLimit(req, 'public-lead', 8, 600))) return jsonResponse(req, { ok: false, error: 'Demasiadas solicitudes. Intentalo de nuevo mas tarde.' }, 429, METHODS);
     const body = await readJson(req, 12000);
     if (cleanText(body.website, 200)) return jsonResponse(req, { ok: true }, 200, METHODS);
+    // El formulario exige confirmar que se ha leido la informacion de privacidad.
+    if (body.privacidad !== true) throw new Error('INVALID_INPUT');
     const nombre = cleanText(body.nombre, 100, { required: true });
     const { text: tel, digits } = phone(body.tel);
     const mascota = cleanText(body.mascota, 100, { required: true });
@@ -71,6 +74,7 @@ export default async function handler(req) {
     const clients = await getClients();
     const index = clients.findIndex((client) => { try { return phone(String(client?.tel || '')).digits === digits; } catch (_) { return false; } });
     const next = { nombre, tel, mascota, servicio, fecha: new Date().toISOString().slice(0, 10), notas: notes(data), origen: 'web' };
+    next.consentimientos = mergeConsent(index >= 0 ? clients[index].consentimientos : null, { consentMeta: body.consentMeta === true });
     if (index >= 0) clients[index] = { ...clients[index], ...next };
     else clients.unshift({ id: crypto.randomUUID(), estado: 'consulta', ...next });
     await saveClients(clients);

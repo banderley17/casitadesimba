@@ -13,8 +13,10 @@
 <link rel="alternate" hreflang="es" href="https://lacasitadesimba.es/">
 <link rel="alternate" hreflang="en" href="https://lacasitadesimba.es/">
 <link rel="alternate" hreflang="x-default" href="https://lacasitadesimba.es/">
-<link rel="icon" type="image/png" href="images/favicon-simba.png?v=202608071341">
-<link rel="apple-touch-icon" href="images/favicon-simba.png?v=202608071341">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/favicon-192.png?v=20261124">
+<link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96.png?v=20261124">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon-180.png?v=20261124">
 
 <!-- Open Graph -->
 <meta property="og:type" content="business.business">
@@ -182,8 +184,9 @@
 }
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="css/cookie-consent.css">
 <style>
 :root {
   --rosa:       #F08A7C;
@@ -1025,6 +1028,16 @@ h2 {
 }
 .btn-form:hover { transform:translateY(-3px); box-shadow:0 14px 32px rgba(240,138,124,.55); }
 
+/* Información de protección de datos y casillas del formulario */
+.form-privacy { margin:.4rem 0 .6rem; display:flex; flex-direction:column; gap:.6rem; }
+.form-privacy-info { font-size:.78rem; line-height:1.55; color:#5f5f5f; background:#fafafa; border:1px solid #eee; border-radius:12px; padding:.75rem .9rem; margin:0; }
+.form-privacy-info a, .form-check a { color:#B4493C; font-weight:700; }
+.form-check { display:flex; align-items:flex-start; gap:.6rem; font-size:.84rem; line-height:1.5; color:var(--texto); cursor:pointer; }
+.form-check input { width:20px; height:20px; min-width:20px; margin:.1rem 0 0; accent-color:var(--rosa-dark); cursor:pointer; }
+.form-check input:focus-visible { outline:3px solid var(--rosa); outline-offset:2px; }
+.form-check-optional { font-size:.78rem; color:#666; }
+.form-check-optional em { font-style:normal; font-weight:800; color:#555; }
+
 /* Columna derecha: mapa + info */
 .contacto-derecha { display:flex; flex-direction:column; gap:1.5rem; }
 .mapa-wrapper {
@@ -1544,51 +1557,14 @@ header.scrolled .lang-btn { background:rgba(0,0,0,.07); border-color:rgba(0,0,0,
   }
 }
 
-/* ── MODALES LEGALES ── */
-.modal-overlay {
-  display:none; position:fixed; inset:0; z-index:9999;
-  background:rgba(0,0,0,.6); backdrop-filter:blur(4px);
-  align-items:center; justify-content:center; padding:1rem;
-}
-.modal-overlay.open { display:flex; }
-.modal-box {
-  background:white; border-radius:1rem; max-width:700px; width:100%;
-  max-height:85vh; overflow-y:auto; padding:2.5rem 2rem;
-  position:relative; box-shadow:0 20px 60px rgba(0,0,0,.3);
-}
-.modal-box h2 { font-family:'Pacifico',cursive; color:var(--rosa-dark); margin-bottom:1.2rem; font-size:1.6rem; }
-.modal-box h3 { color:var(--oscuro); margin:1.4rem 0 .5rem; font-size:1rem; }
-.modal-box p, .modal-box li { font-size:.93rem; line-height:1.75; color:#444; }
-.modal-box ul { padding-left:1.2rem; margin:.4rem 0; }
-.modal-close {
-  position:absolute; top:1rem; right:1rem;
-  background:none; border:none; font-size:1.4rem; cursor:pointer;
-  color:#999; line-height:1; padding:.3rem .5rem; border-radius:.5rem;
-  transition:background .2s;
-}
-.modal-close:hover { background:#f0f0f0; color:#333; }
+/* ── PIE: ENLACES LEGALES ── */
 .footer-legal { display:flex; gap:1.2rem; flex-wrap:wrap; justify-content:center; }
-.footer-legal a { color:rgba(255,255,255,.55); font-size:.78rem; text-decoration:none; transition:color .2s; }
+.footer-legal a { color:rgba(255,255,255,.75); font-size:.78rem; text-decoration:none; transition:color .2s; }
 .footer-legal a:hover { color:white; }
 
 </style>
 
-<!-- Meta Pixel -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '4281036645446757');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel -->
+<!-- Meta Pixel: se carga únicamente tras el consentimiento de "Publicidad" (ver js/cookie-consent.js y el script de medición al final de la página). -->
 </head>
 <body>
 
@@ -1618,7 +1594,7 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       </div>
     </nav>
     <button id="langBtn" class="lang-btn" aria-label="Switch language">
-      <img id="langFlag" src="https://flagcdn.com/20x15/gb.png" alt="EN" width="20" height="15" style="border-radius:2px;vertical-align:middle;margin-right:3px;">
+      <img id="langFlag" src="images/flag-gb.svg" alt="EN" width="20" height="15" style="border-radius:2px;vertical-align:middle;margin-right:3px;">
       <span id="langText">EN</span>
     </button>
     <button class="menu-btn" id="menuBtn" aria-label="Menú">☰</button>
@@ -2140,6 +2116,17 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
             <label for="fdesc">Cuéntanos sobre tu perro</label>
             <textarea id="fdesc" placeholder="Raza, edad, carácter, si es sociable con otros perros..."></textarea>
           </div>
+          <div class="form-privacy" id="form-privacy">
+            <p class="form-privacy-info" id="fpriv-info"><strong>Protección de datos:</strong> La Casita de Simba usará estos datos para estudiar tu solicitud, confirmarte disponibilidad y gestionar la reserva. Se guardan en nuestro gestor de reservas y se abrirá WhatsApp para enviarnos el mensaje. Puedes acceder, rectificar o suprimir tus datos y ejercer tus demás derechos escribiendo a lacasitadesimba04@gmail.com. Más información en la <a href="politica-privacidad.html" target="_blank" rel="noopener">Política de Privacidad</a>.</p>
+            <label class="form-check" for="fprivacidad">
+              <input type="checkbox" id="fprivacidad" name="privacidad" required>
+              <span id="fprivacidad-txt">He leído la información sobre protección de datos.</span>
+            </label>
+            <label class="form-check form-check-optional" for="fmeta">
+              <input type="checkbox" id="fmeta" name="consent_meta">
+              <span id="fmeta-txt"><em>(Opcional)</em> Acepto que La Casita de Simba comparta mi teléfono, cifrado, con Meta (Facebook e Instagram) para medir sus anuncios y no mostrármelos si ya soy cliente. Puedo retirarlo cuando quiera.</span>
+            </label>
+          </div>
           <button type="submit" class="btn-form">💬 Enviar por WhatsApp</button>
         </form>
       </div>
@@ -2147,10 +2134,20 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
       <!-- MAPA + INFO -->
       <div class="contacto-derecha reveal">
         <div class="mapa-wrapper">
-          <iframe
-            src="https://maps.google.com/maps?cid=15418317452853479791&output=embed&hl=es&z=15"
-            allowfullscreen loading="lazy">
+          <iframe title="Mapa de La Casita de Simba en Google Maps" hidden
+            data-consent-src="https://maps.google.com/maps?cid=15418317452853479791&output=embed&hl=es&z=15"
+            data-consent-category="funcionales"
+            allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin">
           </iframe>
+          <div class="consent-placeholder" data-consent-for="funcionales">
+            <span class="cp-ico" aria-hidden="true">📍</span>
+            <strong id="map-ph-title">Calle Puentelarra 5, Local 10 · Madrid</strong>
+            <p id="map-ph-text">El mapa interactivo lo ofrece Google Maps, que puede instalar cookies y recibir tu dirección IP. Solo se cargará si lo autorizas.</p>
+            <div class="cp-actions">
+              <button type="button" data-consent-enable="funcionales" id="map-ph-btn">Mostrar mapa</button>
+              <a class="cp-link" id="map-ph-link" href="https://maps.app.goo.gl/K8vez9C3RgssnENv5" target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a>
+            </div>
+          </div>
           <div class="mapa-tap" onclick="this.remove()"></div>
         </div>
         <div class="info-cards">
@@ -2229,9 +2226,10 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
   <div class="footer-bottom">
     <span>© 2026 La Casita de Simba · Madrid</span>
     <div class="footer-legal">
-      <a href="#" onclick="openModal('modal-aviso');return false;">Aviso Legal</a>
-      <a href="#" onclick="openModal('modal-privacidad');return false;">Privacidad</a>
-      <a href="#" onclick="openModal('modal-cookies');return false;">Política de Cookies</a>
+      <a href="aviso-legal.html">Aviso Legal</a>
+      <a href="politica-privacidad.html">Privacidad</a>
+      <a href="politica-cookies.html">Política de Cookies</a>
+      <button type="button" class="cc-footer-btn" data-cookie-settings>Configurar cookies</button>
     </div>
   </div>
 </footer>
@@ -2239,73 +2237,6 @@ src="https://www.facebook.com/tr?id=4281036645446757&ev=PageView&noscript=1"
 <!-- BANNER KIT DIGITAL -->
 <div class="banner-kit">
   <img src="images/banner2.png" alt="Financiado por la Unión Europea – Next Generation EU · Kit Digital" class="banner-kit-img">
-</div>
-
-<!-- MODAL: AVISO LEGAL -->
-<div class="modal-overlay" id="modal-aviso" onclick="closeModalOutside(event,'modal-aviso')">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('modal-aviso')" aria-label="Cerrar">✕</button>
-    <h2>Aviso Legal</h2>
-    <h3>Titular del sitio web</h3>
-    <p>En cumplimiento de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa:</p>
-    <ul>
-      <li><strong>Denominación:</strong> La Casita de Simba</li>
-      <li><strong>Domicilio:</strong> Calle Puentelarra 5, Local 10, Madrid</li>
-      <li><strong>Email:</strong> lacasitadesimba04@gmail.com</li>
-      <li><strong>Teléfono:</strong> +34 613 753 680</li>
-    </ul>
-    <h3>Objeto y condiciones de uso</h3>
-    <p>Este sitio web tiene carácter informativo sobre los servicios de guarderia canina ofrecidos por La Casita de Simba. El acceso y uso del sitio implica la aceptación de las presentes condiciones. Nos reservamos el derecho a modificar el contenido sin previo aviso.</p>
-    <h3>Propiedad intelectual</h3>
-    <p>Todos los contenidos del sitio web (textos, imágenes, logotipos, diseño) son propiedad de La Casita de Simba o cuentan con la debida autorización. Queda prohibida su reproducción total o parcial sin consentimiento expreso.</p>
-    <h3>Responsabilidad</h3>
-    <p>La Casita de Simba no se hace responsable de los daños derivados del uso del sitio ni de la información contenida en enlaces a terceros.</p>
-  </div>
-</div>
-
-<!-- MODAL: PRIVACIDAD -->
-<div class="modal-overlay" id="modal-privacidad" onclick="closeModalOutside(event,'modal-privacidad')">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('modal-privacidad')" aria-label="Cerrar">✕</button>
-    <h2>Política de Privacidad</h2>
-    <h3>Responsable del tratamiento</h3>
-    <p>La Casita de Simba · Calle Puentelarra 5, Local 10, Madrid · lacasitadesimba04@gmail.com</p>
-    <h3>Datos que recogemos</h3>
-    <p>A través del formulario de contacto recogemos únicamente los datos que tú nos facilitas voluntariamente: nombre, teléfono, correo electrónico y mensaje.</p>
-    <h3>Finalidad</h3>
-    <p>Los datos se utilizan exclusivamente para responder a tu consulta y gestionar la reserva de plaza en la residencia. No se usan para ninguna otra finalidad.</p>
-    <h3>Base legal</h3>
-    <p>El tratamiento se basa en el consentimiento que otorgas al enviar el formulario (art. 6.1.a RGPD).</p>
-    <h3>Conservación</h3>
-    <p>Los datos se conservan el tiempo necesario para atender tu solicitud y, en su caso, mientras dure la relación contractual.</p>
-    <h3>Cesión a terceros</h3>
-    <p>No se ceden datos a terceros salvo obligación legal.</p>
-    <h3>Tus derechos</h3>
-    <p>Puedes ejercer en cualquier momento tus derechos de <strong>acceso, rectificación, supresión, portabilidad, limitación y oposición</strong> escribiendo a lacasitadesimba04@gmail.com. Si consideras que el tratamiento no se ajusta a la normativa, puedes reclamar ante la <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">Agencia Española de Protección de Datos</a>.</p>
-  </div>
-</div>
-
-<!-- MODAL: COOKIES -->
-<div class="modal-overlay" id="modal-cookies" onclick="closeModalOutside(event,'modal-cookies')">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal('modal-cookies')" aria-label="Cerrar">✕</button>
-    <h2>Política de Cookies</h2>
-    <h3>¿Qué son las cookies?</h3>
-    <p>Las cookies son pequeños archivos que se almacenan en tu dispositivo cuando visitas un sitio web. Permiten que el sitio recuerde ciertas acciones o preferencias durante un tiempo.</p>
-    <h3>¿Qué cookies usa este sitio?</h3>
-    <p>Este sitio web utiliza <strong>únicamente cookies técnicas y funcionales</strong> estrictamente necesarias para su correcto funcionamiento (por ejemplo, guardar tu preferencia de idioma durante la sesión). No se usan cookies de publicidad, rastreo ni análisis de terceros.</p>
-    <h3>¿Necesito dar mi consentimiento?</h3>
-    <p>Las cookies técnicas no requieren tu consentimiento según la normativa vigente (LSSI y Directiva 2009/136/CE), al ser imprescindibles para el funcionamiento del sitio.</p>
-    <h3>¿Cómo desactivarlas?</h3>
-    <p>Puedes configurar tu navegador para bloquear o eliminar cookies. Ten en cuenta que esto puede afectar al funcionamiento de algunas funciones del sitio. Más información en la ayuda de tu navegador:</p>
-    <ul>
-      <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Google Chrome</a></li>
-      <li><a href="https://support.mozilla.org/es/kb/habilitar-y-deshabilitar-cookies" target="_blank" rel="noopener noreferrer">Mozilla Firefox</a></li>
-      <li><a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer">Safari</a></li>
-    </ul>
-    <h3>Contacto</h3>
-    <p>Para cualquier consulta sobre nuestra política de cookies escríbenos a lacasitadesimba04@gmail.com.</p>
-  </div>
 </div>
 
 <!-- WHATSAPP BUBBLE -->
@@ -2489,6 +2420,7 @@ if (statsEl) {
 }
 
 // Formulario → WhatsApp
+function _visible(id) { var g = document.getElementById(id); return !!g && g.style.display !== 'none'; }
 function enviar(e) {
   e.preventDefault();
   var n       = document.getElementById('fn').value.trim();
@@ -2504,10 +2436,12 @@ function enviar(e) {
   var invitados  = document.getElementById('finvitados').value;
   var hora       = document.getElementById('fhora').value;
   var durEl      = document.getElementById('fduracion');
+  var privacidad = document.getElementById('fprivacidad').checked;
+  var consentMeta = document.getElementById('fmeta').checked;
+  if (!privacidad) { document.getElementById('fprivacidad').reportValidity(); return; }
   var duracion   = durEl.options[durEl.selectedIndex].text;
   var msg = 'Hola Helena, quiero hacer una reserva en La Casita de Simba 🐾\n\n';
   msg += '👤 *Nombre:* ' + n + '\n';
-  msg += '📞 *Teléfono:* ' + (tel || 'No indicado') + '\n';
   msg += '🐶 *Perro:* ' + perro + '\n';
   msg += '🏷️ *Servicio:* ' + serv + '\n';
   if (entrada) msg += '📅 *Fecha:* ' + entrada + '\n';
@@ -2524,8 +2458,13 @@ function enviar(e) {
     keepalive: true,
     body: JSON.stringify({
       nombre: n, tel: tel, mascota: perro, servicio: serv,
-      entrada: entrada, salida: salida, hora: hora, duracion: duracion,
-      invitados: invitados, vacunas: vacunas, descripcion: desc, website: website
+      // Solo se envían los campos visibles para el servicio elegido (minimización).
+      entrada: entrada,
+      salida: _visible('fsalida-group') ? salida : '',
+      hora: _visible('fhora-group') ? hora : '',
+      duracion: _visible('fduracion-group') ? duracion : '',
+      invitados: _visible('finvitados-group') ? invitados : '', vacunas: vacunas, descripcion: desc, website: website,
+      privacidad: privacidad, consentMeta: consentMeta
     })
   }).catch(function(){});
   if (invitados) msg += '🐕 *Invitados peludos:* ' + invitados + '\n';
@@ -2895,6 +2834,11 @@ function enviar(e) {
       'lbl-vacunas':'¿Tu peludito tiene al día sus vacunas y desparasitaciones?','opt-vac-sel':'Seleccionar...','opt-vac-si':'✅ Sí','opt-vac-no':'❌ No',
       'lbl-desc':'Cuéntanos sobre tu perro','ph-desc':'Raza, edad, carácter, si es sociable con otros perros...',
       'form-btn':'💬 Enviar por WhatsApp',
+      'fpriv-info':'<strong>Protección de datos:</strong> La Casita de Simba usará estos datos para estudiar tu solicitud, confirmarte disponibilidad y gestionar la reserva. Se guardan en nuestro gestor de reservas y se abrirá WhatsApp para enviarnos el mensaje. Puedes acceder, rectificar o suprimir tus datos y ejercer tus demás derechos escribiendo a lacasitadesimba04@gmail.com. Más información en la <a href="politica-privacidad.html" target="_blank" rel="noopener">Política de Privacidad</a>.',
+      'fprivacidad-txt':'He leído la información sobre protección de datos.',
+      'fmeta-txt':'<em>(Opcional)</em> Acepto que La Casita de Simba comparta mi teléfono, cifrado, con Meta (Facebook e Instagram) para medir sus anuncios y no mostrármelos si ya soy cliente. Puedo retirarlo cuando quiera.',
+      'map-ph-text':'El mapa interactivo lo ofrece Google Maps, que puede instalar cookies y recibir tu dirección IP. Solo se cargará si lo autorizas.',
+      'map-ph-btn':'Mostrar mapa','map-ph-link':'Abrir en Google Maps',
       'info-dir':'Dirección','info-tel':'Teléfono','info-email':'Email','info-hora':'Horario',
       'info-hora-val':'Lun–Vie: 08:00–20:00 · Fines de semana: consultar',
       'cont-wa':'💬 Escríbenos por WhatsApp',
@@ -2998,6 +2942,11 @@ function enviar(e) {
       'lbl-vacunas':'Is your pup up to date with vaccines and deworming?','opt-vac-sel':'Select...','opt-vac-si':'✅ Yes','opt-vac-no':'❌ No',
       'lbl-desc':'Tell us about your dog','ph-desc':'Breed, age, temperament, sociable with other dogs...',
       'form-btn':'💬 Send via WhatsApp',
+      'fpriv-info':'<strong>Data protection:</strong> La Casita de Simba will use this information to review your request, confirm availability and manage your booking. It is stored in our booking manager and WhatsApp will open so you can send us the message. You can access, correct or delete your data and exercise your other rights by writing to lacasitadesimba04@gmail.com. More information in our <a href="politica-privacidad.html" target="_blank" rel="noopener">Privacy Policy</a> (in Spanish).',
+      'fprivacidad-txt':'I have read the data protection information.',
+      'fmeta-txt':'<em>(Optional)</em> I agree that La Casita de Simba may share my phone number, encrypted, with Meta (Facebook and Instagram) to measure its ads and stop showing them to me if I am already a customer. I can withdraw this at any time.',
+      'map-ph-text':'The interactive map is provided by Google Maps, which may set cookies and receive your IP address. It will only load if you allow it.',
+      'map-ph-btn':'Show map','map-ph-link':'Open in Google Maps',
       'info-dir':'Address','info-tel':'Phone','info-email':'Email','info-hora':'Hours',
       'info-hora-val':'Mon–Fri: 08:00–20:00 · Weekends on request',
       'cont-wa':'💬 Write us on WhatsApp',
@@ -3195,6 +3144,12 @@ function enviar(e) {
     s('#fservicio option:nth-child(5)','opt5',lang);
     s('#fservicio option:nth-child(6)','opt6',lang);
     s('.btn-form','form-btn',lang);
+    s('#fpriv-info','fpriv-info',lang,'h');
+    s('#fprivacidad-txt','fprivacidad-txt',lang);
+    s('#fmeta-txt','fmeta-txt',lang,'h');
+    s('#map-ph-text','map-ph-text',lang);
+    s('#map-ph-btn','map-ph-btn',lang);
+    s('#map-ph-link','map-ph-link',lang);
     var infoKeys = ['info-dir','info-tel','info-email','info-hora'];
     document.querySelectorAll('.info-card').forEach(function(card,i) {
       var st = card.querySelector('strong'); if (st && tr[lang][infoKeys[i]]) st.textContent = tr[lang][infoKeys[i]];
@@ -3226,7 +3181,7 @@ function enviar(e) {
     if (typeof window._toggleFechas === 'function') window._toggleFechas();
     var flag = document.getElementById('langFlag');
     var langText = document.getElementById('langText');
-    if (flag) { flag.src = lang==='es' ? 'https://flagcdn.com/20x15/gb.png' : 'https://flagcdn.com/20x15/es.png'; flag.alt = lang==='es' ? 'EN' : 'ES'; }
+    if (flag) { flag.src = lang==='es' ? 'images/flag-gb.svg' : 'images/flag-es.svg'; flag.alt = lang==='es' ? 'EN' : 'ES'; }
     if (langText) langText.textContent = lang==='es' ? 'EN' : 'ES';
     localStorage.setItem('casita-lang', lang);
   }
@@ -3288,31 +3243,20 @@ function enviar(e) {
   }, 4000);
 })();
 
-function openModal(id) {
-  document.getElementById(id).classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-  document.body.style.overflow = '';
-}
-function closeModalOutside(e, id) {
-  if (e.target === document.getElementById(id)) closeModal(id);
-}
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => { m.classList.remove('open'); document.body.style.overflow = ''; });
-});
 </script>
 
-<!-- Pixel tracking + CAPI -->
+<!-- Pixel tracking + CAPI: solo se activa con el consentimiento de "Publicidad" -->
+<script src="js/cookie-consent.js"></script>
 <script>
 var CAPI_URL = 'https://casitadesimba.vercel.app/api/track';
 var SITE_URL = 'https://lacasitadesimba.es/';
 
+function _marketingOk() { return !!(window.CasitaConsent && CasitaConsent.has('marketing')); }
 function _genId() { return Date.now() + '_' + Math.random().toString(36).slice(2,8); }
 function _getCookie(n) { var m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)'); return m ? m.pop() : ''; }
 
 function sendCAPI(event_name, custom_data, event_id) {
+  if (!_marketingOk()) return;
   fetch(CAPI_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -3331,6 +3275,7 @@ function sendCAPI(event_name, custom_data, event_id) {
 }
 
 function _trackPair(event_name, custom_data) {
+  if (!_marketingOk() || typeof window.fbq !== 'function') return;
   var id = _genId();
   fbq('track', event_name, custom_data || {}, { eventID: id });
   sendCAPI(event_name, custom_data, id);
@@ -3342,11 +3287,24 @@ function _waitFbp(cb, tries) {
   if (fbp || (tries || 0) >= 15) { cb(fbp); return; }
   setTimeout(function(){ _waitFbp(cb, (tries||0)+1); }, 200);
 }
-(function() {
+
+// Meta Pixel: no se descarga ni instala cookies hasta que el usuario autoriza "Publicidad".
+CasitaConsent.whenGranted('marketing', function() {
+  if (window.fbq) return;
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('consent', 'grant');
+  fbq('init', '4281036645446757');
   var id = _genId();
   fbq('track', 'PageView', {}, { eventID: id });
   _waitFbp(function(){ sendCAPI('PageView', {}, id); });
-})();
+});
 
 // Clics en WhatsApp y teléfono → Contact
 document.addEventListener('click', function(e) {
@@ -3370,9 +3328,6 @@ if (bookingForm) {
     _trackPair('Lead', { content_name: document.getElementById('fservicio').value || 'Reserva' });
   });
 }
-
-
-
 </script>
 
 

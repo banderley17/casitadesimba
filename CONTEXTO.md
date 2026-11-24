@@ -312,3 +312,22 @@ Quitada el 2026-06-06 a petición del usuario (HTML/CSS/traducciones completas g
 - Se reprodujo la lectura: Meta devolvió HTTP 400, código 17 y subcódigo 2446079 en `/api/ads-stats`, que indica limitación temporal de solicitudes. La campaña no está pausada; las métricas de hoy funcionaban antes de alcanzar ese límite.
 - Se añadieron trazas saneadas en Vercel y caché en Upstash por período durante 60 segundos, para que abrir o pulsar varias veces Publicidad no multiplique llamadas a Meta. Commits `55aa77c` y `8bf76ed`, desplegados en Vercel Production y GitHub Pages; suite Node 10/10 y sintaxis de APIs correcta.
 - En la comprobación inmediatamente posterior Meta mantenía el límite, por lo que el panel muestra el aviso temporal. Esperar a que Meta libere la cuota y volver a abrir la pestaña; la caché evita repetir la causa.
+
+## Actualización 2026-11-24 — Auditoría legal, cookies y privacidad (solo en local, sin publicar)
+
+- Hallazgo: la web publicada cargaba Meta Pixel (`_fbp`, 90 días, y CAPI) y Google Maps sin consentimiento, y la política de cookies decía que solo había cookies técnicas. El panel subía teléfonos (hash) de todos los contactos a Meta sin consentimiento.
+- Implementado: gestor de consentimiento propio (`js/cookie-consent.js`, `css/cookie-consent.css`) con Aceptar/Rechazar/Configurar al mismo nivel; categorías Técnicas, Funcionales (mapa) y Publicidad; el píxel solo se carga tras aceptar Publicidad y el mapa tras aceptar Funcionales; «Configurar cookies» en el pie.
+- Páginas nuevas: `aviso-legal.html`, `politica-privacidad.html`, `politica-cookies.html`, `condiciones-contratacion.html` (borrador, `noindex`), con `css/legal.css`. Se quitaron los modales legales antiguos.
+- Formulario: información de privacidad, casilla obligatoria sin marcar, casilla opcional para compartir el teléfono con Meta; `api/public-lead.js` exige `privacidad: true` y guarda `consentimientos`. El mensaje de WhatsApp ya no repite el teléfono.
+- Decisión del usuario: `api/sync-audience.js` y los eventos `Purchase` solo usan contactos con `consentimientos.meta === true` (`lib/meta-consent.mjs`). Los contactos antiguos o creados en el panel ya no se envían a Meta. Las estadísticas de visitas del panel solo contarán visitantes que acepten Publicidad.
+- Fuentes Google alojadas en `fonts/`; banderas en `images/flag-*.svg`.
+- Verificación: Playwright local (primera visita sin cookies ni terceros, aceptar, configurar, recargar, retirar, rechazar, formulario con API interceptada, móvil 375 px y escritorio, 0 errores JS) y `node --test tests/*.test.mjs` 18/18.
+- Copia previa: `C:\Users\bande\Desktop\casitadesimba-local-backups\2026-11-24-auditoria-legal`.
+- Pendiente antes de publicar: datos del titular (nombre/razón social, NIF, registro, núcleo zoológico), condiciones comerciales reales, plazo de conservación, origen de las reseñas mostradas como «de Google», revisión jurídica. Detalle completo en `INFORME_AUDITORIA_LEGAL.md`. No se ha desplegado ni hecho commit.
+
+## Publicación 2026-11-24 — Cumplimiento legal y favicon
+
+- A petición del usuario se publica la adaptación legal. Titular indicado: María Elena (faltan apellidos y NIF; el NIF figura como «pendiente de incorporar»). Las reseñas mostradas son reales según el usuario.
+- Se omitieron hasta confirmarse: fila de Registro Mercantil, núcleo zoológico, mención a WhatsApp Business y gestoría concreta. Conservación de solicitudes no convertidas: máximo 1 año.
+- `condiciones-contratacion.html` sigue siendo un borrador: no se enlaza y está excluido de GitHub Pages (`_config.yml`) y Vercel (`.vercelignore`).
+- Favicon: nuevo recorte cuadrado de la cara de Simba (legible a 48 px) en `favicon.ico` (16/32/48), `images/favicon-96.png`, `-180`, `-192`. Google tarda días o semanas en refrescar el favicon de los resultados tras volver a rastrear.

@@ -65,7 +65,8 @@ export default async function handler(req) {
         notas: cleanText(body.notas, 1_500),
       };
       let metaPurchase = 'not-needed';
-      if (client.estado === 'cliente') {
+      // Los contactos creados en el panel no tienen consentimiento registrado para Meta.
+      if (client.estado === 'cliente' && shouldTrackPurchase(null, client)) {
         client.purchaseEventId = `purchase:${client.id}`;
         client.purchasePendingAt = new Date().toISOString();
       }

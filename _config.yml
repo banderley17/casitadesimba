@@ -2,6 +2,9 @@ exclude:
   - AGENTS.md
   - CONTEXTO.md
   - security_best_practices_report.md
+  - INFORME_AUDITORIA_LEGAL.md
+  - condiciones-contratacion.html
+  - tests
   - api
   - lib
   - vercel.json

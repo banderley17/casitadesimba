@@ -5,6 +5,7 @@ import {
   buildPurchaseEvent,
   shouldTrackPurchase,
 } from '../lib/meta-purchase.mjs';
+import { hasMetaConsent, mergeConsent } from '../lib/meta-consent.mjs';
 
 test('builds a Purchase event with a normalized hashed phone', async () => {
   const payload = await buildPurchaseEvent({
@@ -32,16 +33,38 @@ test('builds a Purchase event with a normalized hashed phone', async () => {
   });
 });
 
+const OK = { consentimientos: { meta: true } };
+
 test('tracks only the first transition to a paid client', () => {
-  assert.equal(shouldTrackPurchase(null, { estado: 'cliente' }), true);
-  assert.equal(shouldTrackPurchase({ estado: 'consulta' }, { estado: 'cliente' }), true);
-  assert.equal(shouldTrackPurchase({ estado: 'excluido' }, { estado: 'cliente' }), true);
-  assert.equal(shouldTrackPurchase({ estado: 'cliente' }, { estado: 'cliente' }), false);
-  assert.equal(shouldTrackPurchase({ estado: 'cliente' }, { estado: 'cliente', purchaseEventId: 'pending', purchasePendingAt: '2026-08-27T12:00:00.000Z' }), true);
-  assert.equal(shouldTrackPurchase({ estado: 'cliente' }, { estado: 'cliente', purchaseEventId: 'already-sent', purchaseTrackedAt: '2026-08-27T12:00:00.000Z' }), false);
-  assert.equal(shouldTrackPurchase({ estado: 'consulta' }, { estado: 'consulta' }), false);
-  assert.equal(shouldTrackPurchase({ estado: 'consulta' }, { estado: 'cliente', purchaseEventId: 'already-sent', purchaseTrackedAt: '2026-08-27T12:00:00.000Z' }), false);
-  assert.equal(shouldTrackPurchase({ estado: 'excluido' }, { estado: 'cliente', purchaseLegacy: true }), false);
+  assert.equal(shouldTrackPurchase(null, { ...OK, estado: 'cliente' }), true);
+  assert.equal(shouldTrackPurchase({ estado: 'consulta' }, { ...OK, estado: 'cliente' }), true);
+  assert.equal(shouldTrackPurchase({ estado: 'excluido' }, { ...OK, estado: 'cliente' }), true);
+  assert.equal(shouldTrackPurchase({ estado: 'cliente' }, { ...OK, estado: 'cliente' }), false);
+  assert.equal(shouldTrackPurchase({ estado: 'cliente' }, { ...OK, estado: 'cliente', purchaseEventId: 'pending', purchasePendingAt: '2026-08-27T12:00:00.000Z' }), true);
+  assert.equal(shouldTrackPurchase({ estado: 'cliente' }, { ...OK, estado: 'cliente', purchaseEventId: 'already-sent', purchaseTrackedAt: '2026-08-27T12:00:00.000Z' }), false);
+  assert.equal(shouldTrackPurchase({ estado: 'consulta' }, { ...OK, estado: 'consulta' }), false);
+  assert.equal(shouldTrackPurchase({ estado: 'consulta' }, { ...OK, estado: 'cliente', purchaseEventId: 'already-sent', purchaseTrackedAt: '2026-08-27T12:00:00.000Z' }), false);
+  assert.equal(shouldTrackPurchase({ estado: 'excluido' }, { ...OK, estado: 'cliente', purchaseLegacy: true }), false);
+});
+
+test('never tracks a Purchase without explicit Meta consent', () => {
+  assert.equal(shouldTrackPurchase(null, { estado: 'cliente' }), false);
+  assert.equal(shouldTrackPurchase({ estado: 'consulta' }, { estado: 'cliente', consentimientos: { meta: false } }), false);
+  assert.equal(shouldTrackPurchase({ estado: 'consulta' }, { estado: 'cliente', consentimientos: { meta: true, metaRetiradoAt: '2026-11-24T00:00:00.000Z' } }), false);
+});
+
+test('records and withdraws Meta consent from the booking form', () => {
+  const given = mergeConsent(null, { consentMeta: true }, 'T1');
+  assert.equal(given.meta, true);
+  assert.equal(hasMetaConsent({ consentimientos: given }), true);
+  const withdrawn = mergeConsent(given, { consentMeta: false }, 'T2');
+  assert.equal(withdrawn.meta, false);
+  assert.equal(withdrawn.metaRetiradoAt, 'T2');
+  assert.equal(hasMetaConsent({ consentimientos: withdrawn }), false);
+  const never = mergeConsent(null, { consentMeta: false }, 'T3');
+  assert.equal(never.meta, false);
+  assert.equal(never.metaRetiradoAt, undefined);
+  assert.equal(never.privacidadInformadaAt, 'T3');
 });
 
 test('sends the Purchase payload to the Graph API without exposing the token', async () => {

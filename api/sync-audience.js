@@ -1,4 +1,5 @@
 import { jsonResponse, optionsResponse, requireAdmin } from '../lib/security.js';
+import { hasMetaConsent } from '../lib/meta-consent.mjs';
 
 export const config = { runtime: 'edge' };
 const METHODS = 'POST, OPTIONS';
@@ -81,8 +82,10 @@ export default async function handler(req) {
     try { clients = JSON.parse(await kv(['GET', 'client_list']) || '[]'); } catch (_) {}
     if (!Array.isArray(clients)) clients = [];
     if (filter !== 'todos') clients = clients.filter((client) => client.estado === filter);
+    // Solo contactos que autorizaron expresamente compartir su telefono con Meta.
+    clients = clients.filter(hasMetaConsent);
     const valid = clients.map((client) => ({ ...client, normalizedPhone: phone(client.tel) })).filter((client) => client.normalizedPhone).slice(0, 10_000);
-    if (!valid.length) return jsonResponse(req, { ok: false, error: 'No hay contactos válidos para sincronizar' }, 400, METHODS, { csrf: true });
+    if (!valid.length) return jsonResponse(req, { ok: false, error: 'No hay contactos con consentimiento para compartir sus datos con Meta' }, 400, METHODS, { csrf: true });
     const key = `meta_audience_${filter}`;
     let audienceId = await kv(['GET', key]);
     const rows = [];
